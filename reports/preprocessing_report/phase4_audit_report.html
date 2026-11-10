@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F1 Telemetry Intelligence – Phase 4 Preprocessing Audit & Verification Report</title>
+    <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --border-color: #334155;
+            --accent-red: #e10600;
+            --accent-cyan: #06b6d4;
+            --accent-green: #10b981;
+            --accent-yellow: #f59e0b;
+            --accent-blue: #3b82f6;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 2rem 3rem;
+        }
+        header {
+            border-bottom: 2px solid var(--accent-red);
+            padding-bottom: 1.5rem;
+            margin-bottom: 2.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .brand-badge {
+            background: linear-gradient(135deg, var(--accent-red), #990000);
+            color: #fff;
+            padding: 0.4rem 0.8rem;
+            font-weight: 800;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            border-radius: 4px;
+        }
+        h1 { font-size: 1.8rem; font-weight: 700; color: #fff; }
+        .subtitle { color: var(--text-secondary); font-size: 0.95rem; margin-top: 0.3rem; }
+        .header-meta { text-align: right; font-size: 0.85rem; color: var(--text-secondary); }
+
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.2rem;
+            margin-bottom: 2.5rem;
+        }
+        .metric-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.2rem 1.5rem;
+            border-top: 3px solid var(--accent-cyan);
+        }
+        .metric-card.alert { border-top-color: var(--accent-yellow); }
+        .metric-card.success { border-top-color: var(--accent-green); }
+        .metric-title { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-secondary); font-weight: 600; }
+        .metric-value { font-size: 1.8rem; font-weight: 800; color: #fff; margin: 0.3rem 0; font-family: monospace; }
+        .metric-desc { font-size: 0.8rem; color: var(--text-secondary); }
+
+        section {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.8rem 2rem;
+            margin-bottom: 2.5rem;
+        }
+        h2 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.6rem;
+        }
+        h2 .section-num {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--accent-cyan);
+            padding: 0.1rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+        p, li { color: #cbd5e1; font-size: 0.95rem; }
+        ul, ol { margin-left: 1.5rem; margin-top: 0.5rem; margin-bottom: 1rem; }
+        li { margin-bottom: 0.4rem; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.2rem 0;
+            font-size: 0.88rem;
+        }
+        th, td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+        th {
+            background: rgba(15, 23, 42, 0.6);
+            color: var(--text-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+        }
+        tr:hover td { background: rgba(255, 255, 255, 0.02); }
+        .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+        .font-bold { font-weight: 700; }
+        .small { font-size: 0.78rem; }
+        .text-deficit { color: #f87171; font-weight: 700; font-family: monospace; }
+        .text-success { color: #34d399; font-weight: 700; }
+
+        .badge {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        .badge.pass { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid #059669; }
+        .badge.warn { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid #d97706; }
+        .badge.fail { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid #dc2626; }
+        .classification-pill {
+            background: rgba(59, 130, 246, 0.2);
+            color: #60a5fa;
+            border: 1px solid #2563eb;
+            padding: 0.15rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.72rem;
+            font-weight: 600;
+        }
+
+        .callout {
+            background: rgba(6, 182, 212, 0.08);
+            border-left: 4px solid var(--accent-cyan);
+            padding: 1rem 1.2rem;
+            border-radius: 0 6px 6px 0;
+            margin: 1.2rem 0;
+        }
+        .callout.alert {
+            background: rgba(245, 158, 11, 0.08);
+            border-left-color: var(--accent-yellow);
+        }
+        .callout.danger {
+            background: rgba(239, 68, 68, 0.08);
+            border-left-color: var(--accent-red);
+        }
+        .callout-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.3rem; color: #fff; }
+
+        .defect-summary-box {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .box-pane {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 1.2rem;
+        }
+        .box-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand">
+            <span class="brand-badge">FIA / F1 DATA ARCHITECTURE</span>
+            <div>
+                <h1>Phase 4 Preprocessing Audit &amp; Verification Report</h1>
+                <div class="subtitle">F1 Telemetry Intelligence Platform &bull; 2024 Abu Dhabi Grand Prix</div>
+            </div>
+        </div>
+        <div class="header-meta">
+            <div><strong>Audit Status:</strong> <span class="badge pass">VERIFIED &amp; APPROVED</span></div>
+            <div><strong>Scope:</strong> Phase 4 Validation, Cleansing &amp; Resampling</div>
+            <div><strong>Engine:</strong> Python 3.12 / NumPy / SciPy / Pandas</div>
+        </div>
+    </header>
+
+    <!-- Top Key Metrics -->
+    <div class="metric-grid">
+        <div class="metric-card success">
+            <div class="metric-title">Raw Data Immutability</div>
+            <div class="metric-value">100.0%</div>
+            <div class="metric-desc">All 4 raw SHA-256 hashes bit-level match</div>
+        </div>
+        <div class="metric-card success">
+            <div class="metric-title">Resampled Slices</div>
+            <div class="metric-value">495,849</div>
+            <div class="metric-desc">Across 95 eligible driver-laps (1.0m grid)</div>
+        </div>
+        <div class="metric-card alert">
+            <div class="metric-title">Nominal Point Deficit</div>
+            <div class="metric-value">-5,846</div>
+            <div class="metric-desc">61.5m / lap racing line vs track centerline</div>
+        </div>
+        <div class="metric-card success">
+            <div class="metric-title">Lap Classifications</div>
+            <div class="metric-value">96 / 96</div>
+            <div class="metric-desc">38 Flying &bull; 38 VSC &bull; 19 Start &bull; 1 DNF</div>
+        </div>
+        <div class="metric-card success">
+            <div class="metric-title">Distance Monotonicity</div>
+            <div class="metric-value">96 / 96</div>
+            <div class="metric-desc">Monotonically non-decreasing (&Delta;d &ge; 0.0m)</div>
+        </div>
+    </div>
+
+    <!-- Executive Summary & Defect Ledger -->
+    <section>
+        <h2><span class="section-num">1</span> Executive Audit Summary &amp; Defect Ledger</h2>
+        <p>
+            This technical audit conducted an exhaustive verification of the Phase 4 data validation and preprocessing implementation
+            in accordance with rigorous motorsport data engineering standards. The pipeline was audited across distance calibration,
+            spatial interpolation, lap-level classification taxonomy, signal clipping, and raw storage immutability.
+        </p>
+
+        <div class="defect-summary-box">
+            <div class="box-pane" style="border-left: 4px solid var(--accent-green);">
+                <div class="box-title" style="color: var(--accent-green);">
+                    <span>&check;</span> Verified Implementation &amp; Confirmed Expected Behaviour
+                </div>
+                <ul>
+                    <li><strong>100% Raw Data Immutability:</strong> All 4 raw files in <code>data/raw/</code> remain pristine and bit-level identical to Phase 2 ingestion hashes.</li>
+                    <li><strong>Physically Grounded Spatial Bounds:</strong> The 495,849 resampled rows count is proven mathematically correct. Resampling strictly avoids extrapolating beyond measured vehicle telemetry.</li>
+                    <li><strong>Lap Taxonomy Integrity:</strong> All 96 driver-lap sequences correctly classified. Sergio Perez Lap 1 collision retirement isolated from high-speed flying lap models.</li>
+                    <li><strong>Signal Preservation:</strong> Zero raw sensor columns overwritten; companion audit features (<code>Distance_Corrected</code>, <code>Throttle_Clipped</code>, <code>IsBraking</code>) derived deterministically.</li>
+                </ul>
+            </div>
+            <div class="box-pane" style="border-left: 4px solid var(--accent-yellow);">
+                <div class="box-title" style="color: var(--accent-yellow);">
+                    <span>&#9888;</span> Defects Corrected &amp; Documentation Harmonization
+                </div>
+                <ul>
+                    <li><strong>Terminology Correction (Monotonicity):</strong> Corrected documentation asserting "strictly increasing distance". Proved <code>Distance_Corrected</code> guarantees <strong>monotonically non-decreasing (&Delta;d &ge; 0.0m)</strong> progression, correctly preserving 152 physical zero-delta occurrences during stationary starting grid holds and jitter clamping.</li>
+                    <li><strong>Resampling Row Deficit Explanation:</strong> Formally documented why resampled telemetry contains 495,849 rows rather than theoretical 501,695 rows (95 &times; 5281). Racing line trajectory reduces path length below track centerline (5,281.0m), and extrapolation beyond recorded data is strictly forbidden.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Distance Correction Audit -->
+    <section>
+        <h2><span class="section-num">2</span> Distance Correction &amp; Monotonicity Audit</h2>
+        <p>
+            An audit of <code>src/preprocessing/clean_telemetry.py</code> was conducted to establish whether <code>Distance_Corrected</code>
+            is strictly increasing (&Delta;d &gt; 0) or monotonically non-decreasing (&Delta;d &ge; 0), and whether repeated distance coordinates
+            corrupt or reflect legitimate vehicle behaviour.
+        </p>
+
+        <div class="callout">
+            <div class="callout-title">Mathematical &amp; Empirical Findings: Monotonically Non-Decreasing (&Delta;d &ge; 0)</div>
+            <p>
+                The audit proves conclusively that <code>Distance_Corrected</code> is <strong>monotonically non-decreasing</strong> across all 96 driver-lap sequences.
+                Exactly <strong>152 telemetry samples</strong> exhibit consecutive differences where &Delta;d = 0.0m:
+            </p>
+            <ul>
+                <li><strong>91 samples across Lap 1 (all 20 drivers):</strong> Cars parked stationary on their respective starting grid slots awaiting the start lights (Speed = 0.0 km/h, Throttle = 0%). In addition, negative grid coordinates clamped to 0.0m create consecutive 0.0m plateau points. This represents legitimate physical vehicle state.</li>
+                <li><strong>27 samples on Franco Colapinto (COL) Lap 4:</strong> Sub-millimetre GPS timing loop jitter where raw distance momentarily dropped by -0.0001m. Clamping to running maximum held the distance coordinate constant (&Delta;d = 0.0m).</li>
+                <li><strong>34 samples on Oscar Piastri (PIA) Lap 5:</strong> Floating point precision jitter where raw distance dropped by -0.003m, held constant by the monotonic running maximum filter.</li>
+            </ul>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Metric</th>
+                    <th>Observed Telemetry Value</th>
+                    <th>Engineering Interpretation</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Strictly Increasing Laps (&Delta;d &gt; 0)</td>
+                    <td class="mono font-bold">74 / 96</td>
+                    <td>Strict inequality does not hold because stationary grid samples have &Delta;d = 0.</td>
+                </tr>
+                <tr>
+                    <td>Monotonically Non-Decreasing Laps (&Delta;d &ge; 0)</td>
+                    <td class="mono font-bold text-success">96 / 96 (100.0%)</td>
+                    <td>Verified complete absence of negative spatial steps across entire dataset.</td>
+                </tr>
+                <tr>
+                    <td>Non-Monotonic Laps (&Delta;d &lt; 0)</td>
+                    <td class="mono font-bold">0 / 96 (0.0%)</td>
+                    <td>All 22 historical non-monotonic anomalies successfully eliminated.</td>
+                </tr>
+                <tr>
+                    <td>Raw Distance Preservation</td>
+                    <td class="mono font-bold">100.0% Unchanged</td>
+                    <td>Raw Distance min: -0.0899m, max: 5299.7347m preserved intact.</td>
+                </tr>
+                <tr>
+                    <td>Corrected Distance Bounds</td>
+                    <td class="mono font-bold">[0.0000m, 5299.7347m]</td>
+                    <td>Negative grid offsets (-0.0899m) successfully calibrated to timing line.</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Spatial Resampling Audit -->
+    <section>
+        <h2><span class="section-num">3</span> Spatial Resampling Audit (495,849 vs 501,695 Rows)</h2>
+        <p>
+            An in-depth investigation was executed to resolve why <code>resampled_telemetry.parquet</code> contains <strong>495,849 rows</strong> across
+            95 driver-laps rather than the theoretical maximum of <strong>501,695 rows</strong> (95 &times; 5,281 positions).
+        </p>
+
+        <div class="callout alert">
+            <div class="callout-title">The Engineering Explanation for the 5,846 Row Difference</div>
+            <p>
+                The theoretical calculation of 501,695 rows assumes that every driver covers exactly 5,281.0 metres (from 0.0m to 5,280.0m inclusive)
+                on every single lap. In actual Formula 1 telemetry:
+            </p>
+            <ol>
+                <li><strong>Racing Line Geometry:</strong> The official circuit length (5,281.0m) is measured along the geometric centerline of the track. Professional drivers do not drive the centerline; they take the racing line, cutting apexes and minimizing trajectory radius. Consequently, a driver's integrated wheel and GPS distance at the start-finish line typically ranges between 5,215m and 5,260m (mean: 5,219.46m).</li>
+                <li><strong>Strict Anti-Extrapolation Policy:</strong> <code>resample_telemetry.py</code> strictly bounds the uniform grid within observed telemetry:
+                    <div style="margin: 0.5rem 0; font-family: monospace; background: rgba(0,0,0,0.3); padding: 0.5rem; border-radius: 4px;">
+                        grid_start = np.ceil(max(0.0, d_min))<br>
+                        grid_end = np.floor(min(5281.0, d_max))
+                    </div>
+                    If the grid were arbitrarily forced to extend to 5,280.0m, the interpolation algorithm would be forced to <strong>extrapolate unobserved data</strong>
+                    for an average of 61.5 metres per lap past the finish line, fabricating non-existent telemetry.
+                </li>
+                <li><strong>Exclusion of Perez Lap 1:</strong> Sergio Perez completed only 3,932.8m before his collision retirement (&lt; 4,800.0m threshold). He is correctly excluded (96 - 1 = 95 laps).</li>
+            </ol>
+            <p style="margin-top: 0.5rem;">
+                <strong>Conclusion:</strong> The 495,849 row count is physically and mathematically correct. <em>Forcing extra records into the dataset would violate data integrity.</em>
+            </p>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Driver</th>
+                    <th>Lap</th>
+                    <th>Classification</th>
+                    <th>Observed Min</th>
+                    <th>Observed Max</th>
+                    <th>Span (m)</th>
+                    <th>Resampled Pts</th>
+                    <th>Nominal Pts</th>
+                    <th>Deficit</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+        <tr>
+            <td class="mono font-bold">ALB</td>
+            <td>Lap 1</td>
+            <td><span class="classification-pill">START_LAP</span></td>
+            <td>0.00m</td>
+            <td>5250.55m</td>
+            <td>5250.55m</td>
+            <td>5,250</td>
+            <td>5,281</td>
+            <td class="text-deficit">-31</td>
+            <td><span class="badge pass">Included</span></td>
+        </tr>
+        
+        <tr>
+            <td class="mono font-bold">ALB</td>
+            <td>Lap 2</td>
+            <td><span class="classification-pill">VSC_AFFECTED_LAP</span></td>
+            <td>0.30m</td>
+            <td>5219.67m</td>
+            <td>5219.36m</td>
+            <td>5,219</td>
+            <td>5,281</td>
+            <td class="text-deficit">-62</td>
+            <td><span class="badge pass">Included</span></td>
+        </tr>
+        
+        <tr>
+            <td class="mono font-bold">ALB</td>
+            <td>Lap 3</td>
+            <td><span class="classification-pill">VSC_AFFECTED_LAP</span></td>
+            <td>0.16m</td>
+            <td>5213.81m</td>
+            <td>5213.65m</td>
+            <td>5,213</td>
+            <td>5,281</td>
+            <td class="text-deficit">-68</td>
+            <td><span class="badge pass">Included</span></td>
+        </tr>
+        
+        <tr>
+            <td class="mono font-bold">ALB</td>
+            <td>Lap 4</td>
+            <td><span class="classification-pill">COMPLETE_FLYING_LAP</span></td>
+            <td>0.06m</td>
+            <td>5200.36m</td>
+            <td>5200.30m</td>
+            <td>5,200</td>
+            <td>5,281</td>
+            <td class="text-deficit">-81</td>
+            <td><span class="badge pass">Included</span></td>
+        </tr>
+        
+        <tr>
+            <td class="mono font-bold">ALB</td>
+            <td>Lap 5</td>
+            <td><span class="classification-pill">COMPLETE_FLYING_LAP</span></td>
+            <td>1.00m</td>
+            <td>5200.09m</td>
+            <td>5199.08m</td>
+            <td>5,199</td>
+            <td>5,281</td>
+            <td class="text-deficit">-82</td>
+            <td><span class="badge pass">Included</span></td>
+        </tr>
+        
+        <tr>
+            <td class="mono font-bold">ALO</td>
+            <td>Lap 1</td>
+            <td><span class="classification-pill">START_LAP</span></td>
+            <td>0.00m</td>
+            <td>5218.81m</td>
+            <td>5218.81m</td>
+            <td>5,219</td>
+            <td>5,281</td>
+            <td class="text-deficit">-62</td>
+            <td><span class="badge pass">Included</span></td>
+        </tr>
+        
+        <tr>
+            <td class="mono font-bold">ALO</td>
+            <td>Lap 2</td>
+            <td><span class="classification-pill">VSC_AFFECTED_LAP</span></td>
+            <td>0.12m</td>
+            <td>5220.64m</td>
+            <td>5220.52m</td>
+            <td>5,220</td>
+            <td>5,281</td>
+            <td class="text-deficit">-61</td>
+            <td><span class="badge pass">Included</span></td>
+        </tr>
+        
+        <tr>
+            <td class="mono font-bold">ALO</td>
+            <td>Lap 3</td>
+            <td><span class="classification-pill">VSC_AFFECTED_LAP</span></td>
+            <td>0.00m</td>
+            <td>5214.17m</td>
+            <td>5214.17m</td>
+            <td>5,215</td>
+            <td>5,281</td>
+            <td class="text-deficit">-66</td>
+            <td><span class="badge pass">Included</span></td>
+        </tr>
+        
+        <tr>
+            <td class="mono font-bold">ALO</td>
+            <td>Lap 4</td>
+            <td><span class="classification-pill">COMPLETE_FLYING_LAP</span></td>
+            <td>0.28m</td>
+            <td>5216.22m</td>
+            <td>5215.94m</td>
+            <td>5,216</td>
+            <td>5,281</td>
+            <td class="text-deficit">-65</td>
+            <td><span class="badge pass">Included</span></td>
+        </tr>
+        
+        <tr>
+            <td class="mono font-bold">ALO</td>
+            <td>Lap 5</td>
+            <td><span class="classification-pill">COMPLETE_FLYING_LAP</span></td>
+            <td>0.18m</td>
+            <td>5230.17m</td>
+            <td>5229.99m</td>
+            <td>5,230</td>
+            <td>5,281</td>
+            <td class="text-deficit">-51</td>
+            <td><span class="badge pass">Included</span></td>
+        </tr>
+        
+        <tr>
+            <td class="mono font-bold">BOT</td>
+            <td>Lap 1</td>
+            <td><span class="classification-pill">START_LAP</span></td>
+            <td>0.00m</td>
+            <td>5209.67m</td>
+            <td>5209.67m</td>
+            <td>5,209</td>
+            <td>5,281</td>
+            <td class="text-deficit">-72</td>
+            <td><span class="badge pass">Included</span></td>
+        </tr>
+        
+        <tr>
+            <td class="mono font-bold">BOT</td>
+            <td>Lap 2</td>
+            <td><span class="classification-pill">VSC_AFFECTED_LAP</span></td>
+            <td>0.05m</td>
+            <td>5221.14m</td>
+            <td>5221.09m</td>
+            <td>5,221</td>
+            <td>5,281</td>
+            <td class="text-deficit">-60</td>
+            <td><span class="badge pass">Included</span></td>
+        </tr>
+        
+        <tr>
+            <td class="mono font-bold">BOT</td>
+            <td>Lap 3</td>
+            <td><span class="classification-pill">VSC_AFFECTED_LAP</span></td>
+            <td>0.03m</td>
+            <td>5226.23m</td>
+            <td>5226.20m</td>
+            <td>5,226</td>
+            <td>5,281</td>
+            <td class="text-deficit">-55</td>
+            <td><span class="badge pass">Included</span></td>
+        </tr>
+        
+        <tr>
+            <td class="mono font-bold">BOT</td>
+            <td>Lap 4</td>
+            <td><span class="classification-pill">COMPLETE_FLYING_LAP</span></td>
+            <td>0.03m</td>
+            <td>5212.50m</td>
+            <td>5212.47m</td>
+            <td>5,212</td>
+            <td>5,281</td>
+            <td class="text-deficit">-69</td>
+            <td><span class="badge pass">Included</span></td>
+        </tr>
+        
+        <tr>
+            <td class="mono font-bold">BOT</td>
+            <td>Lap 5</td>
+            <td><span class="classification-pill">COMPLETE_FLYING_LAP</span></td>
+            <td>0.19m</td>
+            <td>5208.38m</td>
+            <td>5208.19m</td>
+            <td>5,208</td>
+            <td>5,281</td>
+            <td class="text-deficit">-73</td>
+            <td><span class="badge pass">Included</span></td>
+        </tr>
+        
+            </tbody>
+        </table>
+        <div class="small" style="color: var(--text-secondary); text-align: right; margin-top: 0.5rem;">
+            Showing first 15 of 96 sequences. Full 96-sequence audit available in <code>reports/preprocessing_report/resampling_audit.csv</code>.
+        </div>
+    </section>
+
+    <!-- Lap Classification Audit -->
+    <section>
+        <h2><span class="section-num">4</span> Lap Classification &amp; TrackStatus Semantics Audit</h2>
+        <p>
+            The 96 driver-lap sequences were audited against official FIA timing logs and FastF1 TrackStatus definitions:
+        </p>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.2rem 0;">
+            <div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Classification Category</th>
+                            <th>Count</th>
+                            <th>Percentage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+        <tr>
+            <td class="font-bold">VSC_AFFECTED_LAP</td>
+            <td class="mono font-bold">38</td>
+            <td>39.6%</td>
+        </tr>
+        
+        <tr>
+            <td class="font-bold">COMPLETE_FLYING_LAP</td>
+            <td class="mono font-bold">38</td>
+            <td>39.6%</td>
+        </tr>
+        
+        <tr>
+            <td class="font-bold">START_LAP</td>
+            <td class="mono font-bold">19</td>
+            <td>19.8%</td>
+        </tr>
+        
+        <tr>
+            <td class="font-bold">DNF_OR_RETIRED</td>
+            <td class="mono font-bold">1</td>
+            <td>1.0%</td>
+        </tr>
+        
+                    </tbody>
+                </table>
+            </div>
+            <div>
+                <div class="callout">
+                    <div class="callout-title">TrackStatus Semantics Verification</div>
+                    <ul>
+                        <li><strong>Lap 1 (TrackStatus 12):</strong> Yellow flags and standing start launch phase. Classified as <code>START_LAP</code> (19 complete, 1 DNF).</li>
+                        <li><strong>Laps 2 &amp; 3 (TrackStatus 26, 126, 671):</strong> Full course Virtual Safety Car deployment following Perez's crash. Drivers restricted by VSC delta. Classified as <code>VSC_AFFECTED_LAP</code> (38 laps).</li>
+                        <li><strong>Laps 4 &amp; 5 (TrackStatus 1):</strong> Full green flag conditions with unrestricted racing pace. Classified as <code>COMPLETE_FLYING_LAP</code> (38 laps).</li>
+                        <li><strong>Perez Lap 1 Crash (PER):</strong> Distance span 3,932.8m, LapTime NaT. Classified as <code>DNF_OR_RETIRED</code>. Excluded from flying lap models.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Feature Engineering Audit -->
+    <section>
+        <h2><span class="section-num">5</span> Feature Engineering &amp; Data Leakage Audit</h2>
+        <p>
+            All 11 derived features were audited to verify correct data typing, range bounds, absence of data leakage, and preservation of raw sensors:
+        </p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Feature Name</th>
+                    <th>Data Type</th>
+                    <th>Nulls</th>
+                    <th>Observed Range</th>
+                    <th>Sample Values</th>
+                    <th>Audit Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+            <tr>
+                <td class="mono font-bold">IsLeadingRace</td>
+                <td class="mono">bool</td>
+                <td>0</td>
+                <td>False to True</td>
+                <td class="mono small">[False, True]</td>
+                <td><span class="badge pass">PASS</span></td>
+            </tr>
+            
+            <tr>
+                <td class="mono font-bold">IsTimingLineBoundary</td>
+                <td class="mono">bool</td>
+                <td>0</td>
+                <td>False to True</td>
+                <td class="mono small">[True, False]</td>
+                <td><span class="badge pass">PASS</span></td>
+            </tr>
+            
+            <tr>
+                <td class="mono font-bold">Distance_Corrected</td>
+                <td class="mono">float64</td>
+                <td>0</td>
+                <td>0.0 to 5299.734657709479</td>
+                <td class="mono small">[0.0014869038478941376, 0.060480096287762526, 0.23333333333333334, 0.7363215062552648, 0.7888888888888888]</td>
+                <td><span class="badge pass">PASS</span></td>
+            </tr>
+            
+            <tr>
+                <td class="mono font-bold">Distance_Anomaly_Flag</td>
+                <td class="mono">bool</td>
+                <td>0</td>
+                <td>False to True</td>
+                <td class="mono small">[False, True]</td>
+                <td><span class="badge pass">PASS</span></td>
+            </tr>
+            
+            <tr>
+                <td class="mono font-bold">Throttle_Clipped</td>
+                <td class="mono">float64</td>
+                <td>0</td>
+                <td>0.0 to 100.0</td>
+                <td class="mono small">[21.0, 18.41071542857143, 16.0, 19.69999872, 20.0]</td>
+                <td><span class="badge pass">PASS</span></td>
+            </tr>
+            
+            <tr>
+                <td class="mono font-bold">Throttle_Overtravel_Flag</td>
+                <td class="mono">bool</td>
+                <td>0</td>
+                <td>False to True</td>
+                <td class="mono small">[False, True]</td>
+                <td><span class="badge pass">PASS</span></td>
+            </tr>
+            
+            <tr>
+                <td class="mono font-bold">IsBraking</td>
+                <td class="mono">bool</td>
+                <td>0</td>
+                <td>False to True</td>
+                <td class="mono small">[False, True]</td>
+                <td><span class="badge pass">PASS</span></td>
+            </tr>
+            
+            <tr>
+                <td class="mono font-bold">Brake_Int</td>
+                <td class="mono">int64</td>
+                <td>0</td>
+                <td>0.0 to 1.0</td>
+                <td class="mono small">[0, 1]</td>
+                <td><span class="badge pass">PASS</span></td>
+            </tr>
+            
+            <tr>
+                <td class="mono font-bold">LapClassification</td>
+                <td class="mono">object</td>
+                <td>0</td>
+                <td>COMPLETE_FLYING_LAP to VSC_AFFECTED_LAP</td>
+                <td class="mono small">['START_LAP', 'VSC_AFFECTED_LAP', 'COMPLETE_FLYING_LAP', 'DNF_OR_RETIRED']</td>
+                <td><span class="badge pass">PASS</span></td>
+            </tr>
+            
+            <tr>
+                <td class="mono font-bold">IsCompleteLap</td>
+                <td class="mono">bool</td>
+                <td>0</td>
+                <td>False to True</td>
+                <td class="mono small">[True, False]</td>
+                <td><span class="badge pass">PASS</span></td>
+            </tr>
+            
+            <tr>
+                <td class="mono font-bold">IsOutlierFlag</td>
+                <td class="mono">bool</td>
+                <td>0</td>
+                <td>False to True</td>
+                <td class="mono small">[False, True]</td>
+                <td><span class="badge pass">PASS</span></td>
+            </tr>
+            
+            </tbody>
+        </table>
+
+        <div class="callout">
+            <div class="callout-title">Specific Feature Audit Findings</div>
+            <ul>
+                <li><code>IsLeadingRace</code>: Exactly 2,957 samples flagged as <code>True</code>, belonging strictly to Lando Norris (<code>NOR</code>) during Laps 2, 3, 4, and 5. Zero false positive labels across remaining 19 drivers.</li>
+                <li><code>Throttle_Clipped</code>: All 32 instances of throttle overtravel (&gt; 100.0%, max 104.0%) successfully clamped to 100.0%, preserving raw <code>Throttle</code> in full.</li>
+                <li><code>IsBraking</code> &amp; <code>Brake_Int</code>: 100% boolean-to-integer fidelity verified (14,089 braking instances in both channels).</li>
+                <li><strong>No Data Leakage:</strong> All derived features use strictly causal, current-lap, or spatial features; no future lap times or downstream outcomes leaked into telemetry rows.</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Raw Data Cryptographic Hashes -->
+    <section>
+        <h2><span class="section-num">6</span> Raw Dataset Cryptographic Verification (SHA-256)</h2>
+        <p>
+            Raw source data files were verified bit-for-bit against recorded baseline cryptographic hashes:
+        </p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Raw File Name</th>
+                    <th>Expected SHA-256 Digest</th>
+                    <th>Verified Actual SHA-256 Digest</th>
+                    <th>File Size</th>
+                    <th>Integrity Verdict</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+        <tr>
+            <td class="mono font-bold">2024_abu_dhabi_race_laps.csv</td>
+            <td class="mono small">cd92d0a8534374606002b1b39dc51e66185b63fce79f4d67b03cd9ef05abf52c</td>
+            <td class="mono small">cd92d0a8534374606002b1b39dc51e66185b63fce79f4d67b03cd9ef05abf52c</td>
+            <td>454,656 bytes</td>
+            <td><span class="badge pass">MATCH (UNTOUCHED)</span></td>
+        </tr>
+        
+        <tr>
+            <td class="mono font-bold">2024_abu_dhabi_race_laps.parquet</td>
+            <td class="mono small">8f56a5e246e981011090d6a969664f06e1d2915013239db21b94a0e1843be31e</td>
+            <td class="mono small">8f56a5e246e981011090d6a969664f06e1d2915013239db21b94a0e1843be31e</td>
+            <td>132,481 bytes</td>
+            <td><span class="badge pass">MATCH (UNTOUCHED)</span></td>
+        </tr>
+        
+        <tr>
+            <td class="mono font-bold">2024_abu_dhabi_race_telemetry.csv</td>
+            <td class="mono small">2104ff24209460a29e821336c73b47ab9310d14d82452fc4bf952af316d09296</td>
+            <td class="mono small">2104ff24209460a29e821336c73b47ab9310d14d82452fc4bf952af316d09296</td>
+            <td>21,968,961 bytes</td>
+            <td><span class="badge pass">MATCH (UNTOUCHED)</span></td>
+        </tr>
+        
+        <tr>
+            <td class="mono font-bold">2024_abu_dhabi_race_telemetry.parquet</td>
+            <td class="mono small">6fa2d79b98a92741964b03e9cbcfc347928310384e052463b6eef20bf1cde2aa</td>
+            <td class="mono small">6fa2d79b98a92741964b03e9cbcfc347928310384e052463b6eef20bf1cde2aa</td>
+            <td>7,288,354 bytes</td>
+            <td><span class="badge pass">MATCH (UNTOUCHED)</span></td>
+        </tr>
+        
+            </tbody>
+        </table>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 F1 Telemetry Intelligence Platform &bull; Phase 4 Data Validation &amp; Preprocessing Technical Audit</p>
+        <p style="margin-top: 0.3rem; font-size: 0.78rem;">Generated automatically by <code>src/preprocessing/audit_phase4.py</code></p>
+    </footer>
+
+</body>
+</html>
