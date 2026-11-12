@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phase 5.1: EDA Scientific Validation & Analytical Audit | F1 Telemetry Intelligence</title>
+    <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent-cyan: #06b6d4;
+            --accent-green: #10b981;
+            --accent-amber: #f59e0b;
+            --accent-rose: #f43f5e;
+            --accent-blue: #3b82f6;
+            --border-color: #334155;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            margin: 0;
+            padding: 30px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        header {
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        h1 {
+            color: var(--accent-cyan);
+            font-size: 2.2rem;
+            margin-bottom: 8px;
+        }
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-right: 8px;
+        }
+        .badge-audit { background-color: rgba(6, 182, 212, 0.2); color: var(--accent-cyan); }
+        .badge-verified { background-color: rgba(16, 185, 129, 0.2); color: var(--accent-green); }
+        .badge-alert { background-color: rgba(244, 63, 94, 0.2); color: var(--accent-rose); }
+
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            margin-bottom: 35px;
+        }
+        .metric-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+        }
+        .metric-card h3 {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 0;
+        }
+        .metric-value {
+            font-size: 2.1rem;
+            font-weight: 700;
+            margin: 8px 0;
+        }
+        .metric-delta {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        .text-green { color: var(--accent-green); }
+        .text-amber { color: var(--accent-amber); }
+        .text-rose { color: var(--accent-rose); }
+        .text-cyan { color: var(--accent-cyan); }
+
+        section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: var(--accent-cyan);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.92rem;
+        }
+        th, td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+        th {
+            background-color: rgba(15, 23, 42, 0.6);
+            color: var(--accent-cyan);
+            font-weight: 600;
+        }
+        tr:hover {
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+        .callout {
+            border-left: 4px solid var(--accent-amber);
+            background: rgba(245, 158, 11, 0.1);
+            padding: 15px 20px;
+            border-radius: 0 6px 6px 0;
+            margin: 20px 0;
+        }
+        .callout-success {
+            border-left-color: var(--accent-green);
+            background: rgba(16, 185, 129, 0.1);
+        }
+        .callout-danger {
+            border-left-color: var(--accent-rose);
+            background: rgba(244, 63, 94, 0.1);
+        }
+        .figure-card {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .figure-card img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+        }
+        .figure-caption {
+            color: var(--text-secondary);
+            font-size: 0.88rem;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <span class="badge badge-audit">Phase 5.1 Scientific Audit</span>
+            <span class="badge badge-verified">Empirically Verified</span>
+            <h1>F1 Telemetry Intelligence: Scientific Validation & Analytical Audit</h1>
+            <div class="subtitle">
+                Rigorous statistical validation of DRS mechanics, kinematic correlation dynamics,
+                and machine learning readiness | 2024 Abu Dhabi Grand Prix (Yas Marina Circuit)
+            </div>
+        </header>
+
+        <!-- Executive Metrics -->
+        <div class="metric-grid">
+            <div class="metric-card">
+                <h3>Naive DRS Speed Delta</h3>
+                <div class="metric-value text-rose">+100.92 <span style="font-size:1.1rem">km/h</span></div>
+                <div class="metric-delta text-rose">Confounded Ecological Fallacy (Full Lap)</div>
+            </div>
+            <div class="metric-card">
+                <h3>Location-Controlled DRS Delta</h3>
+                <div class="metric-value text-green">+12.75 <span style="font-size:1.1rem">km/h</span></div>
+                <div class="metric-delta text-green">Driver Cluster 95% CI: [10.5, 15.28] km/h (N=19 Drivers, 5,000 Bootstraps)</div>
+            </div>
+            <div class="metric-card">
+                <h3>Track Confounding Share</h3>
+                <div class="metric-value text-amber">87.4%</div>
+                <div class="metric-delta text-amber">88.17 km/h from corners & braking</div>
+            </div>
+            <div class="metric-card">
+                <h3>Random Split Leakage</h3>
+                <div class="metric-value text-rose">96.1%</div>
+                <div class="metric-delta text-rose">Adjacent test rows in train (Lag-1 ACF: 0.997)</div>
+            </div>
+        </div>
+
+        <!-- Task 1: DRS Validation -->
+        <section>
+            <h2>1. Task 1: DRS Analytical Validation & Confounding Decomposition</h2>
+            <p>
+                In Phase 5 EDA, initial reports documented a raw difference of <strong>+100.92 km/h</strong> between
+                DRS-active samples (298.69 km/h) and DRS-inactive samples (197.77 km/h).
+                Our scientific audit reveals that <strong>87.4% of this difference (88.17 km/h) is an ecological fallacy</strong>
+                caused by track geometry confounding.
+            </p>
+            <div class="callout callout-danger">
+                <strong>Mechanism of Confounding:</strong> DRS is strictly prohibited in corners and chicanes and is only activated
+                along the two longest straightaways (1,750m - 2,450m and 2,850m - 3,450m). Consequently, the DRS-inactive subset
+                contains all low-speed corners (Turn 5 hairpin at ~61 km/h, Turn 6-7 chicane at ~80 km/h, and marina complexes),
+                as well as severe braking zones from 326 km/h down to 60 km/h.
+            </div>
+
+            <div class="callout callout-success">
+                <strong>Important Methodological Distinction (Location Control vs. Causal Aerodynamics):</strong><br>
+                Restricting evaluation to straightaways yields an adjusted delta of <strong>+12.75 km/h</strong>.
+                While this successfully isolates track topography, it is a <strong>location-controlled observational association</strong>, NOT a pure causal
+                aerodynamic wing-flap benefit. Under F1 racing conditions, DRS is activated when trailing within 1.0 second, conflating the wing flap
+                effect with aerodynamic slipstream (tow), battery energy deployment (ERS overtake mode), and straightaway entry velocity.
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Comparison Scope</th>
+                        <th>Track Distance Window</th>
+                        <th>DRS ON Mean</th>
+                        <th>DRS OFF Mean</th>
+                        <th>Mean Delta</th>
+                        <th>Cohen's d</th>
+                        <th>Sample 95% CI</th>
+                        <th>Cluster 95% CI</th>
+                        <th>Significance Testing</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+            <tr>
+                <td><strong>Naive Pooled Full Lap</strong></td>
+                <td>All Track Distances (0m - 5,281m)</td>
+                <td>298.69 km/h</td>
+                <td>197.77 km/h</td>
+                <td class="text-rose"><strong>+100.92 km/h</strong></td>
+                <td>N/A (Confounded)</td>
+                <td>N/A (Confounded)</td>
+                <td>N/A (Confounded)</td>
+                <td>N/A</td>
+            </tr>
+        
+
+            <tr>
+                <td><strong>Controlled Straights (Combined)</strong></td>
+                <td>Back Straights 1 & 2 (1750-2450m & 2850-3450m)</td>
+                <td>298.31 km/h</td>
+                <td>285.57 km/h</td>
+                <td class="text-green"><strong>+12.75 km/h</strong></td>
+                <td>0.504 (Medium)</td>
+                <td>[11.29, 14.21]</td>
+                <td>[10.50, 15.28]</td>
+                <td>5.97e-64 (descriptive)</td>
+            </tr>
+        
+
+            <tr>
+                <td><strong>Controlled Straight 1 (Zone 1)</strong></td>
+                <td>Back Straight 1 (1750m - 2450m)</td>
+                <td>308.52 km/h</td>
+                <td>297.40 km/h</td>
+                <td class="text-green"><strong>+11.12 km/h</strong></td>
+                <td>0.617 (Medium-High)</td>
+                <td>[9.68, 12.56]</td>
+                <td>[8.20, 13.30]</td>
+                <td>2.12e-49 (descriptive)</td>
+            </tr>
+        
+
+            <tr>
+                <td><strong>Controlled Straight 2 (Zone 2)</strong></td>
+                <td>Back Straight 2 (2850m - 3450m)</td>
+                <td>286.79 km/h</td>
+                <td>273.12 km/h</td>
+                <td class="text-green"><strong>+13.67 km/h</strong></td>
+                <td>0.514 (Medium)</td>
+                <td>[11.46, 15.88]</td>
+                <td>[11.32, 16.93]</td>
+                <td>1.10e-32 (descriptive)</td>
+            </tr>
+        
+                </tbody>
+            </table>
+            <p style="font-size:0.85rem; color:var(--text-secondary);">
+                * Note on Statistical Inference: Due to extreme serial autocorrelation (ACF₁ = 0.997), sample-level p-values violate i.i.d. independence assumptions
+                and are descriptive only. Inferential confidence intervals are derived from hierarchical cluster-aware bootstrapping across the 19 drivers (retaining all eligible laps per driver, 5,000 bootstrap iterations).
+            </p>
+
+            <div class="figure-card">
+                <img src="figures/01_drs_confounding_vs_controlled.png" alt="DRS Confounding vs Controlled Density Curves">
+                <div class="figure-caption">Figure 1: Comparison of Naive Full-Lap Density Distribution vs Straightaway-Controlled Density Curves.</div>
+            </div>
+
+            <div class="figure-card">
+                <img src="figures/02_spatial_speed_trace_drs_zones.png" alt="Spatial Velocity Profile with DRS Zones">
+                <div class="figure-caption">Figure 2: Spatial Velocity Profile along Yas Marina Circuit highlighting DRS Activation Windows and Cornering Zones.</div>
+            </div>
+        </section>
+
+        <!-- Task 2: Kinematic Correlation Validation -->
+        <section>
+            <h2>2. Task 2: Kinematic Correlation & Dynamic Aerodynamic Drag Validation</h2>
+            <p>
+                The pooled Pearson correlation between <code>Speed</code> and <code>Throttle</code> on clean flying laps is <strong>r = 0.580</strong>.
+                However, spatial window analysis proves that this single summary statistic obscures critical non-linear vehicle physics:
+            </p>
+            <ul>
+                <li><strong>Corner Exit Acceleration (0m-250m, 3,750m-4,000m):</strong> Progressive throttle application drives acceleration, producing strong coupling (<strong>r = +0.75 to +0.95</strong>).</li>
+                <li><strong>Terminal Velocity Straights (1,000m-1,250m, 2,000m-2,250m):</strong> Throttle is pinned at 100% (variance ≈ 0), while acceleration decays asymptotically due to quadratic aerodynamic drag ($F_d = \frac{1}{2}\rho C_d A v^2$). Here, local correlation collapses to near zero (<strong>r = -0.15 to +0.05</strong>).</li>
+                <li><strong>Braking Zones (1,250m-1,500m, 2,500m-2,750m):</strong> Throttle is immediately lifted (0%) while braking decelerates the car from 326 km/h to 60 km/h, decoupling speed from throttle.</li>
+            </ul>
+
+            <div class="figure-card">
+                <img src="figures/04_distance_windowed_drag_dynamics.png" alt="Distance Windowed Correlation & Drag Dynamics">
+                <div class="figure-caption">Figure 3: Spatial breakdown of Local r(Speed, Throttle) across 250m windows, proving correlation collapse on high-speed straights.</div>
+            </div>
+
+            <div class="figure-card">
+                <img src="figures/03_intra_lap_correlation_distributions.png" alt="Intra-Lap Correlation Stability">
+                <div class="figure-caption">Figure 4: Intra-lap stability across 38 clean flying laps (r_Speed_Throttle mean = 0.574, r_Speed_Gear mean = 0.936).</div>
+            </div>
+        </section>
+
+        <!-- Task 3: Machine Learning Data Readiness Audit -->
+        <section>
+            <h2>3. Task 3: Machine Learning Data Readiness & Leakage Audit</h2>
+            <div class="callout callout-danger">
+                <strong>Critical Data Leakage Identified:</strong> Naive random 80/20 train/test row splitting causes catastrophic optimism bias.
+                Because 10 Hz telemetry has a lag-1 autocorrelation of <strong>r = 0.997</strong> for Speed, <strong>96.1% of test rows have an immediate temporal neighbor (within ±0.125s) in the training set</strong>.
+                Models evaluated under random row splits simply interpolate between adjacent time steps, achieving an artificial test $R^2 \approx 0.999$ that completely fails in real race deployment.
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Candidate Target</th>
+                        <th>Target Type</th>
+                        <th>Leakage / Risk Identified</th>
+                        <th>Audit Verdict & Mitigation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>IsBraking</code></td>
+                        <td>Binary Classification</td>
+                        <td><code>Brake_Int</code> is a direct integer cast (correlation = 1.000)</td>
+                        <td><strong class="text-rose">CRITICAL TAUTOLOGY:</strong> Drop <code>Brake_Int</code> and <code>Brake</code> from feature set X.</td>
+                    </tr>
+                    <tr>
+                        <td><code>Speed</code></td>
+                        <td>Continuous Regression</td>
+                        <td>Spatial lookup $(X, Y, d)$ explains <strong>90.2% variance</strong> by track memorization</td>
+                        <td><strong class="text-amber">CIRCUIT MEMORIZATION:</strong> Exclude raw spatial coordinates; use dynamic lag features ($	ext{Throttle}_{t-k}, 	ext{Brake}_{t-k}$).</td>
+                    </tr>
+                    <tr>
+                        <td><code>nGear</code></td>
+                        <td>Multi-Class Classification</td>
+                        <td>$\frac{\text{RPM}}{\text{Speed}}$ uniquely identifies transmission gear ratios</td>
+                        <td><strong class="text-cyan">DETERMINISTIC PHYSICS:</strong> Predicting current gear from concurrent RPM+Speed is a lookup table, not ML.</td>
+                    </tr>
+                    <tr>
+                        <td><code>LapTimeSeconds</code></td>
+                        <td>Lap-Level Regression</td>
+                        <td>Only <strong>N = 38 clean flying laps</strong> exist across 19 drivers in 5-lap window</td>
+                        <td><strong class="text-amber">UNDERPOWERED SAMPLE:</strong> Reserve for baseline benchmark models until full 58-lap ingestion.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="figure-card">
+                <img src="figures/05_temporal_autocorrelation_decay.png" alt="Temporal Autocorrelation Decay">
+                <div class="figure-caption">Figure 5: Temporal Autocorrelation Function (ACF) decay proving massive lag-1 persistence in telemetry signals.</div>
+            </div>
+
+            <div class="figure-card">
+                <img src="figures/06_ml_leakage_and_spatial_audit.png" alt="ML Leakage and Spatial Memorization Audit">
+                <div class="figure-caption">Figure 6: Spatial lookup track memorization (R² = 0.902) and Random Split Neighbor Leakage (96.1%).</div>
+            </div>
+        </section>
+
+        <!-- Phase 6 Recommendations -->
+        <section>
+            <h2>4. Recommendations for Phase 6: Feature Engineering</h2>
+            <div class="callout callout-success">
+                <strong>Mandated Pipeline Rules for Phase 6:</strong>
+                <ol>
+                    <li><strong>Evaluation Strategy:</strong> Enforce <code>GroupKFold(by=['Driver', 'LapNumber'])</code> for all sample-level models. Strict prohibition on random row splitting.</li>
+                    <li><strong>Feature Leakage Defense:</strong> Hard-drop <code>Brake_Int</code>, <code>Brake</code>, and target-derived companions before fitting classifiers for <code>IsBraking</code>.</li>
+                    <li><strong>Dynamic Physics Features:</strong> Replace raw coordinates $(X, Y, Z)$ with track-agnostic kinematic features: local curvature (&kappa;), throttle delta (&Delta;Throttle), longitudinal jerk (da_x/dt), and short-window lag tensors.</li>
+                    <li><strong>DRS Feature Representation:</strong> Represent DRS not as a static binary categorical feature, but interactively coupled with local track location (e.g. <code>DRS_Straight_Interaction</code>) to prevent artificial speed inflation.</li>
+                </ol>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

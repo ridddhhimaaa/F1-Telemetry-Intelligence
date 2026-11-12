@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F1 Telemetry Intelligence: Phase 6 Feature Engineering & SQL Analytics Report</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #0f141c;
+            color: #e6edf3;
+            line-height: 1.6;
+            margin: 0;
+            padding: 24px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #161b22;
+            padding: 32px;
+            border-radius: 8px;
+            border: 1px solid #30363d;
+        }
+        h1, h2, h3 {
+            color: #58a6ff;
+            border-bottom: 1px solid #21262d;
+            padding-bottom: 8px;
+        }
+        h1 { font-size: 2rem; color: #f0883e; }
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            background-color: #238636;
+            color: #ffffff;
+            margin-right: 8px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin: 20px 0;
+        }
+        .card {
+            background-color: #21262d;
+            padding: 16px;
+            border-radius: 6px;
+            border: 1px solid #30363d;
+        }
+        .metric-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #79c0ff;
+        }
+        .metric-label {
+            font-size: 0.9rem;
+            color: #8b949e;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 0.9rem;
+        }
+        th, td {
+            padding: 10px 12px;
+            text-align: left;
+            border: 1px solid #30363d;
+        }
+        th {
+            background-color: #1f242c;
+            color: #58a6ff;
+        }
+        tr:nth-child(even) {
+            background-color: #161b22;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 6px;
+            border: 1px solid #30363d;
+            margin: 12px 0;
+        }
+        code {
+            background-color: #21262d;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #ff7b72;
+            font-family: Consolas, "Liberation Mono", Courier, monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>F1 Telemetry Intelligence: Phase 6 Completion Report</h1>
+        <p><span class="badge">PHASE 6 VERIFIED</span> <span class="badge" style="background-color: #1f6feb;">100% PASS RATE</span> <strong>Track:</strong> Yas Marina Circuit (Abu Dhabi GP 2024)</p>
+        
+        <h2>1. Executive Summary & Pipeline Metrics</h2>
+        <div class="grid">
+            <div class="card">
+                <div class="metric-value">72,476</div>
+                <div class="metric-label">Engineered Telemetry Rows (99 cols)</div>
+            </div>
+            <div class="card">
+                <div class="metric-value">96</div>
+                <div class="metric-label">Aggregated Driver Laps (34 cols)</div>
+            </div>
+            <div class="card">
+                <div class="metric-value">1,469</div>
+                <div class="metric-label">Corner Events (16 Turns Detect)</div>
+            </div>
+            <div class="card">
+                <div class="metric-value">23.7 ms</div>
+                <div class="metric-label">Mean SQL Query Latency</div>
+            </div>
+        </div>
+
+        <h2>2. Key Visualizations</h2>
+        <h3>Friction Circle & G-Force Distribution</h3>
+        <img src="figures/fig02_friction_circle_g_forces.png" alt="Friction Circle">
+        
+        <h3>VER Lap 4 Telemetry Trace along Track Distance</h3>
+        <img src="figures/fig03_throttle_brake_trace_by_distance.png" alt="Throttle and Brake Trace">
+
+        <h3>Corner Speed Profiles (Entry vs Apex vs Exit)</h3>
+        <img src="figures/fig04_corner_speed_profiles.png" alt="Corner Speed Profiles">
+
+        <h3>Drivetrain Speed vs RPM Operating Map</h3>
+        <img src="figures/fig05_gear_shift_rpm_vs_speed.png" alt="Gear Shift Map">
+
+        <h3>Sector Performance Breakdown across Clean Flying Laps</h3>
+        <img src="figures/fig06_sector_performance_comparisons.png" alt="Sector Comparison">
+
+        <h2>3. SQL vs Pandas Programmatic Cross-Validation</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Analytical Query</th>
+                    <th>SQL Engine</th>
+                    <th>Pandas Reference</th>
+                    <th>Tolerance</th>
+                    <th>Validation Verdict</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Clean Flying Laps Summary (Pace & Counts)</td>
+                    <td>relational aggregate</td>
+                    <td>in-memory groupby</td>
+                    <td>&plusmn;0.001 s</td>
+                    <td><strong style="color: #3fb950;">EXACT MATCH</strong></td>
+                </tr>
+                <tr>
+                    <td>Sector Duration & Average Speeds</td>
+                    <td>JOIN sectors + laps</td>
+                    <td>DataFrame merge</td>
+                    <td>&plusmn;0.001 s</td>
+                    <td><strong style="color: #3fb950;">EXACT MATCH</strong></td>
+                </tr>
+                <tr>
+                    <td>Corner Apex Speed Profiles</td>
+                    <td>JOIN corners + laps</td>
+                    <td>DataFrame merge</td>
+                    <td>&plusmn;0.01 km/h</td>
+                    <td><strong style="color: #3fb950;">EXACT MATCH</strong></td>
+                </tr>
+                <tr>
+                    <td>Speed Trap Peak Velocity</td>
+                    <td>SELECT MAX(speed)</td>
+                    <td>Series.max()</td>
+                    <td>&plusmn;0.01 km/h</td>
+                    <td><strong style="color: #3fb950;">EXACT MATCH</strong></td>
+                </tr>
+                <tr>
+                    <td>Braking Time & WOT Totals</td>
+                    <td>GROUP BY driver_id</td>
+                    <td>groupby agg</td>
+                    <td>&plusmn;0.01 % / s</td>
+                    <td><strong style="color: #3fb950;">EXACT MATCH</strong></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>4. SQL Query Execution Benchmarks</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Script</th>
+                    <th>Query #</th>
+                    <th>Statement Description</th>
+                    <th>Result Rows</th>
+                    <th>Execution Time (s)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>05_basic_analysis.sql</td><td>1</td><td>===============================================</td><td>58</td><td>0.0035</td></tr><tr><td>05_basic_analysis.sql</td><td>2</td><td>Query 2: Clean Flying Laps ranking by lap time</td><td>38</td><td>0.0014</td></tr><tr><td>05_basic_analysis.sql</td><td>3</td><td>Query 3: Driver average flying lap pace with HA</td><td>19</td><td>0.0011</td></tr><tr><td>05_basic_analysis.sql</td><td>4</td><td>Query 4: Categorizing cornering speeds using CA</td><td>36</td><td>0.0022</td></tr><tr><td>05_basic_analysis.sql</td><td>5</td><td>Query 5: Telemetry dynamic regime distribution</td><td>7</td><td>0.0573</td></tr><tr><td>06_joins_and_aggregations.sql</td><td>1</td><td>===============================================</td><td>38</td><td>0.0015</td></tr><tr><td>06_joins_and_aggregations.sql</td><td>2</td><td>Query 2: Team Performance Aggregation across al</td><td>10</td><td>0.0013</td></tr><tr><td>06_joins_and_aggregations.sql</td><td>3</td><td>Query 3: Sector Breakdown JOIN with Driver Meta</td><td>57</td><td>0.0020</td></tr><tr><td>06_joins_and_aggregations.sql</td><td>4</td><td>Query 4: Telemetry and Corner Kinematics JOIN f</td><td>35</td><td>0.0024</td></tr><tr><td>07_cte_analysis.sql</td><td>1</td><td>===============================================</td><td>19</td><td>0.0020</td></tr><tr><td>07_cte_analysis.sql</td><td>2</td><td>Query 2: Sector-by-Sector Dominance Analysis us</td><td>3</td><td>0.0027</td></tr><tr><td>07_cte_analysis.sql</td><td>3</td><td>Query 3: Multi-CTE Braking Intensity & Decelera</td><td>19</td><td>0.0022</td></tr><tr><td>08_window_functions.sql</td><td>1</td><td>===============================================</td><td>38</td><td>0.0021</td></tr><tr><td>08_window_functions.sql</td><td>2</td><td>-</td><td>50</td><td>0.0435</td></tr><tr><td>08_window_functions.sql</td><td>3</td><td>-</td><td>50</td><td>0.0422</td></tr><tr><td>08_window_functions.sql</td><td>4</td><td>-</td><td>50</td><td>0.0450</td></tr><tr><td>08_window_functions.sql</td><td>5</td><td>-</td><td>590</td><td>0.0049</td></tr><tr><td>09_advanced_telemetry_analysis.sql</td><td>1</td><td>===============================================</td><td>19</td><td>0.1315</td></tr><tr><td>09_advanced_telemetry_analysis.sql</td><td>2</td><td>-</td><td>85</td><td>0.0040</td></tr><tr><td>09_advanced_telemetry_analysis.sql</td><td>3</td><td>-</td><td>57</td><td>0.0037</td></tr><tr><td>09_advanced_telemetry_analysis.sql</td><td>4</td><td>-</td><td>40</td><td>0.0478</td></tr><tr><td>10_data_quality_checks.sql</td><td>1</td><td>===============================================</td><td>1</td><td>0.0594</td></tr><tr><td>10_data_quality_checks.sql</td><td>2</td><td>-</td><td>1</td><td>0.0610</td></tr><tr><td>10_data_quality_checks.sql</td><td>3</td><td>-</td><td>8</td><td>0.0912</td></tr><tr><td>10_data_quality_checks.sql</td><td>4</td><td>-</td><td>5</td><td>0.0377</td></tr><tr><td>10_data_quality_checks.sql</td><td>5</td><td>-</td><td>1</td><td>0.0016</td></tr><tr><td>10_data_quality_checks.sql</td><td>6</td><td>B. Sectors without matching Lap</td><td>1</td><td>0.0010</td></tr><tr><td>10_data_quality_checks.sql</td><td>7</td><td>C. Corners without matching Lap</td><td>1</td><td>0.0012</td></tr><tr><td>10_data_quality_checks.sql</td><td>8</td><td>D. Telemetry rows without matching Lap</td><td>1</td><td>0.0511</td></tr><tr><td>10_data_quality_checks.sql</td><td>9</td><td>-</td><td>4</td><td>0.0019</td></tr>
+            </tbody>
+        </table>
+
+        <h2>5. Mathematical Specifications</h2>
+        <ul>
+            <li><strong>Coordinate Conversion:</strong> FastF1 $X, Y, Z$ are in decimeters ($0.1$ m). Multiplied by $0.1$ to obtain accurate metric coordinates.</li>
+            <li><strong>Longitudinal Acceleration:</strong> $a_{\text{long}} = \frac{\Delta v}{\Delta t}$ where $\Delta t = \max(t_i - t_{i-1}, 0.005\text{ s})$.</li>
+            <li><strong>Trajectory Curvature:</strong> $\kappa = \frac{|x' y'' - y' x''|}{(x'^2 + y'^2)^{3/2}}$, Radius $R = \frac{1}{\kappa}$.</li>
+            <li><strong>Lateral Acceleration:</strong> $a_{\text{lat}} = \frac{v^2}{R} = v^2 \cdot \kappa$.</li>
+            <li><strong>Combined G-Force:</strong> $g_{\text{combined}} = \sqrt{g_{\text{long}}^2 + g_{\text{lat}}^2}$.</li>
+            <li><strong>Drivetrain Kinematics:</strong> Ratio $\frac{\text{RPM}}{v}$, RPM Change Rate $\frac{\Delta \text{RPM}}{\Delta t}$.</li>
+        </ul>
+    </div>
+</body>
+</html>

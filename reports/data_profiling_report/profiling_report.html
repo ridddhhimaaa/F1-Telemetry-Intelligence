@@ -1,0 +1,3772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phase 3 Data Profiling Report - F1 Telemetry Intelligence</title>
+<style>
+:root {
+    --f1-red: #e10600;
+    --f1-dark: #15151e;
+    --f1-surface: #1f1f27;
+    --f1-border: #38383f;
+    --f1-text: #f3f3f3;
+    --f1-text-dim: #949498;
+    --pass-green: #38a169;
+    --warn-yellow: #dd6b20;
+    --danger-red: #e53e3e;
+    --info-blue: #3182ce;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: var(--f1-dark);
+    color: var(--f1-text);
+    line-height: 1.6;
+    padding: 24px;
+}
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+header {
+    border-bottom: 4px solid var(--f1-red);
+    padding-bottom: 16px;
+    margin-bottom: 28px;
+}
+header h1 {
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+header h1 span.badge {
+    background: var(--f1-red);
+    color: #fff;
+    font-size: 0.8rem;
+    padding: 4px 10px;
+    border-radius: 4px;
+    text-transform: uppercase;
+}
+header p.meta {
+    color: var(--f1-text-dim);
+    font-size: 0.95rem;
+    margin-top: 6px;
+}
+.metric-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+}
+.metric-card {
+    background: var(--f1-surface);
+    border: 1px solid var(--f1-border);
+    border-radius: 8px;
+    padding: 16px;
+    border-left: 4px solid var(--f1-red);
+}
+.metric-card h3 {
+    font-size: 0.85rem;
+    color: var(--f1-text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.metric-card p.value {
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin-top: 4px;
+    color: #fff;
+}
+.metric-card p.subtext {
+    font-size: 0.8rem;
+    color: var(--f1-text-dim);
+    margin-top: 2px;
+}
+section {
+    background: var(--f1-surface);
+    border: 1px solid var(--f1-border);
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 28px;
+}
+section h2 {
+    font-size: 1.4rem;
+    color: #fff;
+    border-bottom: 2px solid var(--f1-border);
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+}
+section p, section li {
+    color: #d1d1d6;
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+}
+ul { margin-left: 24px; margin-bottom: 16px; }
+.table-container {
+    overflow-x: auto;
+    margin: 16px 0;
+}
+table.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+    text-align: left;
+    background: #181820;
+}
+table.styled-table th {
+    background: #272733;
+    color: #fff;
+    padding: 10px 12px;
+    font-weight: 700;
+    border-bottom: 2px solid var(--f1-border);
+    white-space: nowrap;
+}
+table.styled-table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--f1-border);
+    color: #e2e2e8;
+}
+table.styled-table tr:hover {
+    background: #2a2a38;
+}
+.alert-box {
+    padding: 16px;
+    border-radius: 6px;
+    margin: 16px 0;
+    font-size: 0.92rem;
+}
+.alert-box.info {
+    background: rgba(49, 130, 206, 0.15);
+    border-left: 4px solid var(--info-blue);
+    color: #bee3f8;
+}
+.alert-box.warning {
+    background: rgba(221, 107, 32, 0.15);
+    border-left: 4px solid var(--warn-yellow);
+    color: #feebc8;
+}
+.alert-box.pass {
+    background: rgba(56, 161, 105, 0.15);
+    border-left: 4px solid var(--pass-green);
+    color: #c6f6d5;
+}
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+    gap: 20px;
+    margin-top: 16px;
+}
+.chart-card {
+    background: #181820;
+    border: 1px solid var(--f1-border);
+    border-radius: 6px;
+    padding: 12px;
+    text-align: center;
+}
+.chart-card img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+.chart-card p.caption {
+    font-size: 0.85rem;
+    color: var(--f1-text-dim);
+    margin-top: 8px;
+    font-weight: 600;
+}
+footer {
+    text-align: center;
+    color: var(--f1-text-dim);
+    font-size: 0.85rem;
+    padding: 24px 0;
+    border-top: 1px solid var(--f1-border);
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+    <h1>Formula 1 Telemetry Intelligence <span class="badge">Phase 3 Profiling</span></h1>
+    <p class="meta">
+        Event: <strong>2024 Abu Dhabi Grand Prix (Race)</strong> |
+        Track: <strong>Yas Marina Circuit (Abu Dhabi)</strong> |
+        Generated: <strong>2026-11-09 08:53:13 UTC</strong> |
+        Environment: <strong>Python 3.14.3</strong>
+    </p>
+</header>
+
+<!-- METRIC HIGHLIGHT CARDS -->
+<div class="metric-grid">
+    <div class="metric-card">
+        <h3>Telemetry Samples</h3>
+        <p class="value">72,476</p>
+        <p class="subtext">26 telemetry channels</p>
+    </div>
+    <div class="metric-card">
+        <h3>Race Lap Records</h3>
+        <p class="value">1,035</p>
+        <p class="subtext">46 lap timing columns</p>
+    </div>
+    <div class="metric-card">
+        <h3>Drivers Profiled</h3>
+        <p class="value">20</p>
+        <p class="subtext">Full grid covered</p>
+    </div>
+    <div class="metric-card">
+        <h3>Telemetry Laps</h3>
+        <p class="value">96</p>
+        <p class="subtext">19 drivers x 5 laps + PER x 1 lap</p>
+    </div>
+    <div class="metric-card">
+        <h3>Missing Values</h3>
+        <p class="value">6,976</p>
+        <p class="subtext">DriverAhead & Gap to car ahead</p>
+    </div>
+    <div class="metric-card">
+        <h3>Exact Duplicates</h3>
+        <p class="value">0</p>
+        <p class="subtext">Zero duplicate rows</p>
+    </div>
+</div>
+
+<!-- SECTION 1: DATASET OVERVIEW -->
+<section id="overview">
+    <h2>1. Dataset Overview &amp; Inventory</h2>
+    <p>Comprehensive assessment of the raw telemetry and race-lap datasets ingested during Phase 2.</p>
+    <div class="table-container">
+        <table class="dataframe styled-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Dataset</th>
+      <th>File Name</th>
+      <th>Format</th>
+      <th>File Size (Bytes)</th>
+      <th>File Size (MB)</th>
+      <th>Total Rows</th>
+      <th>Total Columns</th>
+      <th>Memory Usage (MB)</th>
+      <th>Unique Drivers</th>
+      <th>Unique Laps</th>
+      <th>Unique Driver-Laps</th>
+      <th>Total Missing Values</th>
+      <th>Missing Percentage (%)</th>
+      <th>Constant Columns Count</th>
+      <th>Constant Columns</th>
+      <th>Duplicate Rows</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Telemetry</td>
+      <td>2024_abu_dhabi_race_telemetry.parquet</td>
+      <td>parquet</td>
+      <td>7288354</td>
+      <td>6.95</td>
+      <td>72476</td>
+      <td>26</td>
+      <td>33.07</td>
+      <td>20</td>
+      <td>5</td>
+      <td>96</td>
+      <td>6976</td>
+      <td>0.370</td>
+      <td>5</td>
+      <td>Source; Status; Year; Event; Session</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>2024_abu_dhabi_race_laps.parquet</td>
+      <td>parquet</td>
+      <td>132481</td>
+      <td>0.13</td>
+      <td>1035</td>
+      <td>46</td>
+      <td>0.60</td>
+      <td>20</td>
+      <td>58</td>
+      <td>1035</td>
+      <td>3119</td>
+      <td>6.551</td>
+      <td>1</td>
+      <td>Rainfall</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+    </div>
+    <h3 style="margin-top: 20px; font-size: 1.1rem; color: #fff;">Column Inventory (Sample)</h3>
+    <p>Data types, null percentages, and unique value counts across all columns in both datasets.</p>
+    <div class="table-container">
+        <table class="dataframe styled-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Dataset</th>
+      <th>Column Name</th>
+      <th>Data Type</th>
+      <th>Non-Null Count</th>
+      <th>Null Count</th>
+      <th>Null Percentage (%)</th>
+      <th>Unique Count</th>
+      <th>Sample Values</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Telemetry</td>
+      <td>Date</td>
+      <td>datetime64[ns]</td>
+      <td>72476</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>4351</td>
+      <td>2024-12-08 13:03:35.034000, 2024-12-08 13:03:35.110000, 2024-12-08 13:03:35.116000</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>SessionTime</td>
+      <td>timedelta64[ns]</td>
+      <td>72476</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>4351</td>
+      <td>0 days 00:56:47.817000, 0 days 00:56:47.893000, 0 days 00:56:47.899000</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>DriverAhead</td>
+      <td>object</td>
+      <td>68457</td>
+      <td>4019</td>
+      <td>5.545</td>
+      <td>21</td>
+      <td>61, 4, 55</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>DistanceToDriverAhead</td>
+      <td>float64</td>
+      <td>69519</td>
+      <td>2957</td>
+      <td>4.080</td>
+      <td>67395</td>
+      <td>0.0, 0.010277774222222187, 0.011111111111111072</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>Time</td>
+      <td>timedelta64[ns]</td>
+      <td>72476</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>45308</td>
+      <td>0 days 00:00:00, 0 days 00:00:00.076000, 0 days 00:00:00.082000</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>RPM</td>
+      <td>float64</td>
+      <td>72476</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>41595</td>
+      <td>10000.0, 9999.970149881043, 9999.174129727086</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>Speed</td>
+      <td>float64</td>
+      <td>72476</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>30080</td>
+      <td>0.0, 1.5535707428571428, 3.0</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>nGear</td>
+      <td>Int64</td>
+      <td>72476</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>8</td>
+      <td>1, 2, 3</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>Throttle</td>
+      <td>float64</td>
+      <td>72476</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>12756</td>
+      <td>21.0, 18.41071542857143, 16.0</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>Brake</td>
+      <td>bool</td>
+      <td>72476</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>2</td>
+      <td>False, True</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>DRS</td>
+      <td>Int64</td>
+      <td>72476</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>2</td>
+      <td>0, 1</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>Source</td>
+      <td>object</td>
+      <td>72476</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>1</td>
+      <td>merged</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>Distance</td>
+      <td>float64</td>
+      <td>72476</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>72374</td>
+      <td>0.0014869038478941376, 0.0, -0.00023325237282172812</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>RelativeDistance</td>
+      <td>float64</td>
+      <td>72476</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>72393</td>
+      <td>2.8187449351746785e-07, 0.0, -4.421798661963865e-08</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>Status</td>
+      <td>object</td>
+      <td>72476</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>1</td>
+      <td>OnTrack</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>X</td>
+      <td>float64</td>
+      <td>72476</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>43335</td>
+      <td>207.96631404418176, 207.99690562742722, 208.0</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>Y</td>
+      <td>float64</td>
+      <td>72476</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>49371</td>
+      <td>2045.9969343972518, 2045.9997183997284, 2046.0</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>Z</td>
+      <td>float64</td>
+      <td>72476</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>35649</td>
+      <td>-236.99999409282134, -236.99999945746708, -237.0</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>AccelerationX</td>
+      <td>float64</td>
+      <td>72476</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>70666</td>
+      <td>0.0, 0.7991619047619047, 1.7912253968253966</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>AccelerationY</td>
+      <td>float64</td>
+      <td>72476</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>72385</td>
+      <td>0.0, 0.007366855201251016, 0.006034909222132309</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>AccelerationZ</td>
+      <td>float64</td>
+      <td>72476</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>71930</td>
+      <td>0.0, 3.06653418602292e-05, 0.0003247401108022902</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>Driver</td>
+      <td>object</td>
+      <td>72476</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>20</td>
+      <td>ALB, ALO, BOT</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>LapNumber</td>
+      <td>int64</td>
+      <td>72476</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>5</td>
+      <td>1, 2, 3</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>Year</td>
+      <td>int64</td>
+      <td>72476</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>1</td>
+      <td>2024</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>Event</td>
+      <td>object</td>
+      <td>72476</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>1</td>
+      <td>Abu Dhabi</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>Session</td>
+      <td>object</td>
+      <td>72476</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>1</td>
+      <td>Race</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>index</td>
+      <td>int64</td>
+      <td>1035</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>1035</td>
+      <td>0, 1, 2</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>Time</td>
+      <td>timedelta64[ns]</td>
+      <td>1035</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>1034</td>
+      <td>0 days 00:58:27.597000, 0 days 01:00:22.535000, 0 days 01:02:00.586000</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>Driver</td>
+      <td>category</td>
+      <td>1035</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>20</td>
+      <td>VER, GAS, PER</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>DriverNumber</td>
+      <td>object</td>
+      <td>1035</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>20</td>
+      <td>1, 10, 11</td>
+    </tr>
+  </tbody>
+</table>
+    </div>
+</section>
+
+<!-- SECTION 2: MISSING VALUE ANALYSIS -->
+<section id="missing-values">
+    <h2>2. Missing Value Investigation</h2>
+    <div class="alert-box info">
+        <strong>Domain Discovery - Missing Not At Random (MNAR):</strong><br>
+        All 2,957 missing values in <code>DistanceToDriverAhead</code> belong strictly to <strong>Lando Norris (NOR)</strong> during laps 2 through 5.
+        Norris held P1 (race leader) throughout these laps; by definition, the leader of a Grand Prix has no vehicle ahead.
+        Furthermore, <code>DriverAhead</code> nulls for non-NOR drivers occur almost exclusively within the first 25 meters of the start-finish line timing loop.
+    </div>
+    <div class="table-container">
+        <table class="dataframe styled-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Dataset</th>
+      <th>Column Name</th>
+      <th>Data Type</th>
+      <th>Total Rows</th>
+      <th>Missing Count</th>
+      <th>Missing Percentage (%)</th>
+      <th>Non-Missing Count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Telemetry</td>
+      <td>Date</td>
+      <td>datetime64[ns]</td>
+      <td>72476</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>72476</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>SessionTime</td>
+      <td>timedelta64[ns]</td>
+      <td>72476</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>72476</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>DriverAhead</td>
+      <td>object</td>
+      <td>72476</td>
+      <td>4019</td>
+      <td>5.545</td>
+      <td>68457</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>DistanceToDriverAhead</td>
+      <td>float64</td>
+      <td>72476</td>
+      <td>2957</td>
+      <td>4.080</td>
+      <td>69519</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>Time</td>
+      <td>timedelta64[ns]</td>
+      <td>72476</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>72476</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>RPM</td>
+      <td>float64</td>
+      <td>72476</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>72476</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>Speed</td>
+      <td>float64</td>
+      <td>72476</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>72476</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>nGear</td>
+      <td>Int64</td>
+      <td>72476</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>72476</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>Throttle</td>
+      <td>float64</td>
+      <td>72476</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>72476</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>Brake</td>
+      <td>bool</td>
+      <td>72476</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>72476</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>DRS</td>
+      <td>Int64</td>
+      <td>72476</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>72476</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>Source</td>
+      <td>object</td>
+      <td>72476</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>72476</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>Distance</td>
+      <td>float64</td>
+      <td>72476</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>72476</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>RelativeDistance</td>
+      <td>float64</td>
+      <td>72476</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>72476</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>Status</td>
+      <td>object</td>
+      <td>72476</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>72476</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>X</td>
+      <td>float64</td>
+      <td>72476</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>72476</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>Y</td>
+      <td>float64</td>
+      <td>72476</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>72476</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>Z</td>
+      <td>float64</td>
+      <td>72476</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>72476</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>AccelerationX</td>
+      <td>float64</td>
+      <td>72476</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>72476</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>AccelerationY</td>
+      <td>float64</td>
+      <td>72476</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>72476</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>AccelerationZ</td>
+      <td>float64</td>
+      <td>72476</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>72476</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>Driver</td>
+      <td>object</td>
+      <td>72476</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>72476</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>LapNumber</td>
+      <td>int64</td>
+      <td>72476</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>72476</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>Year</td>
+      <td>int64</td>
+      <td>72476</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>72476</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>Event</td>
+      <td>object</td>
+      <td>72476</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>72476</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>Session</td>
+      <td>object</td>
+      <td>72476</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>72476</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>index</td>
+      <td>int64</td>
+      <td>1035</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>1035</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>Time</td>
+      <td>timedelta64[ns]</td>
+      <td>1035</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>1035</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>Driver</td>
+      <td>category</td>
+      <td>1035</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>1035</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>DriverNumber</td>
+      <td>object</td>
+      <td>1035</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>1035</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>LapTime</td>
+      <td>timedelta64[ns]</td>
+      <td>1035</td>
+      <td>2</td>
+      <td>0.193</td>
+      <td>1033</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>LapNumber</td>
+      <td>float64</td>
+      <td>1035</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>1035</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>Stint</td>
+      <td>float64</td>
+      <td>1035</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>1035</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>PitOutTime</td>
+      <td>timedelta64[ns]</td>
+      <td>1035</td>
+      <td>1007</td>
+      <td>97.295</td>
+      <td>28</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>PitInTime</td>
+      <td>timedelta64[ns]</td>
+      <td>1035</td>
+      <td>1005</td>
+      <td>97.101</td>
+      <td>30</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>Sector1Time</td>
+      <td>timedelta64[ns]</td>
+      <td>1035</td>
+      <td>21</td>
+      <td>2.029</td>
+      <td>1014</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>Sector2Time</td>
+      <td>timedelta64[ns]</td>
+      <td>1035</td>
+      <td>2</td>
+      <td>0.193</td>
+      <td>1033</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>Sector3Time</td>
+      <td>timedelta64[ns]</td>
+      <td>1035</td>
+      <td>2</td>
+      <td>0.193</td>
+      <td>1033</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>Sector1SessionTime</td>
+      <td>timedelta64[ns]</td>
+      <td>1035</td>
+      <td>25</td>
+      <td>2.415</td>
+      <td>1010</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>Sector2SessionTime</td>
+      <td>timedelta64[ns]</td>
+      <td>1035</td>
+      <td>2</td>
+      <td>0.193</td>
+      <td>1033</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>Sector3SessionTime</td>
+      <td>timedelta64[ns]</td>
+      <td>1035</td>
+      <td>2</td>
+      <td>0.193</td>
+      <td>1033</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>SpeedI1</td>
+      <td>float64</td>
+      <td>1035</td>
+      <td>2</td>
+      <td>0.193</td>
+      <td>1033</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>SpeedI2</td>
+      <td>float64</td>
+      <td>1035</td>
+      <td>2</td>
+      <td>0.193</td>
+      <td>1033</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>SpeedFL</td>
+      <td>float64</td>
+      <td>1035</td>
+      <td>32</td>
+      <td>3.092</td>
+      <td>1003</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>SpeedST</td>
+      <td>float64</td>
+      <td>1035</td>
+      <td>2</td>
+      <td>0.193</td>
+      <td>1033</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>IsPersonalBest</td>
+      <td>bool</td>
+      <td>1035</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>1035</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>Compound</td>
+      <td>category</td>
+      <td>1035</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>1035</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>TyreLife</td>
+      <td>float64</td>
+      <td>1035</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>1035</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>FreshTyre</td>
+      <td>bool</td>
+      <td>1035</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>1035</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>Team</td>
+      <td>category</td>
+      <td>1035</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>1035</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>LapStartTime</td>
+      <td>timedelta64[ns]</td>
+      <td>1035</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>1035</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>LapStartDate</td>
+      <td>datetime64[ns]</td>
+      <td>1035</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>1035</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>TrackStatus</td>
+      <td>category</td>
+      <td>1035</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>1035</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>Position</td>
+      <td>float64</td>
+      <td>1035</td>
+      <td>2</td>
+      <td>0.193</td>
+      <td>1033</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>Deleted</td>
+      <td>boolean</td>
+      <td>1035</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>1035</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>DeletedReason</td>
+      <td>object</td>
+      <td>1035</td>
+      <td>1008</td>
+      <td>97.391</td>
+      <td>27</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>FastF1Generated</td>
+      <td>bool</td>
+      <td>1035</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>1035</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>IsAccurate</td>
+      <td>bool</td>
+      <td>1035</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>1035</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>WeatherTime</td>
+      <td>timedelta64[ns]</td>
+      <td>1035</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>1035</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>AirTemp</td>
+      <td>float64</td>
+      <td>1035</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>1035</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>Humidity</td>
+      <td>float64</td>
+      <td>1035</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>1035</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>Pressure</td>
+      <td>float64</td>
+      <td>1035</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>1035</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>Rainfall</td>
+      <td>bool</td>
+      <td>1035</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>1035</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>TrackTemp</td>
+      <td>float64</td>
+      <td>1035</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>1035</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>WindDirection</td>
+      <td>Int64</td>
+      <td>1035</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>1035</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>WindSpeed</td>
+      <td>float64</td>
+      <td>1035</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>1035</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>LapTimeSeconds</td>
+      <td>float64</td>
+      <td>1035</td>
+      <td>2</td>
+      <td>0.193</td>
+      <td>1033</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>ms1</td>
+      <td>object</td>
+      <td>1035</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>1035</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>ms2</td>
+      <td>object</td>
+      <td>1035</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>1035</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>ms3</td>
+      <td>object</td>
+      <td>1035</td>
+      <td>1</td>
+      <td>0.097</td>
+      <td>1034</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>drv</td>
+      <td>object</td>
+      <td>1035</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>1035</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>team</td>
+      <td>object</td>
+      <td>1035</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>1035</td>
+    </tr>
+  </tbody>
+</table>
+    </div>
+    <h3 style="margin-top: 20px; font-size: 1.1rem; color: #fff;">Missingness by Driver</h3>
+    <div class="table-container">
+        <table class="dataframe styled-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Driver</th>
+      <th>Total Samples</th>
+      <th>DriverAhead Missing</th>
+      <th>DriverAhead Missing (%)</th>
+      <th>DistanceToDriverAhead Missing</th>
+      <th>DistanceToDriverAhead Missing (%)</th>
+      <th>Speed Missing</th>
+      <th>Throttle Missing</th>
+      <th>Brake Missing</th>
+      <th>RPM Missing</th>
+      <th>nGear Missing</th>
+      <th>Distance Missing</th>
+      <th>Total Missing All Columns</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>ALB</td>
+      <td>3787</td>
+      <td>21</td>
+      <td>0.55</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>21</td>
+    </tr>
+    <tr>
+      <td>ALO</td>
+      <td>3714</td>
+      <td>21</td>
+      <td>0.57</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>21</td>
+    </tr>
+    <tr>
+      <td>BOT</td>
+      <td>3776</td>
+      <td>20</td>
+      <td>0.53</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <td>COL</td>
+      <td>4265</td>
+      <td>21</td>
+      <td>0.49</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>21</td>
+    </tr>
+    <tr>
+      <td>DOO</td>
+      <td>3806</td>
+      <td>18</td>
+      <td>0.47</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>18</td>
+    </tr>
+    <tr>
+      <td>GAS</td>
+      <td>3693</td>
+      <td>19</td>
+      <td>0.51</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>19</td>
+    </tr>
+    <tr>
+      <td>HAM</td>
+      <td>3756</td>
+      <td>19</td>
+      <td>0.51</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>19</td>
+    </tr>
+    <tr>
+      <td>HUL</td>
+      <td>3706</td>
+      <td>21</td>
+      <td>0.57</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>21</td>
+    </tr>
+    <tr>
+      <td>LAW</td>
+      <td>3751</td>
+      <td>19</td>
+      <td>0.51</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>19</td>
+    </tr>
+    <tr>
+      <td>LEC</td>
+      <td>3724</td>
+      <td>75</td>
+      <td>2.01</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>75</td>
+    </tr>
+    <tr>
+      <td>MAG</td>
+      <td>3718</td>
+      <td>22</td>
+      <td>0.59</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>22</td>
+    </tr>
+    <tr>
+      <td>NOR</td>
+      <td>3655</td>
+      <td>3547</td>
+      <td>97.05</td>
+      <td>2957</td>
+      <td>80.9</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>6504</td>
+    </tr>
+    <tr>
+      <td>PER</td>
+      <td>698</td>
+      <td>6</td>
+      <td>0.86</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <td>PIA</td>
+      <td>3993</td>
+      <td>23</td>
+      <td>0.58</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>23</td>
+    </tr>
+    <tr>
+      <td>RUS</td>
+      <td>3700</td>
+      <td>34</td>
+      <td>0.92</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>34</td>
+    </tr>
+    <tr>
+      <td>SAI</td>
+      <td>3678</td>
+      <td>22</td>
+      <td>0.60</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>22</td>
+    </tr>
+    <tr>
+      <td>STR</td>
+      <td>3734</td>
+      <td>20</td>
+      <td>0.54</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <td>TSU</td>
+      <td>3798</td>
+      <td>22</td>
+      <td>0.58</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>22</td>
+    </tr>
+    <tr>
+      <td>VER</td>
+      <td>3742</td>
+      <td>49</td>
+      <td>1.31</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>49</td>
+    </tr>
+    <tr>
+      <td>ZHO</td>
+      <td>3782</td>
+      <td>20</td>
+      <td>0.53</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>20</td>
+    </tr>
+  </tbody>
+</table>
+    </div>
+    <h3 style="margin-top: 20px; font-size: 1.1rem; color: #fff;">Missingness by Lap Number</h3>
+    <div class="table-container">
+        <table class="dataframe styled-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>LapNumber</th>
+      <th>Total Samples</th>
+      <th>DriverAhead Missing</th>
+      <th>DriverAhead Missing (%)</th>
+      <th>DistanceToDriverAhead Missing</th>
+      <th>DistanceToDriverAhead Missing (%)</th>
+      <th>Speed Missing</th>
+      <th>Throttle Missing</th>
+      <th>Brake Missing</th>
+      <th>RPM Missing</th>
+      <th>nGear Missing</th>
+      <th>Distance Missing</th>
+      <th>Total Missing All Columns</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>14975</td>
+      <td>810</td>
+      <td>5.41</td>
+      <td>0</td>
+      <td>0.00</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>810</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>16581</td>
+      <td>881</td>
+      <td>5.31</td>
+      <td>820</td>
+      <td>4.95</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1701</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>14549</td>
+      <td>851</td>
+      <td>5.85</td>
+      <td>784</td>
+      <td>5.39</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1635</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>13318</td>
+      <td>755</td>
+      <td>5.67</td>
+      <td>693</td>
+      <td>5.20</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1448</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>13053</td>
+      <td>722</td>
+      <td>5.53</td>
+      <td>660</td>
+      <td>5.06</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1382</td>
+    </tr>
+  </tbody>
+</table>
+    </div>
+</section>
+
+<!-- SECTION 3: DUPLICATE ANALYSIS -->
+<section id="duplicates">
+    <h2>3. Duplicate Analysis</h2>
+    <div class="alert-box pass">
+        <strong>Integrity Verification:</strong> Zero exact duplicate rows exist in either Telemetry or Race Laps.
+        Timestamps are 100% strictly unique within each driver and lap.
+    </div>
+    <div class="table-container">
+        <table class="dataframe styled-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Dataset</th>
+      <th>Check Type</th>
+      <th>Columns Evaluated</th>
+      <th>Duplicate Count</th>
+      <th>Duplicate Percentage (%)</th>
+      <th>Status</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Telemetry</td>
+      <td>Exact Row Duplicates</td>
+      <td>All columns</td>
+      <td>0</td>
+      <td>0.0000</td>
+      <td>PASS</td>
+      <td>Identical rows across all columns. Expected: 0.</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>Exact Row Duplicates</td>
+      <td>All columns</td>
+      <td>0</td>
+      <td>0.0000</td>
+      <td>PASS</td>
+      <td>Identical rows across all columns. Expected: 0.</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>Repeated Time within Driver & Lap</td>
+      <td>Driver, LapNumber, Time</td>
+      <td>0</td>
+      <td>0.0000</td>
+      <td>PASS</td>
+      <td>Multiple telemetry observations sharing exact identical lap timestamp.</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>Repeated SessionTime within Driver & Lap</td>
+      <td>Driver, LapNumber, SessionTime</td>
+      <td>0</td>
+      <td>0.0000</td>
+      <td>PASS</td>
+      <td>Multiple telemetry observations sharing exact identical session timestamp.</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>Repeated Distance within Driver & Lap</td>
+      <td>Driver, LapNumber, Distance</td>
+      <td>64</td>
+      <td>0.0883</td>
+      <td>INFO</td>
+      <td>Observations where distance delta is zero. Legitimate when car is stationary or sensor precision limits.</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>Duplicate Driver-Lap Records</td>
+      <td>Driver, LapNumber</td>
+      <td>0</td>
+      <td>0.0000</td>
+      <td>PASS</td>
+      <td>More than one race lap record per driver and lap number.</td>
+    </tr>
+  </tbody>
+</table>
+    </div>
+    <h3 style="margin-top: 20px; font-size: 1.1rem; color: #fff;">Repeated Distance Observations (Physical Plateau)</h3>
+    <p>64 records exhibit identical distance deltas (zero distance progression) while stationary on the starting grid. These are legitimate physical states and must not be deleted.</p>
+    <div class="table-container">
+        <table class="dataframe styled-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Driver</th>
+      <th>LapNumber</th>
+      <th>Repeated Type</th>
+      <th>Repeated Rows Count</th>
+      <th>Sample Distance Values</th>
+      <th>Interpretation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>ALB</td>
+      <td>1</td>
+      <td>Distance</td>
+      <td>2</td>
+      <td>[np.float64(0.0)]</td>
+      <td>Legitimate stationary/start grid or sensor plateau; do not drop.</td>
+    </tr>
+    <tr>
+      <td>ALO</td>
+      <td>1</td>
+      <td>Distance</td>
+      <td>3</td>
+      <td>[np.float64(0.0)]</td>
+      <td>Legitimate stationary/start grid or sensor plateau; do not drop.</td>
+    </tr>
+    <tr>
+      <td>BOT</td>
+      <td>1</td>
+      <td>Distance</td>
+      <td>2</td>
+      <td>[np.float64(0.0)]</td>
+      <td>Legitimate stationary/start grid or sensor plateau; do not drop.</td>
+    </tr>
+    <tr>
+      <td>COL</td>
+      <td>1</td>
+      <td>Distance</td>
+      <td>2</td>
+      <td>[np.float64(0.0)]</td>
+      <td>Legitimate stationary/start grid or sensor plateau; do not drop.</td>
+    </tr>
+    <tr>
+      <td>COL</td>
+      <td>4</td>
+      <td>Distance</td>
+      <td>18</td>
+      <td>[np.float64(201.1686111111111), np.float64(202.9019444444444), np.float64(203.52416666666664)]</td>
+      <td>Legitimate stationary/start grid or sensor plateau; do not drop.</td>
+    </tr>
+    <tr>
+      <td>DOO</td>
+      <td>1</td>
+      <td>Distance</td>
+      <td>2</td>
+      <td>[np.float64(0.0)]</td>
+      <td>Legitimate stationary/start grid or sensor plateau; do not drop.</td>
+    </tr>
+    <tr>
+      <td>GAS</td>
+      <td>1</td>
+      <td>Distance</td>
+      <td>3</td>
+      <td>[np.float64(0.0)]</td>
+      <td>Legitimate stationary/start grid or sensor plateau; do not drop.</td>
+    </tr>
+    <tr>
+      <td>HAM</td>
+      <td>1</td>
+      <td>Distance</td>
+      <td>3</td>
+      <td>[np.float64(0.0)]</td>
+      <td>Legitimate stationary/start grid or sensor plateau; do not drop.</td>
+    </tr>
+    <tr>
+      <td>HUL</td>
+      <td>1</td>
+      <td>Distance</td>
+      <td>2</td>
+      <td>[np.float64(0.0)]</td>
+      <td>Legitimate stationary/start grid or sensor plateau; do not drop.</td>
+    </tr>
+    <tr>
+      <td>LAW</td>
+      <td>1</td>
+      <td>Distance</td>
+      <td>3</td>
+      <td>[np.float64(0.0)]</td>
+      <td>Legitimate stationary/start grid or sensor plateau; do not drop.</td>
+    </tr>
+    <tr>
+      <td>LEC</td>
+      <td>1</td>
+      <td>Distance</td>
+      <td>3</td>
+      <td>[np.float64(0.0)]</td>
+      <td>Legitimate stationary/start grid or sensor plateau; do not drop.</td>
+    </tr>
+    <tr>
+      <td>MAG</td>
+      <td>1</td>
+      <td>Distance</td>
+      <td>2</td>
+      <td>[np.float64(0.0)]</td>
+      <td>Legitimate stationary/start grid or sensor plateau; do not drop.</td>
+    </tr>
+    <tr>
+      <td>NOR</td>
+      <td>1</td>
+      <td>Distance</td>
+      <td>2</td>
+      <td>[np.float64(0.0)]</td>
+      <td>Legitimate stationary/start grid or sensor plateau; do not drop.</td>
+    </tr>
+    <tr>
+      <td>PER</td>
+      <td>1</td>
+      <td>Distance</td>
+      <td>2</td>
+      <td>[np.float64(0.0)]</td>
+      <td>Legitimate stationary/start grid or sensor plateau; do not drop.</td>
+    </tr>
+    <tr>
+      <td>PIA</td>
+      <td>1</td>
+      <td>Distance</td>
+      <td>8</td>
+      <td>[np.float64(0.0), np.float64(390.56555555555536)]</td>
+      <td>Legitimate stationary/start grid or sensor plateau; do not drop.</td>
+    </tr>
+    <tr>
+      <td>PIA</td>
+      <td>5</td>
+      <td>Distance</td>
+      <td>18</td>
+      <td>[np.float64(136.06111111111107)]</td>
+      <td>Legitimate stationary/start grid or sensor plateau; do not drop.</td>
+    </tr>
+    <tr>
+      <td>RUS</td>
+      <td>1</td>
+      <td>Distance</td>
+      <td>2</td>
+      <td>[np.float64(0.0)]</td>
+      <td>Legitimate stationary/start grid or sensor plateau; do not drop.</td>
+    </tr>
+    <tr>
+      <td>SAI</td>
+      <td>1</td>
+      <td>Distance</td>
+      <td>3</td>
+      <td>[np.float64(0.0)]</td>
+      <td>Legitimate stationary/start grid or sensor plateau; do not drop.</td>
+    </tr>
+    <tr>
+      <td>STR</td>
+      <td>1</td>
+      <td>Distance</td>
+      <td>2</td>
+      <td>[np.float64(0.0)]</td>
+      <td>Legitimate stationary/start grid or sensor plateau; do not drop.</td>
+    </tr>
+    <tr>
+      <td>TSU</td>
+      <td>1</td>
+      <td>Distance</td>
+      <td>3</td>
+      <td>[np.float64(0.0)]</td>
+      <td>Legitimate stationary/start grid or sensor plateau; do not drop.</td>
+    </tr>
+    <tr>
+      <td>VER</td>
+      <td>1</td>
+      <td>Distance</td>
+      <td>2</td>
+      <td>[np.float64(0.0)]</td>
+      <td>Legitimate stationary/start grid or sensor plateau; do not drop.</td>
+    </tr>
+    <tr>
+      <td>ZHO</td>
+      <td>1</td>
+      <td>Distance</td>
+      <td>2</td>
+      <td>[np.float64(0.0)]</td>
+      <td>Legitimate stationary/start grid or sensor plateau; do not drop.</td>
+    </tr>
+  </tbody>
+</table>
+    </div>
+</section>
+
+<!-- SECTION 4: STATISTICAL ANALYSIS -->
+<section id="statistics">
+    <h2>4. Statistical &amp; Telemetry Signal Profiling</h2>
+    <p>Descriptive statistics (Mean, Median, Standard Deviation, Min, Max, Quantiles, and IQR) across core vehicle telemetry channels.</p>
+    <div class="table-container">
+        <table class="dataframe styled-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Column</th>
+      <th>Count</th>
+      <th>Mean</th>
+      <th>Std</th>
+      <th>Min</th>
+      <th>25%</th>
+      <th>Median (50%)</th>
+      <th>75%</th>
+      <th>Max</th>
+      <th>IQR</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Speed</td>
+      <td>72476</td>
+      <td>188.8164</td>
+      <td>74.4052</td>
+      <td>0.0000</td>
+      <td>128.4781</td>
+      <td>188.0000</td>
+      <td>251.0271</td>
+      <td>337.0000</td>
+      <td>122.5490</td>
+    </tr>
+    <tr>
+      <td>Throttle</td>
+      <td>72476</td>
+      <td>58.8816</td>
+      <td>42.2515</td>
+      <td>0.0000</td>
+      <td>6.3000</td>
+      <td>72.4682</td>
+      <td>100.0000</td>
+      <td>104.0000</td>
+      <td>93.7000</td>
+    </tr>
+    <tr>
+      <td>Brake</td>
+      <td>72476</td>
+      <td>0.1944</td>
+      <td>0.3957</td>
+      <td>0.0000</td>
+      <td>0.0000</td>
+      <td>0.0000</td>
+      <td>0.0000</td>
+      <td>1.0000</td>
+      <td>0.0000</td>
+    </tr>
+    <tr>
+      <td>RPM</td>
+      <td>72476</td>
+      <td>9882.4874</td>
+      <td>1654.6806</td>
+      <td>0.0000</td>
+      <td>8968.2998</td>
+      <td>10517.0000</td>
+      <td>11096.4392</td>
+      <td>13090.0000</td>
+      <td>2128.1394</td>
+    </tr>
+    <tr>
+      <td>nGear</td>
+      <td>72476</td>
+      <td>4.8226</td>
+      <td>1.9824</td>
+      <td>1.0000</td>
+      <td>3.0000</td>
+      <td>5.0000</td>
+      <td>7.0000</td>
+      <td>8.0000</td>
+      <td>4.0000</td>
+    </tr>
+    <tr>
+      <td>Distance</td>
+      <td>72476</td>
+      <td>2695.4796</td>
+      <td>1527.2213</td>
+      <td>-0.0899</td>
+      <td>1403.3660</td>
+      <td>2713.4775</td>
+      <td>4080.9776</td>
+      <td>5299.7347</td>
+      <td>2677.6116</td>
+    </tr>
+    <tr>
+      <td>DistanceToDriverAhead</td>
+      <td>69519</td>
+      <td>127.3419</td>
+      <td>399.2485</td>
+      <td>0.0000</td>
+      <td>21.5668</td>
+      <td>43.5336</td>
+      <td>72.3211</td>
+      <td>3591.4356</td>
+      <td>50.7543</td>
+    </tr>
+    <tr>
+      <td>RelativeDistance</td>
+      <td>72476</td>
+      <td>0.5167</td>
+      <td>0.2926</td>
+      <td>-0.0000</td>
+      <td>0.2687</td>
+      <td>0.5196</td>
+      <td>0.7837</td>
+      <td>1.0000</td>
+      <td>0.5150</td>
+    </tr>
+    <tr>
+      <td>X</td>
+      <td>72476</td>
+      <td>1446.7826</td>
+      <td>2114.7473</td>
+      <td>-2197.0000</td>
+      <td>-446.5650</td>
+      <td>1647.0000</td>
+      <td>2724.9680</td>
+      <td>5800.7707</td>
+      <td>3171.5330</td>
+    </tr>
+    <tr>
+      <td>Y</td>
+      <td>72476</td>
+      <td>1893.7099</td>
+      <td>4745.2062</td>
+      <td>-5350.8905</td>
+      <td>-1482.4198</td>
+      <td>981.0000</td>
+      <td>5099.1138</td>
+      <td>11779.0540</td>
+      <td>6581.5336</td>
+    </tr>
+    <tr>
+      <td>Z</td>
+      <td>72476</td>
+      <td>-219.4171</td>
+      <td>21.5163</td>
+      <td>-243.0131</td>
+      <td>-231.9897</td>
+      <td>-226.6786</td>
+      <td>-213.8388</td>
+      <td>-124.4645</td>
+      <td>18.1509</td>
+    </tr>
+    <tr>
+      <td>AccelerationX</td>
+      <td>72476</td>
+      <td>0.1261</td>
+      <td>8.7475</td>
+      <td>-83.0118</td>
+      <td>-2.4567</td>
+      <td>1.9554</td>
+      <td>5.4084</td>
+      <td>23.8884</td>
+      <td>7.8651</td>
+    </tr>
+    <tr>
+      <td>AccelerationY</td>
+      <td>72476</td>
+      <td>2.2157</td>
+      <td>16.4981</td>
+      <td>-66.6328</td>
+      <td>-1.3355</td>
+      <td>1.1215</td>
+      <td>10.6321</td>
+      <td>59.6191</td>
+      <td>11.9676</td>
+    </tr>
+    <tr>
+      <td>AccelerationZ</td>
+      <td>72476</td>
+      <td>-1.3482</td>
+      <td>9.1055</td>
+      <td>-92.3193</td>
+      <td>-0.8460</td>
+      <td>0.0101</td>
+      <td>0.7631</td>
+      <td>50.7256</td>
+      <td>1.6091</td>
+    </tr>
+  </tbody>
+</table>
+    </div>
+    <h3 style="margin-top: 20px; font-size: 1.1rem; color: #fff;">Telemetry Signal Operating Envelope</h3>
+    <div class="table-container">
+        <table class="dataframe styled-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Signal</th>
+      <th>Metric</th>
+      <th>Value</th>
+      <th>Unit</th>
+      <th>Category</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Speed</td>
+      <td>Mean Speed (km/h)</td>
+      <td>188.820</td>
+      <td>km/h</td>
+      <td>Speed</td>
+    </tr>
+    <tr>
+      <td>Speed</td>
+      <td>Median Speed (km/h)</td>
+      <td>188.000</td>
+      <td>km/h</td>
+      <td>Speed</td>
+    </tr>
+    <tr>
+      <td>Speed</td>
+      <td>Max Speed (km/h)</td>
+      <td>337.000</td>
+      <td>km/h</td>
+      <td>Speed</td>
+    </tr>
+    <tr>
+      <td>Speed</td>
+      <td>Idle / Low Speed (< 100 km/h) Count</td>
+      <td>9389.000</td>
+      <td>samples</td>
+      <td>Speed</td>
+    </tr>
+    <tr>
+      <td>Speed</td>
+      <td>Idle / Low Speed (< 100 km/h) %</td>
+      <td>12.950</td>
+      <td>%</td>
+      <td>Speed</td>
+    </tr>
+    <tr>
+      <td>Speed</td>
+      <td>Medium Speed (100 - 250 km/h) %</td>
+      <td>61.620</td>
+      <td>%</td>
+      <td>Speed</td>
+    </tr>
+    <tr>
+      <td>Speed</td>
+      <td>High Speed (> 250 km/h) %</td>
+      <td>25.420</td>
+      <td>%</td>
+      <td>Speed</td>
+    </tr>
+    <tr>
+      <td>Throttle</td>
+      <td>Mean Throttle (%)</td>
+      <td>58.880</td>
+      <td>%</td>
+      <td>Throttle</td>
+    </tr>
+    <tr>
+      <td>Throttle</td>
+      <td>Zero Throttle (Coasting/Braking) %</td>
+      <td>21.390</td>
+      <td>%</td>
+      <td>Throttle</td>
+    </tr>
+    <tr>
+      <td>Throttle</td>
+      <td>Throttle Active (> 0) %</td>
+      <td>78.610</td>
+      <td>%</td>
+      <td>Throttle</td>
+    </tr>
+    <tr>
+      <td>Throttle</td>
+      <td>Partial Throttle (0 < T < 99) %</td>
+      <td>37.510</td>
+      <td>%</td>
+      <td>Throttle</td>
+    </tr>
+    <tr>
+      <td>Throttle</td>
+      <td>Wide Open Throttle (>= 99) %</td>
+      <td>41.100</td>
+      <td>%</td>
+      <td>Throttle</td>
+    </tr>
+    <tr>
+      <td>Throttle</td>
+      <td>Overtravel Throttle (> 100) Count</td>
+      <td>32.000</td>
+      <td>samples</td>
+      <td>Throttle</td>
+    </tr>
+    <tr>
+      <td>Throttle</td>
+      <td>Overtravel Throttle (> 100) %</td>
+      <td>0.044</td>
+      <td>%</td>
+      <td>Throttle</td>
+    </tr>
+    <tr>
+      <td>Brake</td>
+      <td>Braking Active Samples</td>
+      <td>14089.000</td>
+      <td>samples</td>
+      <td>Brake</td>
+    </tr>
+    <tr>
+      <td>Brake</td>
+      <td>Braking Active %</td>
+      <td>19.440</td>
+      <td>%</td>
+      <td>Brake</td>
+    </tr>
+    <tr>
+      <td>Brake</td>
+      <td>Braking Inactive %</td>
+      <td>80.560</td>
+      <td>%</td>
+      <td>Brake</td>
+    </tr>
+    <tr>
+      <td>RPM</td>
+      <td>Mean RPM</td>
+      <td>9882.490</td>
+      <td>RPM</td>
+      <td>RPM</td>
+    </tr>
+    <tr>
+      <td>RPM</td>
+      <td>Max RPM</td>
+      <td>13090.000</td>
+      <td>RPM</td>
+      <td>RPM</td>
+    </tr>
+    <tr>
+      <td>RPM</td>
+      <td>Zero RPM Observations</td>
+      <td>33.000</td>
+      <td>samples</td>
+      <td>RPM</td>
+    </tr>
+    <tr>
+      <td>RPM</td>
+      <td>Engine Operating (>= 6000 RPM) %</td>
+      <td>96.770</td>
+      <td>%</td>
+      <td>RPM</td>
+    </tr>
+    <tr>
+      <td>RPM</td>
+      <td>Peak Operating (>= 11000 RPM) %</td>
+      <td>29.220</td>
+      <td>%</td>
+      <td>RPM</td>
+    </tr>
+    <tr>
+      <td>Gear</td>
+      <td>Gear 1 Time %</td>
+      <td>3.250</td>
+      <td>%</td>
+      <td>Gear</td>
+    </tr>
+    <tr>
+      <td>Gear</td>
+      <td>Gear 2 Time %</td>
+      <td>8.960</td>
+      <td>%</td>
+      <td>Gear</td>
+    </tr>
+    <tr>
+      <td>Gear</td>
+      <td>Gear 3 Time %</td>
+      <td>19.140</td>
+      <td>%</td>
+      <td>Gear</td>
+    </tr>
+    <tr>
+      <td>Gear</td>
+      <td>Gear 4 Time %</td>
+      <td>16.370</td>
+      <td>%</td>
+      <td>Gear</td>
+    </tr>
+    <tr>
+      <td>Gear</td>
+      <td>Gear 5 Time %</td>
+      <td>11.770</td>
+      <td>%</td>
+      <td>Gear</td>
+    </tr>
+    <tr>
+      <td>Gear</td>
+      <td>Gear 6 Time %</td>
+      <td>14.890</td>
+      <td>%</td>
+      <td>Gear</td>
+    </tr>
+    <tr>
+      <td>Gear</td>
+      <td>Gear 7 Time %</td>
+      <td>14.970</td>
+      <td>%</td>
+      <td>Gear</td>
+    </tr>
+    <tr>
+      <td>Gear</td>
+      <td>Gear 8 Time %</td>
+      <td>10.650</td>
+      <td>%</td>
+      <td>Gear</td>
+    </tr>
+  </tbody>
+</table>
+    </div>
+</section>
+
+<!-- SECTION 5: DRIVER-WISE ANALYSIS -->
+<section id="drivers">
+    <h2>5. Driver-Wise Telemetry Analysis</h2>
+    <div class="alert-box warning">
+        <strong>Analytical Limitation Disclaimer:</strong>
+        Telemetry comparisons must not be conflated with overall race pace.
+        Laps 1-5 encompass the standing start, safety car periods, and cold tyre warm-up phases.
+        Perez (PER) retired on Lap 1; Norris (NOR) ran in clean air as race leader; midfield drivers navigated heavy dirty-air traffic.
+    </div>
+    <div class="table-container">
+        <table class="dataframe styled-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Driver</th>
+      <th>Telemetry Samples</th>
+      <th>Available Laps</th>
+      <th>Average Speed (km/h)</th>
+      <th>Median Speed (km/h)</th>
+      <th>Maximum Speed (km/h)</th>
+      <th>Minimum Speed (km/h)</th>
+      <th>Average Throttle (%)</th>
+      <th>Average RPM</th>
+      <th>Maximum RPM</th>
+      <th>Average Gear</th>
+      <th>Braking Percentage (%)</th>
+      <th>Average Distance (m)</th>
+      <th>Missing Values Count</th>
+      <th>Missing Value Percentage (%)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>SAI</td>
+      <td>3678</td>
+      <td>5</td>
+      <td>193.92</td>
+      <td>190.87</td>
+      <td>310.0</td>
+      <td>0.0</td>
+      <td>62.02</td>
+      <td>10164.19</td>
+      <td>12224.0</td>
+      <td>4.92</td>
+      <td>19.06</td>
+      <td>2703.38</td>
+      <td>22</td>
+      <td>0.023</td>
+    </tr>
+    <tr>
+      <td>NOR</td>
+      <td>3655</td>
+      <td>5</td>
+      <td>193.86</td>
+      <td>193.64</td>
+      <td>307.0</td>
+      <td>0.0</td>
+      <td>60.67</td>
+      <td>10343.52</td>
+      <td>12452.0</td>
+      <td>4.66</td>
+      <td>15.98</td>
+      <td>2695.06</td>
+      <td>6504</td>
+      <td>6.844</td>
+    </tr>
+    <tr>
+      <td>HUL</td>
+      <td>3706</td>
+      <td>5</td>
+      <td>193.52</td>
+      <td>192.00</td>
+      <td>337.0</td>
+      <td>0.0</td>
+      <td>57.99</td>
+      <td>10011.60</td>
+      <td>12417.0</td>
+      <td>4.94</td>
+      <td>19.08</td>
+      <td>2691.77</td>
+      <td>21</td>
+      <td>0.022</td>
+    </tr>
+    <tr>
+      <td>GAS</td>
+      <td>3693</td>
+      <td>5</td>
+      <td>193.49</td>
+      <td>192.00</td>
+      <td>326.0</td>
+      <td>0.0</td>
+      <td>62.59</td>
+      <td>10128.81</td>
+      <td>11983.0</td>
+      <td>4.79</td>
+      <td>16.87</td>
+      <td>2696.39</td>
+      <td>19</td>
+      <td>0.020</td>
+    </tr>
+    <tr>
+      <td>RUS</td>
+      <td>3700</td>
+      <td>5</td>
+      <td>193.29</td>
+      <td>192.00</td>
+      <td>332.0</td>
+      <td>0.0</td>
+      <td>60.58</td>
+      <td>10134.81</td>
+      <td>12635.0</td>
+      <td>4.89</td>
+      <td>18.84</td>
+      <td>2689.73</td>
+      <td>34</td>
+      <td>0.035</td>
+    </tr>
+    <tr>
+      <td>MAG</td>
+      <td>3718</td>
+      <td>5</td>
+      <td>192.88</td>
+      <td>192.95</td>
+      <td>337.0</td>
+      <td>0.0</td>
+      <td>59.74</td>
+      <td>9813.13</td>
+      <td>12871.0</td>
+      <td>5.07</td>
+      <td>19.63</td>
+      <td>2689.02</td>
+      <td>22</td>
+      <td>0.023</td>
+    </tr>
+    <tr>
+      <td>ALO</td>
+      <td>3714</td>
+      <td>5</td>
+      <td>192.83</td>
+      <td>191.00</td>
+      <td>333.0</td>
+      <td>0.0</td>
+      <td>59.28</td>
+      <td>10003.06</td>
+      <td>12099.0</td>
+      <td>4.96</td>
+      <td>21.57</td>
+      <td>2685.97</td>
+      <td>21</td>
+      <td>0.022</td>
+    </tr>
+    <tr>
+      <td>LEC</td>
+      <td>3724</td>
+      <td>5</td>
+      <td>192.72</td>
+      <td>194.00</td>
+      <td>335.0</td>
+      <td>0.0</td>
+      <td>61.35</td>
+      <td>10070.37</td>
+      <td>12073.0</td>
+      <td>4.85</td>
+      <td>21.99</td>
+      <td>2710.06</td>
+      <td>75</td>
+      <td>0.077</td>
+    </tr>
+    <tr>
+      <td>STR</td>
+      <td>3734</td>
+      <td>5</td>
+      <td>192.01</td>
+      <td>194.65</td>
+      <td>325.0</td>
+      <td>0.0</td>
+      <td>59.88</td>
+      <td>9940.75</td>
+      <td>12593.0</td>
+      <td>4.97</td>
+      <td>19.50</td>
+      <td>2694.54</td>
+      <td>20</td>
+      <td>0.021</td>
+    </tr>
+    <tr>
+      <td>VER</td>
+      <td>3742</td>
+      <td>5</td>
+      <td>190.81</td>
+      <td>192.63</td>
+      <td>335.0</td>
+      <td>0.0</td>
+      <td>60.12</td>
+      <td>9929.69</td>
+      <td>12025.0</td>
+      <td>4.73</td>
+      <td>18.44</td>
+      <td>2687.51</td>
+      <td>49</td>
+      <td>0.050</td>
+    </tr>
+    <tr>
+      <td>LAW</td>
+      <td>3751</td>
+      <td>5</td>
+      <td>190.40</td>
+      <td>192.42</td>
+      <td>321.0</td>
+      <td>0.0</td>
+      <td>62.41</td>
+      <td>9830.57</td>
+      <td>12554.0</td>
+      <td>4.79</td>
+      <td>18.13</td>
+      <td>2694.83</td>
+      <td>19</td>
+      <td>0.019</td>
+    </tr>
+    <tr>
+      <td>HAM</td>
+      <td>3756</td>
+      <td>5</td>
+      <td>190.33</td>
+      <td>190.00</td>
+      <td>333.0</td>
+      <td>0.0</td>
+      <td>61.15</td>
+      <td>9791.16</td>
+      <td>12933.0</td>
+      <td>5.00</td>
+      <td>22.87</td>
+      <td>2707.23</td>
+      <td>19</td>
+      <td>0.019</td>
+    </tr>
+    <tr>
+      <td>ZHO</td>
+      <td>3782</td>
+      <td>5</td>
+      <td>189.03</td>
+      <td>189.43</td>
+      <td>331.0</td>
+      <td>0.0</td>
+      <td>57.59</td>
+      <td>9778.45</td>
+      <td>11928.0</td>
+      <td>4.87</td>
+      <td>20.10</td>
+      <td>2741.34</td>
+      <td>20</td>
+      <td>0.020</td>
+    </tr>
+    <tr>
+      <td>BOT</td>
+      <td>3776</td>
+      <td>5</td>
+      <td>188.59</td>
+      <td>189.99</td>
+      <td>318.0</td>
+      <td>0.0</td>
+      <td>61.29</td>
+      <td>9702.98</td>
+      <td>12336.0</td>
+      <td>4.96</td>
+      <td>21.64</td>
+      <td>2712.67</td>
+      <td>20</td>
+      <td>0.020</td>
+    </tr>
+    <tr>
+      <td>ALB</td>
+      <td>3787</td>
+      <td>5</td>
+      <td>188.04</td>
+      <td>187.00</td>
+      <td>336.0</td>
+      <td>0.0</td>
+      <td>55.69</td>
+      <td>9722.36</td>
+      <td>12043.0</td>
+      <td>4.92</td>
+      <td>20.49</td>
+      <td>2732.91</td>
+      <td>21</td>
+      <td>0.021</td>
+    </tr>
+    <tr>
+      <td>DOO</td>
+      <td>3806</td>
+      <td>5</td>
+      <td>187.79</td>
+      <td>187.09</td>
+      <td>329.0</td>
+      <td>0.0</td>
+      <td>59.83</td>
+      <td>9960.20</td>
+      <td>12428.0</td>
+      <td>4.68</td>
+      <td>19.63</td>
+      <td>2737.39</td>
+      <td>18</td>
+      <td>0.018</td>
+    </tr>
+    <tr>
+      <td>TSU</td>
+      <td>3798</td>
+      <td>5</td>
+      <td>187.14</td>
+      <td>185.95</td>
+      <td>326.0</td>
+      <td>0.0</td>
+      <td>60.96</td>
+      <td>9879.95</td>
+      <td>12485.0</td>
+      <td>4.62</td>
+      <td>18.46</td>
+      <td>2712.19</td>
+      <td>22</td>
+      <td>0.022</td>
+    </tr>
+    <tr>
+      <td>PIA</td>
+      <td>3993</td>
+      <td>5</td>
+      <td>179.31</td>
+      <td>176.20</td>
+      <td>325.0</td>
+      <td>0.0</td>
+      <td>54.59</td>
+      <td>9820.61</td>
+      <td>12181.0</td>
+      <td>4.44</td>
+      <td>18.51</td>
+      <td>2594.24</td>
+      <td>23</td>
+      <td>0.022</td>
+    </tr>
+    <tr>
+      <td>COL</td>
+      <td>4265</td>
+      <td>5</td>
+      <td>168.04</td>
+      <td>154.00</td>
+      <td>323.0</td>
+      <td>0.0</td>
+      <td>45.63</td>
+      <td>9039.44</td>
+      <td>11998.0</td>
+      <td>4.55</td>
+      <td>19.65</td>
+      <td>2733.34</td>
+      <td>21</td>
+      <td>0.019</td>
+    </tr>
+    <tr>
+      <td>PER</td>
+      <td>698</td>
+      <td>1</td>
+      <td>154.21</td>
+      <td>145.48</td>
+      <td>317.0</td>
+      <td>0.0</td>
+      <td>46.39</td>
+      <td>9087.73</td>
+      <td>13090.0</td>
+      <td>5.26</td>
+      <td>13.18</td>
+      <td>2180.40</td>
+      <td>6</td>
+      <td>0.033</td>
+    </tr>
+  </tbody>
+</table>
+    </div>
+</section>
+
+<!-- SECTION 6: LAP-WISE ANALYSIS -->
+<section id="laps">
+    <h2>6. Lap-Wise Analysis &amp; Spatial Distance Coverage</h2>
+    <p>Summary of telemetry sample volume, distance progression, and lap completeness for each driver-lap series.</p>
+    <div class="table-container">
+        <table class="dataframe styled-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Driver</th>
+      <th>LapNumber</th>
+      <th>Samples</th>
+      <th>Min Distance (m)</th>
+      <th>Max Distance (m)</th>
+      <th>Distance Coverage (m)</th>
+      <th>Expected Track Length (m)</th>
+      <th>Coverage Ratio (%)</th>
+      <th>Coverage Status</th>
+      <th>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>ALB</td>
+      <td>1</td>
+      <td>774</td>
+      <td>-0.0055</td>
+      <td>5250.5525</td>
+      <td>5250.56</td>
+      <td>5281.0</td>
+      <td>99.42</td>
+      <td>Complete Lap</td>
+      <td>Full circuit covered</td>
+    </tr>
+    <tr>
+      <td>ALB</td>
+      <td>2</td>
+      <td>914</td>
+      <td>0.3014</td>
+      <td>5219.6658</td>
+      <td>5219.36</td>
+      <td>5281.0</td>
+      <td>98.83</td>
+      <td>Complete Lap</td>
+      <td>Full circuit covered</td>
+    </tr>
+    <tr>
+      <td>ALB</td>
+      <td>3</td>
+      <td>722</td>
+      <td>0.1615</td>
+      <td>5213.8113</td>
+      <td>5213.65</td>
+      <td>5281.0</td>
+      <td>98.72</td>
+      <td>Complete Lap</td>
+      <td>Full circuit covered</td>
+    </tr>
+    <tr>
+      <td>ALB</td>
+      <td>4</td>
+      <td>693</td>
+      <td>0.0565</td>
+      <td>5200.3587</td>
+      <td>5200.30</td>
+      <td>5281.0</td>
+      <td>98.47</td>
+      <td>Complete Lap</td>
+      <td>Full circuit covered</td>
+    </tr>
+    <tr>
+      <td>ALB</td>
+      <td>5</td>
+      <td>684</td>
+      <td>1.0031</td>
+      <td>5200.0868</td>
+      <td>5199.08</td>
+      <td>5281.0</td>
+      <td>98.45</td>
+      <td>Complete Lap</td>
+      <td>Full circuit covered</td>
+    </tr>
+    <tr>
+      <td>ALO</td>
+      <td>1</td>
+      <td>735</td>
+      <td>-0.0899</td>
+      <td>5218.8049</td>
+      <td>5218.89</td>
+      <td>5281.0</td>
+      <td>98.82</td>
+      <td>Complete Lap</td>
+      <td>Full circuit covered</td>
+    </tr>
+    <tr>
+      <td>ALO</td>
+      <td>2</td>
+      <td>835</td>
+      <td>0.1156</td>
+      <td>5220.6357</td>
+      <td>5220.52</td>
+      <td>5281.0</td>
+      <td>98.85</td>
+      <td>Complete Lap</td>
+      <td>Full circuit covered</td>
+    </tr>
+    <tr>
+      <td>ALO</td>
+      <td>3</td>
+      <td>774</td>
+      <td>-0.0330</td>
+      <td>5214.1680</td>
+      <td>5214.20</td>
+      <td>5281.0</td>
+      <td>98.74</td>
+      <td>Complete Lap</td>
+      <td>Full circuit covered</td>
+    </tr>
+    <tr>
+      <td>ALO</td>
+      <td>4</td>
+      <td>691</td>
+      <td>0.2753</td>
+      <td>5216.2189</td>
+      <td>5215.94</td>
+      <td>5281.0</td>
+      <td>98.77</td>
+      <td>Complete Lap</td>
+      <td>Full circuit covered</td>
+    </tr>
+    <tr>
+      <td>ALO</td>
+      <td>5</td>
+      <td>679</td>
+      <td>0.1801</td>
+      <td>5230.1697</td>
+      <td>5229.99</td>
+      <td>5281.0</td>
+      <td>99.03</td>
+      <td>Complete Lap</td>
+      <td>Full circuit covered</td>
+    </tr>
+    <tr>
+      <td>BOT</td>
+      <td>1</td>
+      <td>767</td>
+      <td>-0.0121</td>
+      <td>5209.6701</td>
+      <td>5209.68</td>
+      <td>5281.0</td>
+      <td>98.65</td>
+      <td>Complete Lap</td>
+      <td>Full circuit covered</td>
+    </tr>
+    <tr>
+      <td>BOT</td>
+      <td>2</td>
+      <td>892</td>
+      <td>0.0476</td>
+      <td>5221.1350</td>
+      <td>5221.09</td>
+      <td>5281.0</td>
+      <td>98.87</td>
+      <td>Complete Lap</td>
+      <td>Full circuit covered</td>
+    </tr>
+    <tr>
+      <td>BOT</td>
+      <td>3</td>
+      <td>742</td>
+      <td>0.0316</td>
+      <td>5226.2289</td>
+      <td>5226.20</td>
+      <td>5281.0</td>
+      <td>98.96</td>
+      <td>Complete Lap</td>
+      <td>Full circuit covered</td>
+    </tr>
+    <tr>
+      <td>BOT</td>
+      <td>4</td>
+      <td>692</td>
+      <td>0.0285</td>
+      <td>5212.5018</td>
+      <td>5212.47</td>
+      <td>5281.0</td>
+      <td>98.70</td>
+      <td>Complete Lap</td>
+      <td>Full circuit covered</td>
+    </tr>
+    <tr>
+      <td>BOT</td>
+      <td>5</td>
+      <td>683</td>
+      <td>0.1883</td>
+      <td>5208.3794</td>
+      <td>5208.19</td>
+      <td>5281.0</td>
+      <td>98.62</td>
+      <td>Complete Lap</td>
+      <td>Full circuit covered</td>
+    </tr>
+    <tr>
+      <td>COL</td>
+      <td>1</td>
+      <td>782</td>
+      <td>-0.0114</td>
+      <td>5299.7347</td>
+      <td>5299.75</td>
+      <td>5281.0</td>
+      <td>100.35</td>
+      <td>Complete Lap</td>
+      <td>Full circuit covered</td>
+    </tr>
+    <tr>
+      <td>COL</td>
+      <td>2</td>
+      <td>930</td>
+      <td>0.2557</td>
+      <td>5211.4930</td>
+      <td>5211.24</td>
+      <td>5281.0</td>
+      <td>98.68</td>
+      <td>Complete Lap</td>
+      <td>Full circuit covered</td>
+    </tr>
+    <tr>
+      <td>COL</td>
+      <td>3</td>
+      <td>1000</td>
+      <td>0.6160</td>
+      <td>5189.5897</td>
+      <td>5188.97</td>
+      <td>5281.0</td>
+      <td>98.26</td>
+      <td>Complete Lap</td>
+      <td>Full circuit covered</td>
+    </tr>
+    <tr>
+      <td>COL</td>
+      <td>4</td>
+      <td>864</td>
+      <td>-0.0000</td>
+      <td>5280.3960</td>
+      <td>5280.40</td>
+      <td>5281.0</td>
+      <td>99.99</td>
+      <td>Complete Lap</td>
+      <td>Full circuit covered</td>
+    </tr>
+    <tr>
+      <td>COL</td>
+      <td>5</td>
+      <td>689</td>
+      <td>0.1513</td>
+      <td>5225.0379</td>
+      <td>5224.89</td>
+      <td>5281.0</td>
+      <td>98.94</td>
+      <td>Complete Lap</td>
+      <td>Full circuit covered</td>
+    </tr>
+    <tr>
+      <td>DOO</td>
+      <td>1</td>
+      <td>775</td>
+      <td>-0.0082</td>
+      <td>5286.1230</td>
+      <td>5286.13</td>
+      <td>5281.0</td>
+      <td>100.10</td>
+      <td>Complete Lap</td>
+      <td>Full circuit covered</td>
+    </tr>
+    <tr>
+      <td>DOO</td>
+      <td>2</td>
+      <td>921</td>
+      <td>1.7202</td>
+      <td>5224.0327</td>
+      <td>5222.31</td>
+      <td>5281.0</td>
+      <td>98.89</td>
+      <td>Complete Lap</td>
+      <td>Full circuit covered</td>
+    </tr>
+    <tr>
+      <td>DOO</td>
+      <td>3</td>
+      <td>729</td>
+      <td>0.3192</td>
+      <td>5227.3272</td>
+      <td>5227.01</td>
+      <td>5281.0</td>
+      <td>98.98</td>
+      <td>Complete Lap</td>
+      <td>Full circuit covered</td>
+    </tr>
+    <tr>
+      <td>DOO</td>
+      <td>4</td>
+      <td>694</td>
+      <td>0.0871</td>
+      <td>5215.1080</td>
+      <td>5215.02</td>
+      <td>5281.0</td>
+      <td>98.75</td>
+      <td>Complete Lap</td>
+      <td>Full circuit covered</td>
+    </tr>
+    <tr>
+      <td>DOO</td>
+      <td>5</td>
+      <td>687</td>
+      <td>0.1213</td>
+      <td>5214.7016</td>
+      <td>5214.58</td>
+      <td>5281.0</td>
+      <td>98.74</td>
+      <td>Complete Lap</td>
+      <td>Full circuit covered</td>
+    </tr>
+    <tr>
+      <td>GAS</td>
+      <td>1</td>
+      <td>718</td>
+      <td>-0.0393</td>
+      <td>5176.5277</td>
+      <td>5176.57</td>
+      <td>5281.0</td>
+      <td>98.02</td>
+      <td>Complete Lap</td>
+      <td>Full circuit covered</td>
+    </tr>
+    <tr>
+      <td>GAS</td>
+      <td>2</td>
+      <td>833</td>
+      <td>0.2065</td>
+      <td>5217.3795</td>
+      <td>5217.17</td>
+      <td>5281.0</td>
+      <td>98.79</td>
+      <td>Complete Lap</td>
+      <td>Full circuit covered</td>
+    </tr>
+    <tr>
+      <td>GAS</td>
+      <td>3</td>
+      <td>781</td>
+      <td>0.0230</td>
+      <td>5230.0574</td>
+      <td>5230.03</td>
+      <td>5281.0</td>
+      <td>99.03</td>
+      <td>Complete Lap</td>
+      <td>Full circuit covered</td>
+    </tr>
+    <tr>
+      <td>GAS</td>
+      <td>4</td>
+      <td>691</td>
+      <td>0.0212</td>
+      <td>5216.6444</td>
+      <td>5216.62</td>
+      <td>5281.0</td>
+      <td>98.78</td>
+      <td>Complete Lap</td>
+      <td>Full circuit covered</td>
+    </tr>
+    <tr>
+      <td>GAS</td>
+      <td>5</td>
+      <td>670</td>
+      <td>0.7120</td>
+      <td>5228.4428</td>
+      <td>5227.73</td>
+      <td>5281.0</td>
+      <td>98.99</td>
+      <td>Complete Lap</td>
+      <td>Full circuit covered</td>
+    </tr>
+  </tbody>
+</table>
+    </div>
+    <h3 style="margin-top: 20px; font-size: 1.1rem; color: #fff;">Lap Sample Distribution Matrix</h3>
+    <div class="table-container">
+        <table class="dataframe styled-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>LapNumber</th>
+      <th>Driver</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+      <th>4</th>
+      <th>5</th>
+      <th>Total Samples</th>
+      <th>Mean Samples / Lap</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th></th>
+      <td>ALB</td>
+      <td>774</td>
+      <td>914</td>
+      <td>722</td>
+      <td>693</td>
+      <td>684</td>
+      <td>3787</td>
+      <td>757.4</td>
+    </tr>
+    <tr>
+      <th></th>
+      <td>ALO</td>
+      <td>735</td>
+      <td>835</td>
+      <td>774</td>
+      <td>691</td>
+      <td>679</td>
+      <td>3714</td>
+      <td>742.8</td>
+    </tr>
+    <tr>
+      <th></th>
+      <td>BOT</td>
+      <td>767</td>
+      <td>892</td>
+      <td>742</td>
+      <td>692</td>
+      <td>683</td>
+      <td>3776</td>
+      <td>755.2</td>
+    </tr>
+    <tr>
+      <th></th>
+      <td>COL</td>
+      <td>782</td>
+      <td>930</td>
+      <td>1000</td>
+      <td>864</td>
+      <td>689</td>
+      <td>4265</td>
+      <td>853.0</td>
+    </tr>
+    <tr>
+      <th></th>
+      <td>DOO</td>
+      <td>775</td>
+      <td>921</td>
+      <td>729</td>
+      <td>694</td>
+      <td>687</td>
+      <td>3806</td>
+      <td>761.2</td>
+    </tr>
+    <tr>
+      <th></th>
+      <td>GAS</td>
+      <td>718</td>
+      <td>833</td>
+      <td>781</td>
+      <td>691</td>
+      <td>670</td>
+      <td>3693</td>
+      <td>738.6</td>
+    </tr>
+    <tr>
+      <th></th>
+      <td>HAM</td>
+      <td>765</td>
+      <td>884</td>
+      <td>740</td>
+      <td>690</td>
+      <td>677</td>
+      <td>3756</td>
+      <td>751.2</td>
+    </tr>
+    <tr>
+      <th></th>
+      <td>HUL</td>
+      <td>730</td>
+      <td>832</td>
+      <td>777</td>
+      <td>691</td>
+      <td>676</td>
+      <td>3706</td>
+      <td>741.2</td>
+    </tr>
+    <tr>
+      <th></th>
+      <td>LAW</td>
+      <td>758</td>
+      <td>864</td>
+      <td>761</td>
+      <td>690</td>
+      <td>678</td>
+      <td>3751</td>
+      <td>750.2</td>
+    </tr>
+    <tr>
+      <th></th>
+      <td>LEC</td>
+      <td>747</td>
+      <td>856</td>
+      <td>756</td>
+      <td>689</td>
+      <td>676</td>
+      <td>3724</td>
+      <td>744.8</td>
+    </tr>
+    <tr>
+      <th></th>
+      <td>MAG</td>
+      <td>741</td>
+      <td>835</td>
+      <td>775</td>
+      <td>689</td>
+      <td>678</td>
+      <td>3718</td>
+      <td>743.6</td>
+    </tr>
+    <tr>
+      <th></th>
+      <td>NOR</td>
+      <td>698</td>
+      <td>820</td>
+      <td>784</td>
+      <td>693</td>
+      <td>660</td>
+      <td>3655</td>
+      <td>731.0</td>
+    </tr>
+    <tr>
+      <th></th>
+      <td>PER</td>
+      <td>698</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>698</td>
+      <td>139.6</td>
+    </tr>
+    <tr>
+      <th></th>
+      <td>PIA</td>
+      <td>789</td>
+      <td>933</td>
+      <td>713</td>
+      <td>708</td>
+      <td>850</td>
+      <td>3993</td>
+      <td>798.6</td>
+    </tr>
+    <tr>
+      <th></th>
+      <td>RUS</td>
+      <td>723</td>
+      <td>833</td>
+      <td>781</td>
+      <td>688</td>
+      <td>675</td>
+      <td>3700</td>
+      <td>740.0</td>
+    </tr>
+    <tr>
+      <th></th>
+      <td>SAI</td>
+      <td>712</td>
+      <td>832</td>
+      <td>779</td>
+      <td>689</td>
+      <td>666</td>
+      <td>3678</td>
+      <td>735.6</td>
+    </tr>
+    <tr>
+      <th></th>
+      <td>STR</td>
+      <td>752</td>
+      <td>857</td>
+      <td>758</td>
+      <td>689</td>
+      <td>678</td>
+      <td>3734</td>
+      <td>746.8</td>
+    </tr>
+    <tr>
+      <th></th>
+      <td>TSU</td>
+      <td>779</td>
+      <td>927</td>
+      <td>712</td>
+      <td>695</td>
+      <td>685</td>
+      <td>3798</td>
+      <td>759.6</td>
+    </tr>
+    <tr>
+      <th></th>
+      <td>VER</td>
+      <td>762</td>
+      <td>871</td>
+      <td>742</td>
+      <td>688</td>
+      <td>679</td>
+      <td>3742</td>
+      <td>748.4</td>
+    </tr>
+    <tr>
+      <th></th>
+      <td>ZHO</td>
+      <td>770</td>
+      <td>912</td>
+      <td>723</td>
+      <td>694</td>
+      <td>683</td>
+      <td>3782</td>
+      <td>756.4</td>
+    </tr>
+  </tbody>
+</table>
+    </div>
+</section>
+
+<!-- SECTION 7: VALIDITY AND CONSISTENCY -->
+<section id="quality">
+    <h2>7. Data Validity &amp; Cross-Dataset Consistency</h2>
+    <p>Automated verification against Formula 1 physical regulations and cross-table referential integrity.</p>
+    <div class="table-container">
+        <table class="dataframe styled-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Check Name</th>
+      <th>Dataset / Column</th>
+      <th>Affected Records</th>
+      <th>Affected Percentage (%)</th>
+      <th>Severity</th>
+      <th>Result</th>
+      <th>Explanation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Speed: Non-Negative Validation</td>
+      <td>Telemetry / Speed</td>
+      <td>0</td>
+      <td>0.0000</td>
+      <td>INFO</td>
+      <td>PASS</td>
+      <td>Telemetry speed must be non-negative (>= 0 km/h).</td>
+    </tr>
+    <tr>
+      <td>Speed: Max Realistic Velocity (< 360 km/h)</td>
+      <td>Telemetry / Speed</td>
+      <td>0</td>
+      <td>0.0000</td>
+      <td>INFO</td>
+      <td>PASS</td>
+      <td>Speed exceeds modern Yas Marina top-speed envelope (> 360 km/h). Observed max: 337.0 km/h.</td>
+    </tr>
+    <tr>
+      <td>Speed: Stationary Observations (Speed == 0)</td>
+      <td>Telemetry / Speed</td>
+      <td>184</td>
+      <td>0.2539</td>
+      <td>INFO</td>
+      <td>PASS</td>
+      <td>Cars stationary at start grid on Lap 1 before lights out. Fully valid physical state.</td>
+    </tr>
+    <tr>
+      <td>Throttle: Non-Negative Validation</td>
+      <td>Telemetry / Throttle</td>
+      <td>0</td>
+      <td>0.0000</td>
+      <td>INFO</td>
+      <td>PASS</td>
+      <td>Throttle input cannot be negative.</td>
+    </tr>
+    <tr>
+      <td>Throttle: Range Upper Bound (<= 100%)</td>
+      <td>Telemetry / Throttle</td>
+      <td>32</td>
+      <td>0.0442</td>
+      <td>REVIEW REQUIRED</td>
+      <td>WARNING</td>
+      <td>Throttle values up to 104.0% observed (sensor pedal travel calibration overtravel).</td>
+    </tr>
+    <tr>
+      <td>Brake: Boolean / Binary State Representation</td>
+      <td>Telemetry / Brake</td>
+      <td>0</td>
+      <td>0.0000</td>
+      <td>INFO</td>
+      <td>PASS</td>
+      <td>Brake column dtype is bool; binary values verified (2 unique states).</td>
+    </tr>
+    <tr>
+      <td>RPM: Non-Negative Validation</td>
+      <td>Telemetry / RPM</td>
+      <td>0</td>
+      <td>0.0000</td>
+      <td>INFO</td>
+      <td>PASS</td>
+      <td>Engine RPM cannot be negative.</td>
+    </tr>
+    <tr>
+      <td>RPM: Zero RPM Observations</td>
+      <td>Telemetry / RPM</td>
+      <td>33</td>
+      <td>0.0455</td>
+      <td>REVIEW REQUIRED</td>
+      <td>WARNING</td>
+      <td>33 zero RPM records detected. Verified: all 33 rows belong to PER Lap 1 post-crash engine shutdown.</td>
+    </tr>
+    <tr>
+      <td>RPM: Realistic ICE Rev Limit (<= 15,000 RPM)</td>
+      <td>Telemetry / RPM</td>
+      <td>0</td>
+      <td>0.0000</td>
+      <td>INFO</td>
+      <td>PASS</td>
+      <td>F1 1.6L V6 Turbo Hybrid regulatory rev ceiling is 15,000 RPM (practical limit ~12,500-13,200). Observed max: 13,090 RPM.</td>
+    </tr>
+    <tr>
+      <td>Gear: Forward Range Validation (Gears 1 to 8)</td>
+      <td>Telemetry / nGear</td>
+      <td>0</td>
+      <td>0.0000</td>
+      <td>INFO</td>
+      <td>PASS</td>
+      <td>Forward transmission gears span 1 to 8. Reverse and neutral not observed in race telemetry.</td>
+    </tr>
+    <tr>
+      <td>Distance: Negative Offset Check</td>
+      <td>Telemetry / Distance</td>
+      <td>44</td>
+      <td>0.0607</td>
+      <td>REVIEW REQUIRED</td>
+      <td>WARNING</td>
+      <td>44 samples have negative distance (minimum: -0.0899m). Occurs at Lap 1 starting grid slots.</td>
+    </tr>
+    <tr>
+      <td>Distance: Lap Monotonicity Check</td>
+      <td>Telemetry / Distance</td>
+      <td>22</td>
+      <td>22.9200</td>
+      <td>REVIEW REQUIRED</td>
+      <td>WARNING</td>
+      <td>22 out of 96 laps exhibit non-monotonic distance steps (20 laps at Lap 1 line crossing + 2 jitter laps).</td>
+    </tr>
+    <tr>
+      <td>Time: Strict Monotonic Progression</td>
+      <td>Telemetry / Time</td>
+      <td>0</td>
+      <td>0.0000</td>
+      <td>INFO</td>
+      <td>PASS</td>
+      <td>Time is 100% strictly monotonically increasing across all 96 driver-lap telemetry series.</td>
+    </tr>
+    <tr>
+      <td>Cross-Dataset: Telemetry Drivers in Race Laps</td>
+      <td>Telemetry vs Race Laps / Driver</td>
+      <td>0</td>
+      <td>0.0000</td>
+      <td>INFO</td>
+      <td>PASS</td>
+      <td>All 20 telemetry drivers exist in the race-laps dataset. Perfect alignment.</td>
+    </tr>
+    <tr>
+      <td>Cross-Dataset: Driver-Lap Alignment</td>
+      <td>Telemetry vs Race Laps / (Driver, LapNumber)</td>
+      <td>0</td>
+      <td>0.0000</td>
+      <td>INFO</td>
+      <td>PASS</td>
+      <td>All 96 telemetry driver-laps exist in the race-laps dataset (100% matched).</td>
+    </tr>
+  </tbody>
+</table>
+    </div>
+    <h3 style="margin-top: 20px; font-size: 1.1rem; color: #fff;">Cross-Dataset Referential Alignment</h3>
+    <div class="table-container">
+        <table class="dataframe styled-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Comparison Domain</th>
+      <th>Telemetry Dataset</th>
+      <th>Race Laps Dataset</th>
+      <th>Discrepancy Count</th>
+      <th>Status</th>
+      <th>Remarks</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Driver Roster</td>
+      <td>20 drivers (ALB, ALO, BOT, COL, DOO, GAS, HAM, HUL, LAW, LEC, MAG, NOR, PER, PIA, RUS, SAI, STR, TSU, VER, ZHO)</td>
+      <td>20 drivers (ALB, ALO, BOT, COL, DOO, GAS, HAM, HUL, LAW, LEC, MAG, NOR, PER, PIA, RUS, SAI, STR, TSU, VER, ZHO)</td>
+      <td>0</td>
+      <td>PASS</td>
+      <td>Identical 20-driver roster in both datasets.</td>
+    </tr>
+    <tr>
+      <td>Driver-Lap Coverage</td>
+      <td>96 laps (up to 5 laps / driver; PER has 1 lap)</td>
+      <td>1035 laps (full race duration, 58 laps)</td>
+      <td>0</td>
+      <td>PASS</td>
+      <td>Telemetry is a sampled subset of the full race session (Phase 2 capped batch ingestion).</td>
+    </tr>
+    <tr>
+      <td>Session Identifiers</td>
+      <td>2024 Abu Dhabi Race</td>
+      <td>2024 Abu Dhabi Grand Prix (Race)</td>
+      <td>0</td>
+      <td>PASS</td>
+      <td>Session identifiers match metadata collection parameters.</td>
+    </tr>
+    <tr>
+      <td>Driver Retirement (PER)</td>
+      <td>PER has exactly 1 lap (3,932.8m coverage, ending post-crash)</td>
+      <td>PER has Lap 1 recorded with NaT LapTime (TrackStatus 12, retired)</td>
+      <td>0</td>
+      <td>PASS</td>
+      <td>Both datasets independently confirm Sergio Perez retired on Lap 1.</td>
+    </tr>
+  </tbody>
+</table>
+    </div>
+    <h3 style="margin-top: 20px; font-size: 1.1rem; color: #fff;">Data Quality Warnings & Preprocessing Audit Log</h3>
+    <div class="table-container">
+        <table class="dataframe styled-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Warning ID</th>
+      <th>Category</th>
+      <th>Severity</th>
+      <th>Affected Entity</th>
+      <th>Observation</th>
+      <th>Root Cause Hypothesis</th>
+      <th>Recommended Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>WARN_THROTTLE_OVERTRAVEL</td>
+      <td>Sensor Calibration</td>
+      <td>REVIEW REQUIRED</td>
+      <td>Telemetry.Throttle</td>
+      <td>32 samples (0.044%) exceed 100% (max 104.0%).</td>
+      <td>ECU pedal travel potentiometers frequently register 100-104% overtravel during full throttle application.</td>
+      <td>Document during Phase 3; in Phase 4 preprocessing, decide whether to clip to 100.0% or preserve raw signal.</td>
+    </tr>
+    <tr>
+      <td>WARN_RPM_ZERO_ENGINE_OFF</td>
+      <td>Vehicle Operational State</td>
+      <td>REVIEW REQUIRED</td>
+      <td>Telemetry.RPM</td>
+      <td>33 observations with RPM == 0.</td>
+      <td>Sergio Perez (PER) sustained a crash on Lap 1; the power unit shut down while the vehicle coasted down in 7th gear.</td>
+      <td>Retain unaltered in profiling. In Phase 4, flag DNF telemetry segments so they do not skew flying lap models.</td>
+    </tr>
+    <tr>
+      <td>WARN_DISTANCE_GRID_NEGATIVE</td>
+      <td>Spatial Measurement</td>
+      <td>REVIEW REQUIRED</td>
+      <td>Telemetry.Distance</td>
+      <td>44 samples with Distance < 0m (min: -0.0899m) exclusively on Lap 1.</td>
+      <td>Cars starting behind the start-finish line timing loop on the grid begin with sub-zero relative distance.</td>
+      <td>Preserve in Phase 3 profiling. In Phase 4 preprocessing, shift grid offsets or zero-align at the timing line.</td>
+    </tr>
+    <tr>
+      <td>WARN_DISTANCE_NON_MONOTONIC</td>
+      <td>Spatial Alignment</td>
+      <td>REVIEW REQUIRED</td>
+      <td>Telemetry.Distance</td>
+      <td>22 laps exhibit negative distance increments.</td>
+      <td>Lap 1 starts involve grid alignment resets where distance resets from 0.001m to 0.0m. COL Lap 4 and PIA Lap 5 exhibit sub-millimeter floating point jitter.</td>
+      <td>In Phase 4 preprocessing, enforce strictly monotonic distance filtering and remove sub-millimeter jitter steps.</td>
+    </tr>
+    <tr>
+      <td>WARN_NOR_RACE_LEADER_MISSING_AHEAD</td>
+      <td>Structural Missingness (MNAR)</td>
+      <td>INFO / EXPECTED</td>
+      <td>Telemetry.DistanceToDriverAhead</td>
+      <td>All 2957 missing DistanceToDriverAhead values in the entire dataset belong strictly to Lando Norris (NOR).</td>
+      <td>NOR led the Abu Dhabi Grand Prix during laps 2 through 5. The race leader by definition has no car ahead.</td>
+      <td>DO NOT impute with 0 or mean. Preserve as null or encode with an explicit boolean flag 'IsLeading' in Phase 4.</td>
+    </tr>
+  </tbody>
+</table>
+    </div>
+</section>
+
+<!-- SECTION 8: VISUAL PROFILING -->
+<section id="visualizations">
+    <h2>8. Visual Profiling Gallery</h2>
+    <p>14 high-resolution profiling charts rendered directly from the raw telemetry dataset.</p>
+    <div class="charts-grid">
+        <div class="chart-card">
+            <img src="charts/speed_distribution.png" alt="Speed Distribution">
+            <p class="caption">Figure 1: Vehicle Speed Distribution</p>
+        </div>
+        <div class="chart-card">
+            <img src="charts/throttle_distribution.png" alt="Throttle Distribution">
+            <p class="caption">Figure 2: Throttle Input Distribution</p>
+        </div>
+        <div class="chart-card">
+            <img src="charts/brake_usage_distribution.png" alt="Brake Usage Distribution">
+            <p class="caption">Figure 3: Brake Application Distribution</p>
+        </div>
+        <div class="chart-card">
+            <img src="charts/rpm_distribution.png" alt="RPM Distribution">
+            <p class="caption">Figure 4: Engine RPM Distribution</p>
+        </div>
+        <div class="chart-card">
+            <img src="charts/avg_speed_by_driver.png" alt="Average Speed by Driver">
+            <p class="caption">Figure 5: Average Speed by Driver</p>
+        </div>
+        <div class="chart-card">
+            <img src="charts/sample_count_by_driver.png" alt="Sample Count by Driver">
+            <p class="caption">Figure 6: Telemetry Samples by Driver</p>
+        </div>
+        <div class="chart-card">
+            <img src="charts/missing_values_by_column.png" alt="Missing Values">
+            <p class="caption">Figure 7: Missing Values by Column</p>
+        </div>
+        <div class="chart-card">
+            <img src="charts/speed_vs_distance_selected_laps.png" alt="Speed vs Distance">
+            <p class="caption">Figure 8: Speed Profile along Track (Lap 3 Comparison)</p>
+        </div>
+        <div class="chart-card">
+            <img src="charts/gear_distribution.png" alt="Gear Distribution">
+            <p class="caption">Figure 9: Transmission Gear Distribution</p>
+        </div>
+        <div class="chart-card">
+            <img src="charts/lap_avg_speed.png" alt="Lap Average Speed">
+            <p class="caption">Figure 10: Field Average Speed Progression</p>
+        </div>
+        <div class="chart-card">
+            <img src="charts/braking_percentage_by_driver.png" alt="Braking Percentage">
+            <p class="caption">Figure 11: Braking Percentage by Driver</p>
+        </div>
+        <div class="chart-card">
+            <img src="charts/avg_throttle_by_driver.png" alt="Average Throttle">
+            <p class="caption">Figure 12: Average Throttle Input by Driver</p>
+        </div>
+        <div class="chart-card">
+            <img src="charts/sample_counts_by_lap.png" alt="Sample Counts by Lap">
+            <p class="caption">Figure 13: Sample Counts by Race Lap</p>
+        </div>
+        <div class="chart-card">
+            <img src="charts/telemetry_correlation_heatmap.png" alt="Correlation Heatmap">
+            <p class="caption">Figure 14: Telemetry Channel Correlation Heatmap</p>
+        </div>
+    </div>
+</section>
+
+<!-- SECTION 9: RECOMMENDATIONS FOR PHASE 4 -->
+<section id="recommendations">
+    <h2>9. Recommended Preprocessing Actions (Phase 4 Roadmap)</h2>
+    <ul>
+        <li><strong>Structural Missingness Handling:</strong> Preserve <code>DistanceToDriverAhead</code> nulls for race leaders (e.g. NOR); generate an explicit indicator feature <code>IsLeadingRace = True/False</code> rather than zero-filling.</li>
+        <li><strong>Spatial Distance Normalization:</strong> Zero-align Lap 1 starting grid offsets (-0.0899m to 0.0m) at the start-finish line. Remove sub-millimeter negative jitter steps in distance curves.</li>
+        <li><strong>Throttle Signal Clipping:</strong> Standardize throttle potentiometer overtravel values ([100.1%, 104.0%]) to 100.0% max for uniform ML modeling.</li>
+        <li><strong>Retirement / DNF Segmentation:</strong> Flag incomplete retirement telemetry (PER Lap 1) with <code>IsCompleteLap = False</code> and separate out-of-competition samples from flying lap training datasets.</li>
+        <li><strong>Interpolation & Track Resampling:</strong> Resample raw irregular telemetry intervals onto uniform 1.0-meter track distance grids to enable direct driver-to-driver delta comparisons.</li>
+    </ul>
+</section>
+
+<footer>
+    <p>F1 Telemetry Intelligence &bull; Phase 3 Data Profiling Module &bull; Executed with zero raw data modification.</p>
+</footer>
+
+</div>
+</body>
+</html>

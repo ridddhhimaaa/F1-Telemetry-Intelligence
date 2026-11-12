@@ -1,0 +1,5 @@
+Strategy,Implementation,Pros,Cons,Verdict
+Random Row Split (Naive),train_test_split(test_size=0.2),Simple to implement,Massive data leakage due to temporal autocorrelation; completely invalidates evaluation,STRICTLY FORBIDDEN
+Group-by-Lap Split (GroupKFold),"GroupKFold(n_splits=5) grouped by (Driver, LapNumber)",Guarantees entire laps remain intact; prevents intra-lap leakage; tests generalization across laps,Requires multiple complete laps per driver,RECOMMENDED for intra-race model validation
+Driver-Held-Out Split (GroupKFold by Driver),"GroupKFold grouped by Driver (e.g. train on 15 drivers, test on 5)",Evaluates driver-independent vehicle physics and trajectory prediction,Does not allow model to learn individual driver styles,RECOMMENDED for universal physics models
+Sequential Time-Series Split,"Train on Laps 1-4, test on Lap 5",Strictly simulates real-time deployment during a Grand Prix,Sensitive to early-race non-representative regimes (Laps 1-3 were VSC),"RECOMMENDED for full-race 58-lap datasets (e.g. train Laps 4-45, test Laps 46-58)"

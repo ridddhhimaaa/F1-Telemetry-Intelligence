@@ -1,0 +1,31 @@
+Signal,Metric,Value,Unit,Category
+Speed,Mean Speed (km/h),188.82,km/h,Speed
+Speed,Median Speed (km/h),188.0,km/h,Speed
+Speed,Max Speed (km/h),337.0,km/h,Speed
+Speed,Idle / Low Speed (< 100 km/h) Count,9389.0,samples,Speed
+Speed,Idle / Low Speed (< 100 km/h) %,12.95,%,Speed
+Speed,Medium Speed (100 - 250 km/h) %,61.62,%,Speed
+Speed,High Speed (> 250 km/h) %,25.42,%,Speed
+Throttle,Mean Throttle (%),58.88,%,Throttle
+Throttle,Zero Throttle (Coasting/Braking) %,21.39,%,Throttle
+Throttle,Throttle Active (> 0) %,78.61,%,Throttle
+Throttle,Partial Throttle (0 < T < 99) %,37.51,%,Throttle
+Throttle,Wide Open Throttle (>= 99) %,41.1,%,Throttle
+Throttle,Overtravel Throttle (> 100) Count,32.0,samples,Throttle
+Throttle,Overtravel Throttle (> 100) %,0.044,%,Throttle
+Brake,Braking Active Samples,14089.0,samples,Brake
+Brake,Braking Active %,19.44,%,Brake
+Brake,Braking Inactive %,80.56,%,Brake
+RPM,Mean RPM,9882.49,RPM,RPM
+RPM,Max RPM,13090.0,RPM,RPM
+RPM,Zero RPM Observations,33.0,samples,RPM
+RPM,Engine Operating (>= 6000 RPM) %,96.77,%,RPM
+RPM,Peak Operating (>= 11000 RPM) %,29.22,%,RPM
+Gear,Gear 1 Time %,3.25,%,Gear
+Gear,Gear 2 Time %,8.96,%,Gear
+Gear,Gear 3 Time %,19.14,%,Gear
+Gear,Gear 4 Time %,16.37,%,Gear
+Gear,Gear 5 Time %,11.77,%,Gear
+Gear,Gear 6 Time %,14.89,%,Gear
+Gear,Gear 7 Time %,14.97,%,Gear
+Gear,Gear 8 Time %,10.65,%,Gear

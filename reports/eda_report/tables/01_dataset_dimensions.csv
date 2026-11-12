@@ -1,0 +1,4 @@
+Dataset Entity,Rows,Columns,Memory (MB),Unique Drivers,Unique Laps,Primary Granularity
+Processed Telemetry,72476,37,39.68,20,5,Time-domain intra-lap samples (~10 Hz)
+Processed Race Laps,1035,48,0.7,20,58,Lap-level summary records (58 laps total)
+Resampled Spatial Telemetry,495849,18,115.76,19,5,Space-domain synchronized slices (1.0m grid)

@@ -1,0 +1,9 @@
+Gear,Samples,Mean_Speed_kmh,Mean_RPM,Mean_Ratio_RPM_per_kmh,Std_Ratio,Min_Ratio,Max_Ratio,PhysicalStatus
+1,169,23.78,6329.9,374.97,712.8,83.33,5672.71,Discrete mechanical gear ratio
+2,1370,79.69,6911.1,87.04,5.96,70.1,110.49,Discrete mechanical gear ratio
+3,4092,120.15,8859.1,73.96,4.01,57.94,88.95,Discrete mechanical gear ratio
+4,4474,159.31,9891.2,62.33,3.7,50.37,89.48,Discrete mechanical gear ratio
+5,2851,204.48,10829.8,53.34,4.35,44.39,84.99,Discrete mechanical gear ratio
+6,4456,237.99,11027.6,46.69,4.18,38.61,87.18,Discrete mechanical gear ratio
+7,5428,264.74,10801.6,41.13,3.94,34.52,85.39,Discrete mechanical gear ratio
+8,3531,298.34,10761.9,36.36,3.48,31.64,79.01,Discrete mechanical gear ratio

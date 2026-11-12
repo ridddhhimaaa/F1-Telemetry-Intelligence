@@ -1,0 +1,6 @@
+table_name,row_count,expected_count
+drivers,21,19
+laps,96,96
+sectors,288,288
+corners,1469,1469
+telemetry_features,72476,72476

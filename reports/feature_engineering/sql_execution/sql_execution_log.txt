@@ -1,0 +1,420 @@
+F1 Telemetry Intelligence - PostgreSQL Query Execution Log
+Dialect: postgresql
+Timestamp: 2026-11-12 14:52:42
+================================================================================
+
+
+================================================================================
+SCRIPT: 05_basic_analysis.sql
+================================================================================
+
+--- Query 1: -- ========================================================= ---
+Rows: 58 | Execution Time: 0.0514s
+  driver_id   lap_classification  completed_laps
+0       ALB  COMPLETE_FLYING_LAP               2
+1       ALO  COMPLETE_FLYING_LAP               2
+2       BOT  COMPLETE_FLYING_LAP               2
+3       COL  COMPLETE_FLYING_LAP               2
+4       DOO  COMPLETE_FLYING_LAP               2
+5       GAS  COMPLETE_FLYING_LAP               2
+6       HAM  COMPLETE_FLYING_LAP               2
+7       HUL  COMPLETE_FLYING_LAP               2
+8       LAW  COMPLETE_FLYING_LAP               2
+9       LEC  COMPLETE_FLYING_LAP               2
+... (48 more rows)
+
+
+--- Query 2: -- Query 2: Clean Flying Laps ranking by lap time (WHERE, OR ---
+Rows: 38 | Execution Time: 0.0028s
+  driver_id  lap_number  lap_time_s  speed_mean_kmh  speed_max_kmh  full_throttle_pct
+0       SAI           4      88.995          211.49          309.0              50.94
+1       NOR           4      89.010          210.62          306.0              51.08
+2       NOR           5      89.104          209.03          307.0              49.70
+3       MAG           4      89.202          212.64          337.0              54.43
+4       SAI           5      89.250          210.21          310.0              51.65
+5       LEC           4      89.273          211.51          335.0              54.43
+6       HUL           4      89.348          213.29          337.0              52.82
+7       GAS           4      89.406          210.81          326.0              52.10
+8       COL           5      89.411          212.08          313.0              49.49
+9       ALO           4      89.434          211.61          333.0              56.87
+... (28 more rows)
+
+
+--- Query 3: -- Query 3: Driver average flying lap pace with HAVING filte ---
+Rows: 19 | Execution Time: 0.0029s
+  driver_id  flying_laps_count  avg_lap_time_s  avg_speed_kmh  top_speed_kmh
+0       NOR                  2          89.057         209.83          307.0
+1       SAI                  2          89.123         210.85          310.0
+2       GAS                  2          89.509         210.32          326.0
+3       LEC                  2          89.513         210.83          335.0
+4       MAG                  2          89.621         210.71          337.0
+5       RUS                  2          89.642         210.36          332.0
+6       HUL                  2          89.658         211.33          337.0
+7       VER                  2          89.659         210.65          335.0
+8       HAM                  2          89.700         210.06          333.0
+9       ALO                  2          89.759         210.36          333.0
+... (9 more rows)
+
+
+--- Query 4: -- Query 4: Categorizing cornering speeds using CASE WHEN ---
+Rows: 36 | Execution Time: 0.0077s
+   corner_id turn_direction  avg_apex_speed_kmh  min_radius_m corner_severity_class
+0          1           LEFT              143.49          10.0   MEDIUM_SPEED_CORNER
+1          2           LEFT              221.30          29.9    HIGH_SPEED_SWEEPER
+2          2          RIGHT               99.81          27.4  SLOW_HAIRPIN_CHICANE
+3          3           LEFT              217.47          44.5    HIGH_SPEED_SWEEPER
+4          3          RIGHT              234.12          27.7    HIGH_SPEED_SWEEPER
+5          4           LEFT               97.53          10.0  SLOW_HAIRPIN_CHICANE
+6          4          RIGHT              228.63          36.2    HIGH_SPEED_SWEEPER
+7          5          RIGHT              270.67          10.0    HIGH_SPEED_SWEEPER
+8          5           LEFT               78.76          10.0  SLOW_HAIRPIN_CHICANE
+9          6          RIGHT               83.22          10.0  SLOW_HAIRPIN_CHICANE
+... (26 more rows)
+
+
+--- Query 5: -- Query 5: Telemetry dynamic regime distribution with NULL  ---
+Rows: 7 | Execution Time: 0.0241s
+          dynamics_regime  sample_count  share_percentage  avg_speed_kmh  avg_accel_mps2
+0      AERO_LIMITED_ACCEL         13006             49.32         258.84            3.96
+1          MEDIUM_BRAKING          5270             19.98         159.37           -7.91
+2  TRACTION_LIMITED_ACCEL          3836             14.55         141.53            7.78
+3  PARTIAL_THROTTLE_ACCEL          2399              9.10         144.80            1.82
+4           HEAVY_BRAKING          1531              5.81         208.85          -27.99
+5              TRANSITION           186              0.71         108.07           -0.60
+6                COASTING           143              0.54         104.76           -0.22
+
+
+================================================================================
+SCRIPT: 06_joins_and_aggregations.sql
+================================================================================
+
+--- Query 1: -- ========================================================= ---
+Rows: 38 | Execution Time: 0.0051s
+  driver_id       driver_name          team  lap_number  lap_time_s  speed_mean_kmh  speed_max_kmh  full_throttle_pct  braking_duration_s
+0       SAI      Carlos Sainz       Ferrari           4      88.995          211.49          309.0              50.94              15.500
+1       NOR      Lando Norris       McLaren           4      89.010          210.62          306.0              51.08              12.716
+2       NOR      Lando Norris       McLaren           5      89.104          209.03          307.0              49.70              12.961
+3       MAG   Kevin Magnussen  Haas F1 Team           4      89.202          212.64          337.0              54.43              13.853
+4       SAI      Carlos Sainz       Ferrari           5      89.250          210.21          310.0              51.65              15.947
+5       LEC   Charles Leclerc       Ferrari           4      89.273          211.51          335.0              54.43              18.528
+6       HUL   Nico Hulkenberg  Haas F1 Team           4      89.348          213.29          337.0              52.82              16.939
+7       GAS      Pierre Gasly        Alpine           4      89.406          210.81          326.0              52.10              12.939
+8       COL  Franco Colapinto      Williams           5      89.411          212.08          313.0              49.49              14.664
+9       ALO   Fernando Alonso  Aston Martin           4      89.434          211.61          333.0              56.87              17.214
+... (28 more rows)
+
+
+--- Query 2: -- Query 2: Team Performance Aggregation across all clean fl ---
+Rows: 10 | Execution Time: 0.0034s
+              team  active_drivers  total_flying_laps  team_avg_lap_time_s  team_best_lap_time_s  team_avg_speed_kmh  team_top_speed_kmh  team_avg_wot_pct
+0          Ferrari               2                  4               89.318                88.995              210.84               335.0              52.5
+1          McLaren               2                  4               95.301                89.010              198.67               316.0              46.5
+2     Haas F1 Team               2                  4               89.640                89.202              211.02               337.0              52.9
+3           Alpine               2                  4               89.918                89.406              208.74               329.0              54.2
+4         Williams               2                  4               96.247                89.411              197.29               336.0              42.7
+5     Aston Martin               2                  4               89.813                89.434              210.47               333.0              54.7
+6         Mercedes               2                  4               89.671                89.488              210.21               333.0              52.2
+7  Red Bull Racing               1                  2               89.659                89.504              210.65               335.0              51.9
+8               RB               2                  4               90.016                89.738              208.56               318.0              52.9
+9      Kick Sauber               2                  4               90.212                89.944              207.73               331.0              53.3
+
+
+--- Query 3: -- Query 3: Sector Breakdown JOIN with Driver Metadata ---
+Rows: 57 | Execution Time: 0.0058s
+   sector          team driver_id  avg_sector_duration_s  avg_speed_kmh  max_speed_kmh  avg_full_throttle_pct
+0       1      Mercedes       RUS                 17.878         240.76         293.00                   82.4
+1       1  Haas F1 Team       MAG                 17.890         239.14         294.00                   80.5
+2       1  Haas F1 Team       HUL                 17.912         238.72         291.41                   74.4
+3       1        Alpine       DOO                 17.941         237.20         289.00                   79.1
+4       1        Alpine       GAS                 17.948         239.11         289.00                   76.4
+5       1      Mercedes       HAM                 17.966         238.21         289.37                   69.7
+6       1            RB       TSU                 17.970         236.30         289.00                   75.7
+7       1       Ferrari       LEC                 17.993         238.61         291.37                   72.7
+8       1  Aston Martin       STR                 18.033         237.60         288.00                   69.0
+9       1   Kick Sauber       ZHO                 18.053         238.22         288.00                   74.8
+... (47 more rows)
+
+
+--- Query 4: -- Query 4: Telemetry and Corner Kinematics JOIN for Minimum ---
+Rows: 35 | Execution Time: 0.0024s
+   corner_id turn_direction  avg_entry_speed_kmh  avg_apex_speed_kmh  avg_exit_speed_kmh  avg_speed_loss_kmh  avg_exit_accel_kmh  min_radius_m
+0          1           LEFT               192.67              150.09              146.37               42.58                1.31          10.0
+1          2           LEFT               231.18              234.75              239.04                0.07                4.37          29.9
+2          2          RIGHT                88.30               99.81              113.04                0.00               13.24          27.4
+3          3          RIGHT               256.81              257.59              259.63                0.56                2.32          27.7
+4          3           LEFT               225.75              232.80              236.42                0.00                3.62          46.5
+5          4           LEFT               183.10               99.50              130.59               83.59               31.54          13.6
+6          4          RIGHT               256.76              257.02              258.61                0.40                2.05          38.4
+7          5          RIGHT               247.00              247.00              250.00                0.00                3.00          62.0
+8          5           LEFT               161.40               81.37               97.60               80.27               17.01          10.0
+9          6          RIGHT                83.16               96.12              111.57                0.00               15.46          10.0
+... (25 more rows)
+
+
+================================================================================
+SCRIPT: 07_cte_analysis.sql
+================================================================================
+
+--- Query 1: -- ========================================================= ---
+Rows: 19 | Execution Time: 0.0031s
+  driver_id             team  best_lap_time_s  delta_to_benchmark_s  deficit_pct  top_speed_kmh  avg_wot_pct
+0       SAI          Ferrari           88.995                 0.000         0.00          310.0         51.3
+1       NOR          McLaren           89.010                 0.015         0.02          307.0         50.4
+2       MAG     Haas F1 Team           89.202                 0.207         0.23          337.0         53.4
+3       LEC          Ferrari           89.273                 0.278         0.31          335.0         53.8
+4       HUL     Haas F1 Team           89.348                 0.353         0.40          337.0         52.4
+5       GAS           Alpine           89.406                 0.411         0.46          326.0         53.7
+6       COL         Williams           89.411                 0.416         0.47          313.0         39.4
+7       ALO     Aston Martin           89.434                 0.439         0.49          333.0         55.7
+8       RUS         Mercedes           89.488                 0.493         0.55          332.0         53.1
+9       VER  Red Bull Racing           89.504                 0.509         0.57          335.0         51.9
+... (9 more rows)
+
+
+--- Query 2: -- Query 2: Sector-by-Sector Dominance Analysis using CTEs ---
+Rows: 3 | Execution Time: 0.0037s
+   sector driver_id  lap_number  sector_duration_s  best_sector_time_s  gap_to_best_s
+0       1       MAG           4             17.738              17.738            0.0
+1       2       LEC           5             37.256              37.256            0.0
+2       3       NOR           5             32.366              32.366            0.0
+
+
+--- Query 3: -- Query 3: Multi-CTE Braking Intensity & Deceleration Energ ---
+Rows: 19 | Execution Time: 0.0025s
+  driver_id          team  avg_braking_time_s  avg_peak_decel_g  max_decel_g  decel_g_vs_fleet
+0       LEC       Ferrari               18.56              5.72         6.75              1.09
+1       STR  Aston Martin               14.26              5.48         5.62              0.85
+2       ALO  Aston Martin               17.50              5.31         6.27              0.68
+3       COL      Williams               19.73              5.21         5.85              0.58
+4       DOO        Alpine               16.61              4.99         5.86              0.36
+5       HUL  Haas F1 Team               16.19              4.98         5.60              0.35
+6       GAS        Alpine               13.29              4.89         4.93              0.26
+7       RUS      Mercedes               15.85              4.77         5.02              0.14
+8       MAG  Haas F1 Team               15.63              4.74         4.90              0.11
+9       BOT   Kick Sauber               16.67              4.64         5.46              0.01
+... (9 more rows)
+
+
+================================================================================
+SCRIPT: 08_window_functions.sql
+================================================================================
+
+--- Query 1: -- ========================================================= ---
+Rows: 38 | Execution Time: 0.0042s
+  driver_id          team  lap_number  lap_time_s   lap_classification  session_lap_rank  team_lap_rank  driver_personal_best_order
+0       SAI       Ferrari           4      88.995  COMPLETE_FLYING_LAP                 1              1                           1
+1       NOR       McLaren           4      89.010  COMPLETE_FLYING_LAP                 2              1                           1
+2       NOR       McLaren           5      89.104  COMPLETE_FLYING_LAP                 3              2                           2
+3       MAG  Haas F1 Team           4      89.202  COMPLETE_FLYING_LAP                 4              1                           1
+4       SAI       Ferrari           5      89.250  COMPLETE_FLYING_LAP                 5              2                           2
+5       LEC       Ferrari           4      89.273  COMPLETE_FLYING_LAP                 6              3                           1
+6       HUL  Haas F1 Team           4      89.348  COMPLETE_FLYING_LAP                 7              2                           1
+7       GAS        Alpine           4      89.406  COMPLETE_FLYING_LAP                 8              1                           1
+8       COL      Williams           5      89.411  COMPLETE_FLYING_LAP                 9              1                           1
+9       ALO  Aston Martin           4      89.434  COMPLETE_FLYING_LAP                10              1                           1
+... (28 more rows)
+
+
+--- Query 2: -- --------------------------------------------------------- ---
+Rows: 50 | Execution Time: 0.0213s
+  driver_id  lap_number  telemetry_id  distance_m   speed_kmh  prev_speed_kmh  next_speed_kmh  delta_v_kmh  accel_longitudinal_mps2  throttle_pct  is_braking
+0       VER           4         69469    0.904998  222.222222             NaN      223.000000          NaN                   8.0445         100.0           0
+1       VER           4         69470    2.656667  223.000000      222.222222      225.499999         0.78                   6.8805         100.0           0
+2       VER           4         69471   10.514019  225.499999      223.000000      227.000000         2.50                   6.0913         100.0           0
+3       VER           4         69472   15.267778  227.000000      225.499999      232.000000         1.50                   5.3968         100.0           0
+4       VER           4         69473   30.734444  232.000000      227.000000      232.111110         5.00                   5.8267         100.0           0
+5       VER           4         69474   31.061680  232.111110      232.000000      236.088889         0.11                   6.0934         100.0           0
+6       VER           4         69475   42.922108  236.088889      232.111110      240.000000         3.98                   6.3778         100.0           0
+7       VER           4         69476   54.734444  240.000000      236.088889      241.860000         3.91                   5.6570         100.0           0
+8       VER           4         69477   63.079327  241.860000      240.000000      243.000000         1.86                   4.5295         100.0           0
+9       VER           4         69478   68.234444  243.000000      241.860000      247.371429         1.14                   4.4539         100.0           0
+... (40 more rows)
+
+
+--- Query 3: -- --------------------------------------------------------- ---
+Rows: 50 | Execution Time: 0.0163s
+  driver_id  lap_number  telemetry_id  distance_m  raw_speed_kmh  moving_avg_speed_kmh  raw_accel_long  moving_avg_accel_long
+0       VER           4         69469    0.904998     222.222222                223.57          8.0445                  7.005
+1       VER           4         69470    2.656667     223.000000                224.43          6.8805                  6.603
+2       VER           4         69471   10.514019     225.499999                225.94          6.0913                  6.448
+3       VER           4         69472   15.267778     227.000000                227.92          5.3968                  6.058
+4       VER           4         69473   30.734444     232.000000                230.54          5.8267                  5.957
+5       VER           4         69474   31.061680     232.111110                233.44          6.0934                  5.870
+6       VER           4         69475   42.922108     236.088889                236.41          6.3778                  5.697
+7       VER           4         69476   54.734444     240.000000                238.61          5.6570                  5.422
+8       VER           4         69477   63.079327     241.860000                241.66          4.5295                  5.345
+9       VER           4         69478   68.234444     243.000000                244.25          4.4539                  5.163
+... (40 more rows)
+
+
+--- Query 4: -- --------------------------------------------------------- ---
+Rows: 50 | Execution Time: 0.0018s
+  driver_id  lap_number  distance_m   speed_kmh  running_max_speed_kmh  running_min_speed_kmh  drs
+0       HAM           4    0.147768  220.600000             220.600000                  220.6    0
+1       HAM           4    1.142222  221.000000             221.000000                  220.6    0
+2       HAM           4   14.050898  226.828571             226.828571                  220.6    0
+3       HAM           4   18.953333  229.000000             229.000000                  220.6    0
+4       HAM           4   25.735442  231.340000             231.340000                  220.6    0
+5       HAM           4   40.321553  236.290000             236.290000                  220.6    0
+6       HAM           4   45.397778  238.000000             238.000000                  220.6    0
+7       HAM           4   57.818183  241.083332             241.083332                  220.6    0
+8       HAM           4   61.531111  242.000000             242.000000                  220.6    0
+9       HAM           4   67.289081  243.062499             243.062499                  220.6    0
+... (40 more rows)
+
+
+--- Query 5: -- --------------------------------------------------------- ---
+Rows: 590 | Execution Time: 0.0049s
+   corner_id driver_id  apex_speed_kmh  apex_speed_quartile  apex_speed_percentile
+0          1       RUS          170.00                    1                  1.000
+1          1       GAS          166.47                    1                  0.974
+2          1       ZHO          166.00                    1                  0.947
+3          1       HAM          163.35                    1                  0.921
+4          1       LEC          163.00                    1                  0.895
+5          1       NOR          161.96                    1                  0.868
+6          1       STR          161.45                    1                  0.842
+7          1       NOR          161.00                    1                  0.816
+8          1       HUL          160.90                    1                  0.789
+9          1       VER          160.00                    1                  0.763
+... (580 more rows)
+
+
+================================================================================
+SCRIPT: 09_advanced_telemetry_analysis.sql
+================================================================================
+
+--- Query 1: -- ========================================================= ---
+Rows: 19 | Execution Time: 0.0520s
+  driver_id             team  lap_number  trap_distance_m  max_speed_kmh  gear  drs  throttle_pct
+0       HUL     Haas F1 Team           4           2401.5          337.0     8    1    100.000000
+1       MAG     Haas F1 Team           4           2399.0          337.0     8    1     99.000000
+2       ALB         Williams           4           2425.1          336.0     8    1    100.000000
+3       LEC          Ferrari           4           2406.2          335.0     8    1     99.000000
+4       VER  Red Bull Racing           5           2405.8          335.0     8    1     46.994428
+5       ALO     Aston Martin           4           2426.3          333.0     8    1     98.000000
+6       HAM         Mercedes           5           2376.0          333.0     8    1    100.000000
+7       RUS         Mercedes           5           2427.2          332.0     8    1    100.000000
+8       ZHO      Kick Sauber           4           2288.2          331.0     8    0     63.000000
+9       DOO           Alpine           5           2363.1          329.0     8    1    100.000000
+... (9 more rows)
+
+
+--- Query 2: -- --------------------------------------------------------- ---
+Rows: 85 | Execution Time: 0.0050s
+   corner_id driver_id  driver_apex_speed_kmh  benchmark_apex_speed_kmh  apex_delta_to_benchmark  apex_delta_to_average  driver_min_speed_loss
+0          1       HAM                 163.35                     170.0                    -6.65                  13.26                  45.00
+1          1       LEC                 163.00                     170.0                    -7.00                  12.91                  39.76
+2          1       NOR                 161.96                     170.0                    -8.04                  11.87                   7.07
+3          1       VER                 160.00                     170.0                   -10.00                   9.91                  38.00
+4          1       ALO                 153.40                     170.0                   -16.60                   3.31                  37.60
+5          2       HAM                 243.00                     245.0                    -2.00                  15.36                   0.00
+6          2       ALO                 242.92                     245.0                    -2.08                  15.28                   0.00
+7          2       LEC                 238.00                     245.0                    -7.00                  10.36                   0.00
+8          2       VER                 237.90                     245.0                    -7.10                  10.26                   0.00
+9          2       NOR                 234.00                     245.0                   -11.00                   6.36                   0.00
+... (75 more rows)
+
+
+--- Query 3: -- --------------------------------------------------------- ---
+Rows: 57 | Execution Time: 0.0046s
+   sector driver_id          team  personal_best_sector_time  benchmark_sector_time  deficit_seconds  avg_speed_kmh  max_speed_kmh  avg_wot_pct
+0       1       MAG  Haas F1 Team                     17.738                 17.738            0.000         239.14         294.00        80.45
+1       1       RUS      Mercedes                     17.800                 17.738            0.062         240.76         293.00        82.35
+2       1       HAM      Mercedes                     17.821                 17.738            0.083         238.21         289.37        69.70
+3       1       HUL  Haas F1 Team                     17.866                 17.738            0.128         238.72         291.41        74.40
+4       1       TSU            RB                     17.868                 17.738            0.130         236.30         289.00        75.65
+5       1       DOO        Alpine                     17.869                 17.738            0.131         237.20         289.00        79.10
+6       1       LEC       Ferrari                     17.879                 17.738            0.141         238.61         291.37        72.70
+7       1       GAS        Alpine                     17.911                 17.738            0.173         239.11         289.00        76.35
+8       1       STR  Aston Martin                     17.998                 17.738            0.260         237.60         288.00        68.95
+9       1       ALO  Aston Martin                     18.045                 17.738            0.307         237.58         287.00        78.40
+... (47 more rows)
+
+
+--- Query 4: -- --------------------------------------------------------- ---
+Rows: 40 | Execution Time: 0.0083s
+   distance_slice_m  ver_speed_kmh  ham_speed_kmh  delta_speed_kmh  ver_throttle_pct  ham_throttle_pct  ver_accel_long  ham_accel_long
+0               0.0         235.08         236.15            -1.07             100.0             100.0            5.79            5.88
+1             100.0         260.45         261.47            -1.01             100.0             100.0            3.26            4.01
+2             200.0         268.99         275.82            -6.83              80.5              81.1           -1.46           -1.98
+3             300.0         180.74         182.82            -2.08               3.4               0.9          -13.96          -16.09
+4             400.0         170.85         163.65             7.21              87.9              81.9            7.24            6.15
+5             500.0         222.22         218.18             4.04              98.3             100.0            6.14            6.59
+6             600.0         241.51         242.51            -1.00              92.5              93.8            2.81            2.29
+7             700.0         255.50         257.02            -1.52              86.4              95.0            1.02            2.33
+8             800.0         255.89         258.58            -2.69              96.7              92.9            0.86            0.19
+9             900.0         264.74         266.33            -1.59             100.0             100.0            2.75            2.26
+... (30 more rows)
+
+
+================================================================================
+SCRIPT: 10_data_quality_checks.sql
+================================================================================
+
+--- Query 1: -- ========================================================= ---
+Rows: 1 | Execution Time: 0.0551s
+   total_telemetry_rows  null_driver_id  null_lap_number  null_distance  null_speed_kmh  null_throttle_pct  null_is_braking  null_gear  null_accel_long  null_curvature
+0                 72476               0                0              0               0                  0                0          0                0               0
+
+
+--- Query 2: -- --------------------------------------------------------- ---
+Rows: 1 | Execution Time: 0.0469s
+   total_violations  negative_speed_count  excessive_speed_count  invalid_throttle_count  invalid_brake_count  extreme_g_count
+0             72476                     0                      0                       0                    0                6
+
+
+--- Query 3: -- --------------------------------------------------------- ---
+Rows: 8 | Execution Time: 0.0247s
+   gear  occurrence_count  pct_of_total
+0     1              2353          3.25
+1     2              6495          8.96
+2     3             13869         19.14
+3     4             11866         16.37
+4     5              8533         11.77
+5     6             10793         14.89
+6     7             10850         14.97
+7     8              7717         10.65
+
+
+--- Query 4: -- --------------------------------------------------------- ---
+Rows: 5 | Execution Time: 0.0066s
+           table_name  row_count  expected_count
+0             drivers         21              19
+1                laps         96              96
+2             sectors        288             288
+3             corners       1469            1469
+4  telemetry_features      72476           72476
+
+
+--- Query 5: -- --------------------------------------------------------- ---
+Rows: 1 | Execution Time: 0.0018s
+   orphan_laps_driver
+0                   0
+
+
+--- Query 6: -- B. Sectors without matching Lap ---
+Rows: 1 | Execution Time: 0.0014s
+   orphan_sectors_lap
+0                   0
+
+
+--- Query 7: -- C. Corners without matching Lap ---
+Rows: 1 | Execution Time: 0.0013s
+   orphan_corners_lap
+0                   0
+
+
+--- Query 8: -- D. Telemetry rows without matching Lap ---
+Rows: 1 | Execution Time: 0.0505s
+   orphan_telemetry_lap
+0                     0
+
+
+--- Query 9: -- --------------------------------------------------------- ---
+Rows: 4 | Execution Time: 0.0017s
+    lap_classification  lap_count  unique_drivers  min_lap_time  avg_lap_time  max_lap_time
+0  COMPLETE_FLYING_LAP         38              19        88.995        91.049       115.146
+1     VSC_AFFECTED_LAP         38              19        94.821       108.035       130.710
+2            START_LAP         19              19        91.142        98.301       103.757
+3       DNF_OR_RETIRED          1               1        91.412        91.412        91.412
+

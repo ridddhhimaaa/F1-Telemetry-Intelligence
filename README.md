@@ -227,14 +227,15 @@ F1-Telemetry-Intelligence/
 | Historical data ingestion | Completed for one experiment | `src/ingestion/collect_race_data.py` |
 | CSV/Parquet storage | Completed for the experiment | Generated files under `data/raw/` |
 | Metadata generation | Completed for the experiment | `data/metadata/2024_abu_dhabi_metadata.json` |
-| Data profiling | In progress | `src/preprocessing/profile_telemetry.py` |
-| Data preprocessing | Not started | No cleaning or feature pipeline is implemented |
-| Exploratory analytics | In progress | Inspection and audit scripts exist; analysis module is empty |
-| Spark integration | Planned | No Spark source or configuration found |
-| Kafka integration | Planned | No producer, consumer, or topic configuration found |
-| Machine learning | Planned | No model or evaluation pipeline found |
-| Dashboard | Planned | Dashboard directory is currently empty |
-| Automated tests | In progress | Validation script exists; no test runner configuration or test suite found |
+| Data profiling | Completed (Phase 3) | `src/preprocessing/profile_telemetry.py`, `docs/data_dictionary.md`, `reports/data_profiling_report/` |
+| Data preprocessing | Completed (Phase 4) | `src/preprocessing/preprocess_pipeline.py`, `data/processed/abu_dhabi_2024/`, `reports/preprocessing_report/` |
+| Exploratory analytics | Upcoming (Phase 5) | Inspection and audit scripts exist; analysis module is next |
+| Feature engineering | Upcoming (Phase 6) | Planned |
+| Spark integration | Planned (Phase 7) | No Spark source or configuration found |
+| Kafka integration | Planned (Phase 8) | No producer, consumer, or topic configuration found |
+| Machine learning | Planned (Phase 9) | No model or evaluation pipeline found |
+| Dashboard | Planned (Phase 10) | Dashboard directory is currently empty |
+| Automated tests | Completed | `tests/test_profile_telemetry.py`, `tests/test_preprocessing_pipeline.py`, full suite (40 tests) |
 
 ### Verified experiment snapshot
 

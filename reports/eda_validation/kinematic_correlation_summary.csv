@@ -1,0 +1,4 @@
+Relationship,Pooled_Pearson_r,IntraLap_Mean_r,IntraLap_Std_r,IntraLap_Median_r,IntraLap_95CI,PhysicalExplanation
+Speed vs Throttle,0.58,0.5741,0.0431,0.5664,"[0.5604, 0.5878]",Coupled in corner acceleration; decoupled at terminal drag limit & braking
+Speed vs Gear,0.936,0.9362,0.0207,0.9369,"[0.9296, 0.9428]",Monotonically constrained by 8-speed transmission ratios
+Speed vs RPM,0.785,0.7785,0.0306,0.7804,"[0.7688, 0.7883]",Sawtooth profile resets across gear upshifts; highly correlated within gear

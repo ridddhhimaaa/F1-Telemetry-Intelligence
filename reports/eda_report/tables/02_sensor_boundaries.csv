@@ -1,0 +1,7 @@
+Channel,Units,ExpectedRange,ActualMin,ActualMax,LowBreaches,HighBreaches,AuditStatus,TechnicalInterpretation
+Speed,km/h,"[0.0, 360.0]",0.0,337.0,0,0,PASS,Within nominal bounds
+Throttle,% (Raw),"[0.0, 100.0]",0.0,104.0,0,32,FLAGGED,32 mechanical overtravel readings up to 104.0%
+Throttle_Clipped,% (Clipped),"[0.0, 100.0]",0.0,100.0,0,0,PASS,Within nominal bounds
+RPM,rev/min,"[0.0, 15000.0]",0.0,13090.0,0,0,PASS,33 zero RPM samples belong strictly to PER collision retirement
+nGear,gear number,"[1.0, 8.0]",1.0,8.0,0,0,PASS,Within nominal bounds
+Distance_Corrected,metres,"[0.0, 5300.0]",0.0,5299.73,0,0,PASS,Within nominal bounds

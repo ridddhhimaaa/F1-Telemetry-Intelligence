@@ -1,0 +1,7 @@
+Dataset,Check Type,Columns Evaluated,Duplicate Count,Duplicate Percentage (%),Status,Description
+Telemetry,Exact Row Duplicates,All columns,0,0.0,PASS,Identical rows across all columns. Expected: 0.
+Race Laps,Exact Row Duplicates,All columns,0,0.0,PASS,Identical rows across all columns. Expected: 0.
+Telemetry,Repeated Time within Driver & Lap,"Driver, LapNumber, Time",0,0.0,PASS,Multiple telemetry observations sharing exact identical lap timestamp.
+Telemetry,Repeated SessionTime within Driver & Lap,"Driver, LapNumber, SessionTime",0,0.0,PASS,Multiple telemetry observations sharing exact identical session timestamp.
+Telemetry,Repeated Distance within Driver & Lap,"Driver, LapNumber, Distance",64,0.0883,INFO,Observations where distance delta is zero. Legitimate when car is stationary or sensor precision limits.
+Race Laps,Duplicate Driver-Lap Records,"Driver, LapNumber",0,0.0,PASS,More than one race lap record per driver and lap number.

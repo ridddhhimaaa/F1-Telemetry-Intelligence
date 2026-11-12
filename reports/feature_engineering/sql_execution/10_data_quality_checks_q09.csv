@@ -1,0 +1,5 @@
+lap_classification,lap_count,unique_drivers,min_lap_time,avg_lap_time,max_lap_time
+COMPLETE_FLYING_LAP,38,19,88.995,91.049,115.146
+VSC_AFFECTED_LAP,38,19,94.821,108.035,130.71
+START_LAP,19,19,91.142,98.301,103.757
+DNF_OR_RETIRED,1,1,91.412,91.412,91.412

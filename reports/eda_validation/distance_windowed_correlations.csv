@@ -1,0 +1,22 @@
+Start_m,End_m,Midpoint_m,r_Speed_Throttle,r_Speed_Gear,Mean_Speed_kmh,Mean_Throttle_pct,Throttle_Variance,Braking_Fraction,DynamicRegime,Samples
+0.0,250.0,125.0,0.9552,0.9803,204.0,80.37,1270.99,0.09,Corner Exit Acceleration,1268
+250.0,500.0,375.0,0.0858,0.8959,175.64,44.39,1808.17,0.346,Heavy Braking Zone,1489
+500.0,750.0,625.0,0.1189,0.8676,233.13,95.17,81.54,0.002,Corner Exit Acceleration,1099
+750.0,1000.0,875.0,0.5116,0.5579,261.19,95.68,92.54,0.0,Corner Exit Acceleration,1012
+1000.0,1250.0,1125.0,-0.0723,0.3895,283.44,99.65,3.94,0.0,High-Speed Full-Throttle Straight (Drag Limited),943
+1250.0,1500.0,1375.0,0.0373,0.8938,151.05,25.5,1192.63,0.467,Heavy Braking Zone,1804
+1500.0,1750.0,1625.0,0.3574,0.9422,214.09,99.13,21.95,0.0,Corner Exit Acceleration,1223
+1750.0,2000.0,1875.0,0.0575,0.7431,283.79,99.73,0.24,0.0,High-Speed Full-Throttle Straight (Drag Limited),933
+2000.0,2250.0,2125.0,-0.1556,0.2701,310.98,99.53,2.75,0.0,High-Speed Full-Throttle Straight (Drag Limited),845
+2250.0,2500.0,2375.0,0.4518,0.1445,316.1,77.13,1584.96,0.141,Cornering / Transition,830
+2500.0,2750.0,2625.0,-0.0825,0.8908,114.41,26.39,959.82,0.398,Heavy Braking Zone,2327
+2750.0,3000.0,2875.0,0.3414,0.9375,218.07,99.31,14.93,0.0,Corner Exit Acceleration,1173
+3000.0,3250.0,3125.0,0.0744,0.7246,284.81,99.75,0.2,0.0,High-Speed Full-Throttle Straight (Drag Limited),909
+3250.0,3500.0,3375.0,0.0223,0.4648,306.42,94.93,370.31,0.029,Corner Exit Acceleration,852
+3500.0,3750.0,3625.0,-0.2524,0.8978,189.36,23.62,999.72,0.504,Heavy Braking Zone,1420
+3750.0,4000.0,3875.0,0.6959,0.8948,215.97,95.48,88.22,0.0,Corner Exit Acceleration,1169
+4000.0,4250.0,4125.0,0.6286,0.2521,250.51,56.49,2173.68,0.272,Cornering / Transition,1043
+4250.0,4500.0,4375.0,-0.0087,0.681,127.45,29.4,811.6,0.278,Cornering / Transition,2010
+4500.0,4750.0,4625.0,0.7509,0.842,177.0,73.17,1141.98,0.01,Cornering / Transition,1399
+4750.0,5000.0,4875.0,0.7318,0.6815,228.38,60.18,1665.06,0.293,Cornering / Transition,1132
+5000.0,5250.0,5125.0,0.6224,0.729,155.28,60.11,1728.41,0.185,Cornering / Transition,1480

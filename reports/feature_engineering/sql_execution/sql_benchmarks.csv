@@ -1,0 +1,31 @@
+script,query_index,query_header,row_count,execution_time_s,output_file
+05_basic_analysis.sql,1,-- =========================================================,58,0.0514,05_basic_analysis_q01.csv
+05_basic_analysis.sql,2,"-- Query 2: Clean Flying Laps ranking by lap time (WHERE, OR",38,0.0028,05_basic_analysis_q02.csv
+05_basic_analysis.sql,3,-- Query 3: Driver average flying lap pace with HAVING filte,19,0.0029,05_basic_analysis_q03.csv
+05_basic_analysis.sql,4,-- Query 4: Categorizing cornering speeds using CASE WHEN,36,0.0077,05_basic_analysis_q04.csv
+05_basic_analysis.sql,5,-- Query 5: Telemetry dynamic regime distribution with NULL ,7,0.0241,05_basic_analysis_q05.csv
+06_joins_and_aggregations.sql,1,-- =========================================================,38,0.0051,06_joins_and_aggregations_q01.csv
+06_joins_and_aggregations.sql,2,-- Query 2: Team Performance Aggregation across all clean fl,10,0.0034,06_joins_and_aggregations_q02.csv
+06_joins_and_aggregations.sql,3,-- Query 3: Sector Breakdown JOIN with Driver Metadata,57,0.0058,06_joins_and_aggregations_q03.csv
+06_joins_and_aggregations.sql,4,-- Query 4: Telemetry and Corner Kinematics JOIN for Minimum,35,0.0024,06_joins_and_aggregations_q04.csv
+07_cte_analysis.sql,1,-- =========================================================,19,0.0031,07_cte_analysis_q01.csv
+07_cte_analysis.sql,2,-- Query 2: Sector-by-Sector Dominance Analysis using CTEs,3,0.0037,07_cte_analysis_q02.csv
+07_cte_analysis.sql,3,-- Query 3: Multi-CTE Braking Intensity & Deceleration Energ,19,0.0025,07_cte_analysis_q03.csv
+08_window_functions.sql,1,-- =========================================================,38,0.0042,08_window_functions_q01.csv
+08_window_functions.sql,2,-- ---------------------------------------------------------,50,0.0213,08_window_functions_q02.csv
+08_window_functions.sql,3,-- ---------------------------------------------------------,50,0.0163,08_window_functions_q03.csv
+08_window_functions.sql,4,-- ---------------------------------------------------------,50,0.0018,08_window_functions_q04.csv
+08_window_functions.sql,5,-- ---------------------------------------------------------,590,0.0049,08_window_functions_q05.csv
+09_advanced_telemetry_analysis.sql,1,-- =========================================================,19,0.052,09_advanced_telemetry_analysis_q01.csv
+09_advanced_telemetry_analysis.sql,2,-- ---------------------------------------------------------,85,0.005,09_advanced_telemetry_analysis_q02.csv
+09_advanced_telemetry_analysis.sql,3,-- ---------------------------------------------------------,57,0.0046,09_advanced_telemetry_analysis_q03.csv
+09_advanced_telemetry_analysis.sql,4,-- ---------------------------------------------------------,40,0.0083,09_advanced_telemetry_analysis_q04.csv
+10_data_quality_checks.sql,1,-- =========================================================,1,0.0551,10_data_quality_checks_q01.csv
+10_data_quality_checks.sql,2,-- ---------------------------------------------------------,1,0.0469,10_data_quality_checks_q02.csv
+10_data_quality_checks.sql,3,-- ---------------------------------------------------------,8,0.0247,10_data_quality_checks_q03.csv
+10_data_quality_checks.sql,4,-- ---------------------------------------------------------,5,0.0066,10_data_quality_checks_q04.csv
+10_data_quality_checks.sql,5,-- ---------------------------------------------------------,1,0.0018,10_data_quality_checks_q05.csv
+10_data_quality_checks.sql,6,-- B. Sectors without matching Lap,1,0.0014,10_data_quality_checks_q06.csv
+10_data_quality_checks.sql,7,-- C. Corners without matching Lap,1,0.0013,10_data_quality_checks_q07.csv
+10_data_quality_checks.sql,8,-- D. Telemetry rows without matching Lap,1,0.0505,10_data_quality_checks_q08.csv
+10_data_quality_checks.sql,9,-- ---------------------------------------------------------,4,0.0017,10_data_quality_checks_q09.csv

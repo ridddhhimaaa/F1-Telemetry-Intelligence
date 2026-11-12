@@ -1,0 +1,4 @@
+Sector,DistanceRange_m,MeanSpeed_kmh,MaxSpeed_kmh,MinSpeed_kmh,FullThrottle_pct,Braking_pct,Description
+Sector 1,0m - 1470m,233.5,298.0,5.2,63.8,14.5,"Main Straight, Turn 1, Fast Sweeps, Turn 5 Hairpin"
+Sector 2,1470m - 3250m,251.1,336.0,55.2,80.4,8.5,"1.2km Back Straight, Turn 6/7 Chicane, Second Straight, Turn 9 Bank"
+Sector 3,3250m - 5281m,211.5,324.0,86.1,44.1,18.8,"Marina & W Hotel Complex, Turns 12-15 Tech Chicanes, Turn 16"

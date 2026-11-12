@@ -1,0 +1,31 @@
+script,query_index,statement_header,result_rows,execution_time_seconds
+05_basic_analysis.sql,1,===============================================,58,0.0035
+05_basic_analysis.sql,2,Query 2: Clean Flying Laps ranking by lap time,38,0.0014
+05_basic_analysis.sql,3,Query 3: Driver average flying lap pace with HA,19,0.0011
+05_basic_analysis.sql,4,Query 4: Categorizing cornering speeds using CA,36,0.0022
+05_basic_analysis.sql,5,Query 5: Telemetry dynamic regime distribution,7,0.0573
+06_joins_and_aggregations.sql,1,===============================================,38,0.0015
+06_joins_and_aggregations.sql,2,Query 2: Team Performance Aggregation across al,10,0.0013
+06_joins_and_aggregations.sql,3,Query 3: Sector Breakdown JOIN with Driver Meta,57,0.002
+06_joins_and_aggregations.sql,4,Query 4: Telemetry and Corner Kinematics JOIN f,35,0.0024
+07_cte_analysis.sql,1,===============================================,19,0.002
+07_cte_analysis.sql,2,Query 2: Sector-by-Sector Dominance Analysis us,3,0.0027
+07_cte_analysis.sql,3,Query 3: Multi-CTE Braking Intensity & Decelera,19,0.0022
+08_window_functions.sql,1,===============================================,38,0.0021
+08_window_functions.sql,2,-,50,0.0435
+08_window_functions.sql,3,-,50,0.0422
+08_window_functions.sql,4,-,50,0.045
+08_window_functions.sql,5,-,590,0.0049
+09_advanced_telemetry_analysis.sql,1,===============================================,19,0.1315
+09_advanced_telemetry_analysis.sql,2,-,85,0.004
+09_advanced_telemetry_analysis.sql,3,-,57,0.0037
+09_advanced_telemetry_analysis.sql,4,-,40,0.0478
+10_data_quality_checks.sql,1,===============================================,1,0.0594
+10_data_quality_checks.sql,2,-,1,0.061
+10_data_quality_checks.sql,3,-,8,0.0912
+10_data_quality_checks.sql,4,-,5,0.0377
+10_data_quality_checks.sql,5,-,1,0.0016
+10_data_quality_checks.sql,6,B. Sectors without matching Lap,1,0.001
+10_data_quality_checks.sql,7,C. Corners without matching Lap,1,0.0012
+10_data_quality_checks.sql,8,D. Telemetry rows without matching Lap,1,0.0511
+10_data_quality_checks.sql,9,-,4,0.0019

@@ -1,0 +1,3 @@
+Entity,Column,NullCount,NullPercentage,EngineeringDomainRootCause
+Telemetry,DriverAhead,4019,5.545,"Structural MNAR: Race leader (3,547 nulls) + timing line boundary zone (472 nulls)"
+Telemetry,DistanceToDriverAhead,2957,4.08,"Structural MNAR: Race leader (NOR, 2,957 nulls) has no vehicle ahead"

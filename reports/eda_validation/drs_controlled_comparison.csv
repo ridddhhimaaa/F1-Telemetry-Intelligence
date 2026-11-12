@@ -1,0 +1,5 @@
+ComparisonScope,TrackRegion,DRS_ON_Mean_kmh,DRS_OFF_Mean_kmh,SpeedDelta_kmh,CI95_kmh,Cluster_CI95_kmh,EffectSize_d,p_value,Interpretation
+Naive Pooled Full Lap,"All Track Distances (0m - 5,281m)",298.69,197.77,100.92,N/A (Confounded),N/A (Confounded),N/A (Confounded),N/A,Grossly distorted by cornering & braking zones in DRS OFF subset
+Controlled Straights (Combined),Back Straights 1 & 2 (1750-2450m & 2850-3450m),298.31,285.57,12.75,"[11.29, 14.21]","[10.50, 15.28]",0.504 (Medium),5.97e-64 (descriptive),Track-location controlled observational delta on straights (subject to slipstream/ERS)
+Controlled Straight 1 (Zone 1),Back Straight 1 (1750m - 2450m),308.52,297.4,11.12,"[9.68, 12.56]","[8.20, 13.30]",0.617 (Medium-High),2.12e-49 (descriptive),Straightaway approaching Turn 6 chicane (observational control)
+Controlled Straight 2 (Zone 2),Back Straight 2 (2850m - 3450m),286.79,273.12,13.67,"[11.46, 15.88]","[11.32, 16.93]",0.514 (Medium),1.10e-32 (descriptive),Straightaway after Turn 7 towards Turn 9 (observational control)

@@ -1,0 +1,3 @@
+Signal,Channel Checked,Validation Rule,Metric,Observed Value,Unit,Derived Features,Interpretation
+Throttle,Telemetry.Throttle,Nominal range [0..100%]; overtravel check,Overtravel Count (> 100%),32 (0.044%),samples,"Throttle_Clipped (float [0..100]), Throttle_Overtravel_Flag (bool)",32 samples show potentiometer mechanical overtravel up to 104.0%. Clipped to 100% for standard ML normalization.
+Brake,Telemetry.Brake,Binary hydraulic line pressure indicator,Active Braking Samples,14089 (19.44%),samples,"IsBraking (bool), Brake_Int (int [0, 1])",Verified binary boolean line pressure flag. Friction braking active in 19.44% of observations.

@@ -1,0 +1,6 @@
+LapNumber,Total Samples,DriverAhead Missing,DriverAhead Missing (%),DistanceToDriverAhead Missing,DistanceToDriverAhead Missing (%),Speed Missing,Throttle Missing,Brake Missing,RPM Missing,nGear Missing,Distance Missing,Total Missing All Columns
+1,14975,810,5.41,0,0.0,0,0,0,0,0,0,810
+2,16581,881,5.31,820,4.95,0,0,0,0,0,0,1701
+3,14549,851,5.85,784,5.39,0,0,0,0,0,0,1635
+4,13318,755,5.67,693,5.2,0,0,0,0,0,0,1448
+5,13053,722,5.53,660,5.06,0,0,0,0,0,0,1382

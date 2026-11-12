@@ -1,0 +1,235 @@
+Driver,Lap,Timestamp,Column,Observed Value,Detection Method,Severity,Interpretation,Recommended Treatment
+ALB,3,0 days 00:01:00.586000,Throttle,104.00%,Domain Boundary (> 100.0%),WARNING,Potentiometer overtravel. Valid pedal travel calibration.,Preserve raw value; normalize with Throttle_Clipped.
+ALB,3,0 days 00:01:00.710000,Throttle,104.00%,Domain Boundary (> 100.0%),WARNING,Potentiometer overtravel. Valid pedal travel calibration.,Preserve raw value; normalize with Throttle_Clipped.
+ALB,3,0 days 00:01:00.891000,Throttle,104.00%,Domain Boundary (> 100.0%),WARNING,Potentiometer overtravel. Valid pedal travel calibration.,Preserve raw value; normalize with Throttle_Clipped.
+ALB,3,0 days 00:01:00.946000,Throttle,104.00%,Domain Boundary (> 100.0%),WARNING,Potentiometer overtravel. Valid pedal travel calibration.,Preserve raw value; normalize with Throttle_Clipped.
+ALB,3,0 days 00:01:01.106000,Throttle,104.00%,Domain Boundary (> 100.0%),WARNING,Potentiometer overtravel. Valid pedal travel calibration.,Preserve raw value; normalize with Throttle_Clipped.
+ALB,3,0 days 00:01:01.131000,Throttle,104.00%,Domain Boundary (> 100.0%),WARNING,Potentiometer overtravel. Valid pedal travel calibration.,Preserve raw value; normalize with Throttle_Clipped.
+ALB,3,0 days 00:01:01.427000,Throttle,104.00%,Domain Boundary (> 100.0%),WARNING,Potentiometer overtravel. Valid pedal travel calibration.,Preserve raw value; normalize with Throttle_Clipped.
+ALB,3,0 days 00:01:01.511000,Throttle,102.95%,Domain Boundary (> 100.0%),WARNING,Potentiometer overtravel. Valid pedal travel calibration.,Preserve raw value; normalize with Throttle_Clipped.
+ALB,3,0 days 00:01:01.711000,Throttle,100.45%,Domain Boundary (> 100.0%),WARNING,Potentiometer overtravel. Valid pedal travel calibration.,Preserve raw value; normalize with Throttle_Clipped.
+ALB,4,0 days 00:00:54.455000,Throttle,102.95%,Domain Boundary (> 100.0%),WARNING,Potentiometer overtravel. Valid pedal travel calibration.,Preserve raw value; normalize with Throttle_Clipped.
+PER,1,0 days 00:01:27.357000,RPM,0.0,Physical Lower Bound (RPM == 0),REVIEW REQUIRED,Engine cut/power unit shutdown (PER Lap 1 crash coasting).,Preserve unaltered; flag DNF_OR_RETIRED in lap metadata.
+PER,1,0 days 00:01:27.382000,RPM,0.0,Physical Lower Bound (RPM == 0),REVIEW REQUIRED,Engine cut/power unit shutdown (PER Lap 1 crash coasting).,Preserve unaltered; flag DNF_OR_RETIRED in lap metadata.
+PER,1,0 days 00:01:27.517000,RPM,0.0,Physical Lower Bound (RPM == 0),REVIEW REQUIRED,Engine cut/power unit shutdown (PER Lap 1 crash coasting).,Preserve unaltered; flag DNF_OR_RETIRED in lap metadata.
+PER,1,0 days 00:01:27.542000,RPM,0.0,Physical Lower Bound (RPM == 0),REVIEW REQUIRED,Engine cut/power unit shutdown (PER Lap 1 crash coasting).,Preserve unaltered; flag DNF_OR_RETIRED in lap metadata.
+PER,1,0 days 00:01:27.677000,RPM,0.0,Physical Lower Bound (RPM == 0),REVIEW REQUIRED,Engine cut/power unit shutdown (PER Lap 1 crash coasting).,Preserve unaltered; flag DNF_OR_RETIRED in lap metadata.
+PER,1,0 days 00:01:27.957000,RPM,0.0,Physical Lower Bound (RPM == 0),REVIEW REQUIRED,Engine cut/power unit shutdown (PER Lap 1 crash coasting).,Preserve unaltered; flag DNF_OR_RETIRED in lap metadata.
+PER,1,0 days 00:01:27.962000,RPM,0.0,Physical Lower Bound (RPM == 0),REVIEW REQUIRED,Engine cut/power unit shutdown (PER Lap 1 crash coasting).,Preserve unaltered; flag DNF_OR_RETIRED in lap metadata.
+PER,1,0 days 00:01:28.157000,RPM,0.0,Physical Lower Bound (RPM == 0),REVIEW REQUIRED,Engine cut/power unit shutdown (PER Lap 1 crash coasting).,Preserve unaltered; flag DNF_OR_RETIRED in lap metadata.
+PER,1,0 days 00:01:28.317000,RPM,0.0,Physical Lower Bound (RPM == 0),REVIEW REQUIRED,Engine cut/power unit shutdown (PER Lap 1 crash coasting).,Preserve unaltered; flag DNF_OR_RETIRED in lap metadata.
+PER,1,0 days 00:01:28.382000,RPM,0.0,Physical Lower Bound (RPM == 0),REVIEW REQUIRED,Engine cut/power unit shutdown (PER Lap 1 crash coasting).,Preserve unaltered; flag DNF_OR_RETIRED in lap metadata.
+ALB,1,0 days 00:00:44.076000,Speed,333.0 km/h,Domain Speed Trap (> 330 km/h),INFO,Peak straight-line terminal velocity under DRS slipstream.,Preserve; physical high-performance peak.
+ALB,1,0 days 00:00:44.121000,Speed,333.0 km/h,Domain Speed Trap (> 330 km/h),INFO,Peak straight-line terminal velocity under DRS slipstream.,Preserve; physical high-performance peak.
+ALB,1,0 days 00:00:44.201000,Speed,333.0 km/h,Domain Speed Trap (> 330 km/h),INFO,Peak straight-line terminal velocity under DRS slipstream.,Preserve; physical high-performance peak.
+ALB,1,0 days 00:00:44.276000,Speed,333.0 km/h,Domain Speed Trap (> 330 km/h),INFO,Peak straight-line terminal velocity under DRS slipstream.,Preserve; physical high-performance peak.
+ALB,4,0 days 00:00:35.530000,Speed,331.0 km/h,Domain Speed Trap (> 330 km/h),INFO,Peak straight-line terminal velocity under DRS slipstream.,Preserve; physical high-performance peak.
+ALB,1,0 days 00:00:26.356000,AccelerationX,-31.51 m/s^2,Statistical IQR Extreme Fence [3.0*IQR],INFO,High instantaneous transient chassis load (kerb strike / threshold braking).,Preserve; essential for vehicle balance evaluation.
+ALB,1,0 days 00:00:26.516000,AccelerationX,-29.68 m/s^2,Statistical IQR Extreme Fence [3.0*IQR],INFO,High instantaneous transient chassis load (kerb strike / threshold braking).,Preserve; essential for vehicle balance evaluation.
+ALB,1,0 days 00:00:26.877000,AccelerationX,-28.85 m/s^2,Statistical IQR Extreme Fence [3.0*IQR],INFO,High instantaneous transient chassis load (kerb strike / threshold braking).,Preserve; essential for vehicle balance evaluation.
+ALB,1,0 days 00:00:27.022000,AccelerationX,-31.63 m/s^2,Statistical IQR Extreme Fence [3.0*IQR],INFO,High instantaneous transient chassis load (kerb strike / threshold braking).,Preserve; essential for vehicle balance evaluation.
+ALB,1,0 days 00:00:27.117000,AccelerationX,-29.66 m/s^2,Statistical IQR Extreme Fence [3.0*IQR],INFO,High instantaneous transient chassis load (kerb strike / threshold braking).,Preserve; essential for vehicle balance evaluation.
+ALB,1,0 days 00:00:19.041000,AccelerationY,-37.37 m/s^2,Statistical IQR Extreme Fence [3.0*IQR],INFO,High instantaneous transient chassis load (kerb strike / threshold braking).,Preserve; essential for vehicle balance evaluation.
+ALB,1,0 days 00:00:19.196000,AccelerationY,-42.94 m/s^2,Statistical IQR Extreme Fence [3.0*IQR],INFO,High instantaneous transient chassis load (kerb strike / threshold braking).,Preserve; essential for vehicle balance evaluation.
+ALB,1,0 days 00:00:19.362000,AccelerationY,-45.95 m/s^2,Statistical IQR Extreme Fence [3.0*IQR],INFO,High instantaneous transient chassis load (kerb strike / threshold braking).,Preserve; essential for vehicle balance evaluation.
+ALB,1,0 days 00:00:19.556000,AccelerationY,-47.71 m/s^2,Statistical IQR Extreme Fence [3.0*IQR],INFO,High instantaneous transient chassis load (kerb strike / threshold braking).,Preserve; essential for vehicle balance evaluation.
+ALB,1,0 days 00:00:19.756000,AccelerationY,-43.88 m/s^2,Statistical IQR Extreme Fence [3.0*IQR],INFO,High instantaneous transient chassis load (kerb strike / threshold braking).,Preserve; essential for vehicle balance evaluation.
+ALB,1,0 days 00:00:11.601000,AccelerationZ,-11.01 m/s^2,Statistical IQR Extreme Fence [3.0*IQR],INFO,High instantaneous transient chassis load (kerb strike / threshold braking).,Preserve; essential for vehicle balance evaluation.
+ALB,1,0 days 00:00:11.801000,AccelerationZ,-19.11 m/s^2,Statistical IQR Extreme Fence [3.0*IQR],INFO,High instantaneous transient chassis load (kerb strike / threshold braking).,Preserve; essential for vehicle balance evaluation.
+ALB,1,0 days 00:00:12.436000,AccelerationZ,-27.66 m/s^2,Statistical IQR Extreme Fence [3.0*IQR],INFO,High instantaneous transient chassis load (kerb strike / threshold braking).,Preserve; essential for vehicle balance evaluation.
+ALB,1,0 days 00:00:12.441000,AccelerationZ,-27.61 m/s^2,Statistical IQR Extreme Fence [3.0*IQR],INFO,High instantaneous transient chassis load (kerb strike / threshold braking).,Preserve; essential for vehicle balance evaluation.
+ALB,1,0 days 00:00:12.596000,AccelerationZ,-27.93 m/s^2,Statistical IQR Extreme Fence [3.0*IQR],INFO,High instantaneous transient chassis load (kerb strike / threshold braking).,Preserve; essential for vehicle balance evaluation.
+ALB,1,0 days 00:00:12.436000,Time_Delta,0.635s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+ALB,1,0 days 00:00:24.421000,Time_Delta,0.505s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+ALB,1,0 days 00:01:15.437000,Time_Delta,0.800s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+ALB,3,0 days 00:00:26.710000,Time_Delta,1.039s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+ALB,3,0 days 00:00:37.691000,Time_Delta,0.640s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+ALB,3,0 days 00:01:13.710000,Time_Delta,0.640s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+ALB,3,0 days 00:01:26.730000,Time_Delta,0.720s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+ALB,4,0 days 00:01:07.455000,Time_Delta,0.684s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+ALB,4,0 days 00:01:19.455000,Time_Delta,0.764s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+ALB,5,0 days 00:00:35.391000,Time_Delta,1.076s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+ALO,1,0 days 00:00:12.436000,Time_Delta,0.635s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+ALO,1,0 days 00:00:24.421000,Time_Delta,0.505s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+ALO,1,0 days 00:01:15.437000,Time_Delta,0.800s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+ALO,3,0 days 00:00:41.769000,Time_Delta,1.039s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+ALO,3,0 days 00:00:52.750000,Time_Delta,0.640s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+ALO,3,0 days 00:01:28.769000,Time_Delta,0.640s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+ALO,3,0 days 00:01:41.789000,Time_Delta,0.720s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+ALO,4,0 days 00:01:16.050000,Time_Delta,0.684s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+ALO,4,0 days 00:01:28.050000,Time_Delta,0.764s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+ALO,5,0 days 00:00:44.612000,Time_Delta,1.076s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+BOT,1,0 days 00:00:12.436000,Time_Delta,0.635s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+BOT,1,0 days 00:00:24.421000,Time_Delta,0.505s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+BOT,1,0 days 00:01:15.437000,Time_Delta,0.800s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+BOT,3,0 days 00:00:30.364000,Time_Delta,1.039s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+BOT,3,0 days 00:00:41.345000,Time_Delta,0.640s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+BOT,3,0 days 00:01:17.364000,Time_Delta,0.640s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+BOT,3,0 days 00:01:30.384000,Time_Delta,0.720s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+BOT,4,0 days 00:01:08.784000,Time_Delta,0.684s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+BOT,4,0 days 00:01:20.784000,Time_Delta,0.764s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+BOT,5,0 days 00:00:36.836000,Time_Delta,1.076s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+COL,1,0 days 00:00:12.436000,Time_Delta,0.635s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+COL,1,0 days 00:00:24.421000,Time_Delta,0.505s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+COL,1,0 days 00:01:15.437000,Time_Delta,0.800s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+COL,3,0 days 00:00:23.557000,Time_Delta,1.039s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+COL,3,0 days 00:00:34.538000,Time_Delta,0.640s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+COL,3,0 days 00:01:10.557000,Time_Delta,0.640s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+COL,3,0 days 00:01:23.577000,Time_Delta,0.720s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+COL,4,0 days 00:00:29.368000,Time_Delta,0.684s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+COL,4,0 days 00:00:41.368000,Time_Delta,0.764s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+COL,4,0 days 00:01:27.364000,Time_Delta,1.076s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+COL,5,0 days 00:01:18.762000,Time_Delta,0.840s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+DOO,1,0 days 00:00:12.436000,Time_Delta,0.635s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+DOO,1,0 days 00:00:24.421000,Time_Delta,0.505s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+DOO,1,0 days 00:01:15.437000,Time_Delta,0.800s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+DOO,3,0 days 00:00:25.713000,Time_Delta,1.039s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+DOO,3,0 days 00:00:36.694000,Time_Delta,0.640s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+DOO,3,0 days 00:01:12.713000,Time_Delta,0.640s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+DOO,3,0 days 00:01:25.733000,Time_Delta,0.720s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+DOO,4,0 days 00:01:05.432000,Time_Delta,0.684s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+DOO,4,0 days 00:01:17.432000,Time_Delta,0.764s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+DOO,5,0 days 00:00:33.230000,Time_Delta,1.076s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+GAS,1,0 days 00:00:12.436000,Time_Delta,0.635s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+GAS,1,0 days 00:00:24.421000,Time_Delta,0.505s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+GAS,1,0 days 00:01:15.437000,Time_Delta,0.800s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+GAS,3,0 days 00:00:44.347000,Time_Delta,1.039s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+GAS,3,0 days 00:00:55.328000,Time_Delta,0.640s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+GAS,3,0 days 00:01:31.347000,Time_Delta,0.640s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+GAS,4,0 days 00:00:01.530000,Time_Delta,0.720s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+GAS,4,0 days 00:01:18.031000,Time_Delta,0.684s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+GAS,5,0 days 00:00:00.625000,Time_Delta,0.625s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+GAS,5,0 days 00:00:46.621000,Time_Delta,1.076s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+HAM,1,0 days 00:00:12.436000,Time_Delta,0.635s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+HAM,1,0 days 00:00:24.421000,Time_Delta,0.505s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+HAM,1,0 days 00:01:15.437000,Time_Delta,0.800s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+HAM,3,0 days 00:00:31.476000,Time_Delta,1.039s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+HAM,3,0 days 00:00:42.457000,Time_Delta,0.640s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+HAM,3,0 days 00:01:18.476000,Time_Delta,0.640s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+HAM,3,0 days 00:01:31.496000,Time_Delta,0.720s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+HAM,4,0 days 00:01:10.261000,Time_Delta,0.684s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+HAM,4,0 days 00:01:22.261000,Time_Delta,0.764s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+HAM,5,0 days 00:00:38.591000,Time_Delta,1.076s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+HUL,1,0 days 00:00:12.436000,Time_Delta,0.635s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+HUL,1,0 days 00:00:24.421000,Time_Delta,0.505s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+HUL,1,0 days 00:01:15.437000,Time_Delta,0.800s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+HUL,3,0 days 00:00:42.706000,Time_Delta,1.039s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+HUL,3,0 days 00:00:53.687000,Time_Delta,0.640s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+HUL,3,0 days 00:01:29.706000,Time_Delta,0.640s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+HUL,3,0 days 00:01:42.689000,Time_Delta,0.683s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+HUL,4,0 days 00:01:16.538000,Time_Delta,0.684s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+HUL,4,0 days 00:01:28.538000,Time_Delta,0.764s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+HUL,5,0 days 00:00:45.186000,Time_Delta,1.076s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+LAW,1,0 days 00:00:12.436000,Time_Delta,0.635s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+LAW,1,0 days 00:00:24.421000,Time_Delta,0.505s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+LAW,1,0 days 00:01:15.437000,Time_Delta,0.800s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+LAW,3,0 days 00:00:34.926000,Time_Delta,1.039s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+LAW,3,0 days 00:00:45.907000,Time_Delta,0.640s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+LAW,3,0 days 00:01:21.926000,Time_Delta,0.640s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+LAW,3,0 days 00:01:34.946000,Time_Delta,0.720s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+LAW,4,0 days 00:01:11.123000,Time_Delta,0.684s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+LAW,4,0 days 00:01:23.123000,Time_Delta,0.764s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+LAW,5,0 days 00:00:39.381000,Time_Delta,1.076s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+LEC,1,0 days 00:00:12.436000,Time_Delta,0.635s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+LEC,1,0 days 00:00:24.421000,Time_Delta,0.505s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+LEC,1,0 days 00:01:15.437000,Time_Delta,0.800s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+LEC,3,0 days 00:00:37.434000,Time_Delta,1.039s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+LEC,3,0 days 00:00:48.415000,Time_Delta,0.640s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+LEC,3,0 days 00:01:24.434000,Time_Delta,0.640s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+LEC,3,0 days 00:01:37.454000,Time_Delta,0.720s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+LEC,4,0 days 00:01:14.299000,Time_Delta,0.684s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+LEC,4,0 days 00:01:26.299000,Time_Delta,0.764s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+LEC,5,0 days 00:00:43.022000,Time_Delta,1.076s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+MAG,1,0 days 00:00:12.436000,Time_Delta,0.635s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+MAG,1,0 days 00:00:24.421000,Time_Delta,0.505s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+MAG,1,0 days 00:01:15.437000,Time_Delta,0.800s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+MAG,3,0 days 00:00:40.945000,Time_Delta,1.039s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+MAG,3,0 days 00:00:51.926000,Time_Delta,0.640s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+MAG,3,0 days 00:01:27.945000,Time_Delta,0.640s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+MAG,3,0 days 00:01:40.965000,Time_Delta,0.720s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+MAG,4,0 days 00:01:15.183000,Time_Delta,0.684s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+MAG,4,0 days 00:01:27.183000,Time_Delta,0.764s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+MAG,5,0 days 00:00:43.977000,Time_Delta,1.076s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+NOR,1,0 days 00:00:12.436000,Time_Delta,0.635s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+NOR,1,0 days 00:00:24.421000,Time_Delta,0.505s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+NOR,1,0 days 00:01:15.437000,Time_Delta,0.800s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+NOR,3,0 days 00:00:48.600000,Time_Delta,1.039s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+NOR,3,0 days 00:00:59.581000,Time_Delta,0.640s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+NOR,3,0 days 00:01:35.600000,Time_Delta,0.640s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+NOR,4,0 days 00:00:05.307000,Time_Delta,0.720s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+NOR,4,0 days 00:01:21.808000,Time_Delta,0.684s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+NOR,5,0 days 00:00:04.798000,Time_Delta,0.764s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+NOR,5,0 days 00:00:50.794000,Time_Delta,1.076s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+PER,1,0 days 00:00:12.436000,Time_Delta,0.635s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+PER,1,0 days 00:00:24.421000,Time_Delta,0.505s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+PER,1,0 days 00:01:15.437000,Time_Delta,0.800s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+PIA,1,0 days 00:00:12.436000,Time_Delta,0.635s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+PIA,1,0 days 00:00:24.421000,Time_Delta,0.505s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+PIA,1,0 days 00:01:15.437000,Time_Delta,0.800s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+PIA,3,0 days 00:00:22.418000,Time_Delta,1.039s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+PIA,3,0 days 00:00:33.399000,Time_Delta,0.640s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+PIA,3,0 days 00:01:09.418000,Time_Delta,0.640s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+PIA,3,0 days 00:01:22.438000,Time_Delta,0.720s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+PIA,4,0 days 00:01:04.079000,Time_Delta,0.684s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+PIA,4,0 days 00:01:16.079000,Time_Delta,0.764s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+PIA,5,0 days 00:00:29.874000,Time_Delta,1.076s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+RUS,1,0 days 00:00:12.436000,Time_Delta,0.635s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+RUS,1,0 days 00:00:24.421000,Time_Delta,0.505s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+RUS,1,0 days 00:01:15.437000,Time_Delta,0.800s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+RUS,3,0 days 00:00:43.574000,Time_Delta,1.039s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+RUS,3,0 days 00:00:54.555000,Time_Delta,0.640s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+RUS,3,0 days 00:01:30.574000,Time_Delta,0.640s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+RUS,4,0 days 00:00:00.783000,Time_Delta,0.720s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+RUS,4,0 days 00:01:17.284000,Time_Delta,0.684s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+RUS,4,0 days 00:01:29.284000,Time_Delta,0.764s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+RUS,5,0 days 00:00:45.792000,Time_Delta,1.076s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+SAI,1,0 days 00:00:12.436000,Time_Delta,0.635s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+SAI,1,0 days 00:00:24.421000,Time_Delta,0.505s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+SAI,1,0 days 00:01:15.437000,Time_Delta,0.800s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+SAI,3,0 days 00:00:45.322000,Time_Delta,1.039s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+SAI,3,0 days 00:00:56.303000,Time_Delta,0.640s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+SAI,3,0 days 00:01:32.322000,Time_Delta,0.640s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+SAI,4,0 days 00:00:02.547000,Time_Delta,0.720s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+SAI,4,0 days 00:01:19.048000,Time_Delta,0.684s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+SAI,5,0 days 00:00:02.053000,Time_Delta,0.764s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+SAI,5,0 days 00:00:48.049000,Time_Delta,1.076s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+STR,1,0 days 00:00:12.436000,Time_Delta,0.635s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+STR,1,0 days 00:00:24.421000,Time_Delta,0.505s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+STR,1,0 days 00:01:15.437000,Time_Delta,0.800s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+STR,3,0 days 00:00:36.411000,Time_Delta,1.039s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+STR,3,0 days 00:00:47.392000,Time_Delta,0.640s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+STR,3,0 days 00:01:23.411000,Time_Delta,0.640s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+STR,3,0 days 00:01:36.431000,Time_Delta,0.720s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+STR,4,0 days 00:01:13.407000,Time_Delta,0.684s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+STR,4,0 days 00:01:25.407000,Time_Delta,0.764s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+STR,5,0 days 00:00:41.718000,Time_Delta,1.076s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+TSU,1,0 days 00:00:12.436000,Time_Delta,0.635s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+TSU,1,0 days 00:00:24.421000,Time_Delta,0.505s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+TSU,1,0 days 00:01:15.437000,Time_Delta,0.800s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+TSU,3,0 days 00:00:24.492000,Time_Delta,1.039s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+TSU,3,0 days 00:00:35.473000,Time_Delta,0.640s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+TSU,3,0 days 00:01:11.492000,Time_Delta,0.640s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+TSU,3,0 days 00:01:24.512000,Time_Delta,0.720s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+TSU,4,0 days 00:01:06.192000,Time_Delta,0.684s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+TSU,4,0 days 00:01:18.192000,Time_Delta,0.764s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+TSU,5,0 days 00:00:34.073000,Time_Delta,1.076s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+VER,1,0 days 00:00:12.436000,Time_Delta,0.635s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+VER,1,0 days 00:00:24.421000,Time_Delta,0.505s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+VER,1,0 days 00:01:15.437000,Time_Delta,0.800s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+VER,3,0 days 00:00:33.643000,Time_Delta,1.039s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+VER,3,0 days 00:00:44.624000,Time_Delta,0.640s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+VER,3,0 days 00:01:20.643000,Time_Delta,0.640s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+VER,3,0 days 00:01:33.663000,Time_Delta,0.720s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+VER,4,0 days 00:01:12.113000,Time_Delta,0.684s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+VER,4,0 days 00:01:24.113000,Time_Delta,0.764s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+VER,5,0 days 00:00:40.605000,Time_Delta,1.076s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+ZHO,1,0 days 00:00:12.436000,Time_Delta,0.635s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+ZHO,1,0 days 00:00:24.421000,Time_Delta,0.505s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+ZHO,1,0 days 00:01:15.437000,Time_Delta,0.800s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+ZHO,3,0 days 00:00:27.546000,Time_Delta,1.039s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+ZHO,3,0 days 00:00:38.527000,Time_Delta,0.640s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+ZHO,3,0 days 00:01:14.546000,Time_Delta,0.640s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+ZHO,3,0 days 00:01:27.566000,Time_Delta,0.720s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+ZHO,4,0 days 00:01:08.140000,Time_Delta,0.684s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+ZHO,4,0 days 00:01:20.140000,Time_Delta,0.764s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.
+ZHO,5,0 days 00:00:36.170000,Time_Delta,1.076s,Sampling Gap (> 0.500s),WARNING,Transient telemetry gap or sensor transmission delay.,Preserve; spatial resampling handles irregular time delta.

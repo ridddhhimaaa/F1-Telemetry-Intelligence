@@ -1,0 +1,6 @@
+comparison_id,name,sql_rows,pandas_rows,tolerance,max_discrepancy,status
+1,Clean Flying-Lap Summary,19,19,0.001,0.0,PASS
+2,Sector Benchmarks,3,3,0.001,0.0,PASS
+3,Corner Apex Speeds,16,16,0.01,0.0,PASS
+4,Driver Speed Traps,19,19,0.01,0.0,PASS
+5,Braking Durations and Full-Throttle Totals,19,19,0.01,0.0,PASS

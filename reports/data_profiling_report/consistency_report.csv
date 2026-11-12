@@ -1,0 +1,5 @@
+Comparison Domain,Telemetry Dataset,Race Laps Dataset,Discrepancy Count,Status,Remarks
+Driver Roster,"20 drivers (ALB, ALO, BOT, COL, DOO, GAS, HAM, HUL, LAW, LEC, MAG, NOR, PER, PIA, RUS, SAI, STR, TSU, VER, ZHO)","20 drivers (ALB, ALO, BOT, COL, DOO, GAS, HAM, HUL, LAW, LEC, MAG, NOR, PER, PIA, RUS, SAI, STR, TSU, VER, ZHO)",0,PASS,Identical 20-driver roster in both datasets.
+Driver-Lap Coverage,96 laps (up to 5 laps / driver; PER has 1 lap),"1035 laps (full race duration, 58 laps)",0,PASS,Telemetry is a sampled subset of the full race session (Phase 2 capped batch ingestion).
+Session Identifiers,2024 Abu Dhabi Race,2024 Abu Dhabi Grand Prix (Race),0,PASS,Session identifiers match metadata collection parameters.
+Driver Retirement (PER),"PER has exactly 1 lap (3,932.8m coverage, ending post-crash)","PER has Lap 1 recorded with NaT LapTime (TrackStatus 12, retired)",0,PASS,Both datasets independently confirm Sergio Perez retired on Lap 1.

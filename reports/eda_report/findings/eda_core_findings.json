@@ -1,0 +1,25 @@
+{
+    "dataset_dimensions": {
+        "telemetry_rows": 72476,
+        "race_lap_rows": 1035,
+        "resampled_rows": 495849,
+        "unique_drivers": 20
+    },
+    "speed_stats": {
+        "PeakSpeed_kmh": 337.0,
+        "MeanFlyingSpeed_kmh": 206.72177925847456,
+        "TopSpeedDriver": "HUL"
+    },
+    "throttle_stats": {
+        "MeanFullThrottle_pct": 51.28578947368421,
+        "TopFullThrottleDriver": "BOT"
+    },
+    "braking_stats": {
+        "BrakingZonesIdentified": 6,
+        "MeanBraking_pct": 17.87421052631579
+    },
+    "gear_stats": {
+        "DominantGear": 7,
+        "MeanShiftsPerLap": 40.78947368421053
+    }
+}

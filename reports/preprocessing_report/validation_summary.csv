@@ -1,0 +1,15 @@
+rule_id,dataset,target,expected_condition,actual_result,affected_records,affected_pct,severity,status,recommended_action
+VAL_TEL_COL_PRESENCE,Telemetry,Columns,All 26 required columns present,All present,0,0.0,INFO,PASS,Ensure upstream ingestion pipeline extracts complete telemetry schema.
+VAL_LAPS_COL_PRESENCE,Race Laps,Columns,All 46 required columns present,All present,0,0.0,INFO,PASS,Validate race laps extraction schema against tif1/FastF1 contract.
+VAL_TEL_SPEED_RANGE,Telemetry,Speed,Speed >= 0.0 km/h and Speed <= 360.0 km/h,"Min: 0.0, Max: 337.0 km/h (neg count: 0)",0,0.0,INFO,PASS,Inspect sensor recording if negative speeds occur.
+VAL_TEL_THROTTLE_NOMINAL,Telemetry,Throttle,0.0% <= Throttle <= 100.0%,32 overtravel samples > 100% (max: 104.0%),32,0.0442,WARNING,WARNING,Preserve raw throttle; create derived clipped feature in Stage 4.
+VAL_TEL_BRAKE_REPRESENTATION,Telemetry,Brake,"Boolean or binary numeric representation {False, True}","dtype: bool, unique values: [np.False_, np.True_]",0,0.0,INFO,PASS,Confirmed binary boolean indicator.
+VAL_TEL_RPM_RANGE,Telemetry,RPM,0.0 < RPM <= 15000.0 (active engine),33 zero RPM records detected (all PER Lap 1 retirement),33,0.0455,WARNING,WARNING,Retain zero RPM as physical indicator of power unit shutdown; flag DNF in Stage 5.
+VAL_TEL_GEAR_RANGE,Telemetry,nGear,"Forward gears integer [1, 8]",All gears within 1..8,0,0.0,INFO,PASS,Ensure transmission telemetry maps exclusively to forward gears.
+VAL_TEL_DISTANCE_NON_NEGATIVE,Telemetry,Distance,Distance >= 0.0 metres,44 samples < 0.0m on Lap 1 starting grid (min: -0.0899m),44,0.0607,WARNING,WARNING,Preserve raw Distance; calibrate derived Distance_Corrected to 0.0m at start-finish line in Stage 3.
+VAL_TEL_TIME_MONOTONIC,Telemetry,Time,Time strictly monotonically increasing per driver-lap,0 non-monotonic driver-laps detected,0,0.0,INFO,PASS,Timestamps must be strictly chronological for valid kinematic calculation.
+VAL_LAPS_DRIVER_ROSTER,Race Laps,Driver,20 official FIA drivers present (20),20 drivers present,0,0.0,INFO,PASS,Verify session roster against FIA official entry list.
+VAL_LAPS_NUMBER_BOUNDS,Race Laps,LapNumber,1 <= LapNumber <= 58 (Abu Dhabi Grand Prix total race laps),"Range: [1, 58]",0,0.0,INFO,PASS,Lap range verified consistent with 58-lap Abu Dhabi Grand Prix.
+VAL_LAPS_TIME_NULLS,Race Laps,LapTime,LapTime present for all completed racing laps,2 null LapTime records (PER Lap 1 DNF),2,0.193,WARNING,WARNING,Corresponds to driver retirement without completing Lap 1; expected domain event.
+VAL_CROSS_DRIVERS,Cross-Dataset,Driver,All telemetry drivers must exist in the race-laps dataset,20 telemetry drivers matched 20 race lap drivers,0,0.0,INFO,PASS,Referential integrity confirmed; 100% driver matching.
+VAL_CROSS_DRIVER_LAPS,Cross-Dataset,"Driver, LapNumber",All telemetry driver-laps must exist in the race-laps dataset,All 96 telemetry driver-laps exist in race laps (100% matched),0,0.0,INFO,PASS,Driver-lap referential integrity verified.

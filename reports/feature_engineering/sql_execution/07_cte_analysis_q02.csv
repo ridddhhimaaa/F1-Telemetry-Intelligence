@@ -1,0 +1,4 @@
+sector,driver_id,lap_number,sector_duration_s,best_sector_time_s,gap_to_best_s
+1,MAG,4,17.738,17.738,0.0
+2,LEC,5,37.256,37.256,0.0
+3,NOR,5,32.366,32.366,0.0

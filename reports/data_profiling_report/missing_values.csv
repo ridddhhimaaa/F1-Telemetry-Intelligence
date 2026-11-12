@@ -1,0 +1,73 @@
+Dataset,Column Name,Data Type,Total Rows,Missing Count,Missing Percentage (%),Non-Missing Count
+Telemetry,Date,datetime64[ns],72476,0,0.0,72476
+Telemetry,SessionTime,timedelta64[ns],72476,0,0.0,72476
+Telemetry,DriverAhead,object,72476,4019,5.545,68457
+Telemetry,DistanceToDriverAhead,float64,72476,2957,4.08,69519
+Telemetry,Time,timedelta64[ns],72476,0,0.0,72476
+Telemetry,RPM,float64,72476,0,0.0,72476
+Telemetry,Speed,float64,72476,0,0.0,72476
+Telemetry,nGear,Int64,72476,0,0.0,72476
+Telemetry,Throttle,float64,72476,0,0.0,72476
+Telemetry,Brake,bool,72476,0,0.0,72476
+Telemetry,DRS,Int64,72476,0,0.0,72476
+Telemetry,Source,object,72476,0,0.0,72476
+Telemetry,Distance,float64,72476,0,0.0,72476
+Telemetry,RelativeDistance,float64,72476,0,0.0,72476
+Telemetry,Status,object,72476,0,0.0,72476
+Telemetry,X,float64,72476,0,0.0,72476
+Telemetry,Y,float64,72476,0,0.0,72476
+Telemetry,Z,float64,72476,0,0.0,72476
+Telemetry,AccelerationX,float64,72476,0,0.0,72476
+Telemetry,AccelerationY,float64,72476,0,0.0,72476
+Telemetry,AccelerationZ,float64,72476,0,0.0,72476
+Telemetry,Driver,object,72476,0,0.0,72476
+Telemetry,LapNumber,int64,72476,0,0.0,72476
+Telemetry,Year,int64,72476,0,0.0,72476
+Telemetry,Event,object,72476,0,0.0,72476
+Telemetry,Session,object,72476,0,0.0,72476
+Race Laps,index,int64,1035,0,0.0,1035
+Race Laps,Time,timedelta64[ns],1035,0,0.0,1035
+Race Laps,Driver,category,1035,0,0.0,1035
+Race Laps,DriverNumber,object,1035,0,0.0,1035
+Race Laps,LapTime,timedelta64[ns],1035,2,0.193,1033
+Race Laps,LapNumber,float64,1035,0,0.0,1035
+Race Laps,Stint,float64,1035,0,0.0,1035
+Race Laps,PitOutTime,timedelta64[ns],1035,1007,97.295,28
+Race Laps,PitInTime,timedelta64[ns],1035,1005,97.101,30
+Race Laps,Sector1Time,timedelta64[ns],1035,21,2.029,1014
+Race Laps,Sector2Time,timedelta64[ns],1035,2,0.193,1033
+Race Laps,Sector3Time,timedelta64[ns],1035,2,0.193,1033
+Race Laps,Sector1SessionTime,timedelta64[ns],1035,25,2.415,1010
+Race Laps,Sector2SessionTime,timedelta64[ns],1035,2,0.193,1033
+Race Laps,Sector3SessionTime,timedelta64[ns],1035,2,0.193,1033
+Race Laps,SpeedI1,float64,1035,2,0.193,1033
+Race Laps,SpeedI2,float64,1035,2,0.193,1033
+Race Laps,SpeedFL,float64,1035,32,3.092,1003
+Race Laps,SpeedST,float64,1035,2,0.193,1033
+Race Laps,IsPersonalBest,bool,1035,0,0.0,1035
+Race Laps,Compound,category,1035,0,0.0,1035
+Race Laps,TyreLife,float64,1035,0,0.0,1035
+Race Laps,FreshTyre,bool,1035,0,0.0,1035
+Race Laps,Team,category,1035,0,0.0,1035
+Race Laps,LapStartTime,timedelta64[ns],1035,0,0.0,1035
+Race Laps,LapStartDate,datetime64[ns],1035,0,0.0,1035
+Race Laps,TrackStatus,category,1035,0,0.0,1035
+Race Laps,Position,float64,1035,2,0.193,1033
+Race Laps,Deleted,boolean,1035,0,0.0,1035
+Race Laps,DeletedReason,object,1035,1008,97.391,27
+Race Laps,FastF1Generated,bool,1035,0,0.0,1035
+Race Laps,IsAccurate,bool,1035,0,0.0,1035
+Race Laps,WeatherTime,timedelta64[ns],1035,0,0.0,1035
+Race Laps,AirTemp,float64,1035,0,0.0,1035
+Race Laps,Humidity,float64,1035,0,0.0,1035
+Race Laps,Pressure,float64,1035,0,0.0,1035
+Race Laps,Rainfall,bool,1035,0,0.0,1035
+Race Laps,TrackTemp,float64,1035,0,0.0,1035
+Race Laps,WindDirection,Int64,1035,0,0.0,1035
+Race Laps,WindSpeed,float64,1035,0,0.0,1035
+Race Laps,LapTimeSeconds,float64,1035,2,0.193,1033
+Race Laps,ms1,object,1035,0,0.0,1035
+Race Laps,ms2,object,1035,0,0.0,1035
+Race Laps,ms3,object,1035,1,0.097,1034
+Race Laps,drv,object,1035,0,0.0,1035
+Race Laps,team,object,1035,0,0.0,1035

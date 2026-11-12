@@ -1,0 +1,73 @@
+Dataset,Column Name,Actual Dtype,Expected Column,Null Count,Null Percentage (%),Is Nullable,Status
+Telemetry,Date,datetime64[ns],True,0,0.0,False,PASS
+Telemetry,SessionTime,timedelta64[ns],True,0,0.0,False,PASS
+Telemetry,DriverAhead,object,True,4019,5.545,True,PASS
+Telemetry,DistanceToDriverAhead,float64,True,2957,4.08,True,PASS
+Telemetry,Time,timedelta64[ns],True,0,0.0,False,PASS
+Telemetry,RPM,float64,True,0,0.0,False,PASS
+Telemetry,Speed,float64,True,0,0.0,False,PASS
+Telemetry,nGear,Int64,True,0,0.0,False,PASS
+Telemetry,Throttle,float64,True,0,0.0,False,PASS
+Telemetry,Brake,bool,True,0,0.0,False,PASS
+Telemetry,DRS,Int64,True,0,0.0,False,PASS
+Telemetry,Source,object,True,0,0.0,False,PASS
+Telemetry,Distance,float64,True,0,0.0,False,PASS
+Telemetry,RelativeDistance,float64,True,0,0.0,False,PASS
+Telemetry,Status,object,True,0,0.0,False,PASS
+Telemetry,X,float64,True,0,0.0,False,PASS
+Telemetry,Y,float64,True,0,0.0,False,PASS
+Telemetry,Z,float64,True,0,0.0,False,PASS
+Telemetry,AccelerationX,float64,True,0,0.0,False,PASS
+Telemetry,AccelerationY,float64,True,0,0.0,False,PASS
+Telemetry,AccelerationZ,float64,True,0,0.0,False,PASS
+Telemetry,Driver,object,True,0,0.0,False,PASS
+Telemetry,LapNumber,int64,True,0,0.0,False,PASS
+Telemetry,Year,int64,True,0,0.0,False,PASS
+Telemetry,Event,object,True,0,0.0,False,PASS
+Telemetry,Session,object,True,0,0.0,False,PASS
+Race Laps,index,int64,True,0,0.0,False,PASS
+Race Laps,Time,timedelta64[ns],True,0,0.0,False,PASS
+Race Laps,Driver,category,True,0,0.0,False,PASS
+Race Laps,DriverNumber,object,True,0,0.0,False,PASS
+Race Laps,LapTime,timedelta64[ns],True,2,0.193,True,PASS
+Race Laps,LapNumber,float64,True,0,0.0,False,PASS
+Race Laps,Stint,float64,True,0,0.0,False,PASS
+Race Laps,PitOutTime,timedelta64[ns],True,1007,97.295,True,PASS
+Race Laps,PitInTime,timedelta64[ns],True,1005,97.101,True,PASS
+Race Laps,Sector1Time,timedelta64[ns],True,21,2.029,True,PASS
+Race Laps,Sector2Time,timedelta64[ns],True,2,0.193,True,PASS
+Race Laps,Sector3Time,timedelta64[ns],True,2,0.193,True,PASS
+Race Laps,Sector1SessionTime,timedelta64[ns],True,25,2.415,True,PASS
+Race Laps,Sector2SessionTime,timedelta64[ns],True,2,0.193,True,PASS
+Race Laps,Sector3SessionTime,timedelta64[ns],True,2,0.193,True,PASS
+Race Laps,SpeedI1,float64,True,2,0.193,True,PASS
+Race Laps,SpeedI2,float64,True,2,0.193,True,PASS
+Race Laps,SpeedFL,float64,True,32,3.092,True,PASS
+Race Laps,SpeedST,float64,True,2,0.193,True,PASS
+Race Laps,IsPersonalBest,bool,True,0,0.0,False,PASS
+Race Laps,Compound,category,True,0,0.0,False,PASS
+Race Laps,TyreLife,float64,True,0,0.0,False,PASS
+Race Laps,FreshTyre,bool,True,0,0.0,False,PASS
+Race Laps,Team,category,True,0,0.0,False,PASS
+Race Laps,LapStartTime,timedelta64[ns],True,0,0.0,False,PASS
+Race Laps,LapStartDate,datetime64[ns],True,0,0.0,False,PASS
+Race Laps,TrackStatus,category,True,0,0.0,False,PASS
+Race Laps,Position,float64,True,2,0.193,True,PASS
+Race Laps,Deleted,boolean,True,0,0.0,False,PASS
+Race Laps,DeletedReason,object,True,1008,97.391,True,PASS
+Race Laps,FastF1Generated,bool,True,0,0.0,False,PASS
+Race Laps,IsAccurate,bool,True,0,0.0,False,PASS
+Race Laps,WeatherTime,timedelta64[ns],True,0,0.0,False,PASS
+Race Laps,AirTemp,float64,True,0,0.0,False,PASS
+Race Laps,Humidity,float64,True,0,0.0,False,PASS
+Race Laps,Pressure,float64,True,0,0.0,False,PASS
+Race Laps,Rainfall,bool,True,0,0.0,False,PASS
+Race Laps,TrackTemp,float64,True,0,0.0,False,PASS
+Race Laps,WindDirection,Int64,True,0,0.0,False,PASS
+Race Laps,WindSpeed,float64,True,0,0.0,False,PASS
+Race Laps,LapTimeSeconds,float64,True,2,0.193,True,PASS
+Race Laps,ms1,object,True,0,0.0,False,PASS
+Race Laps,ms2,object,True,0,0.0,False,PASS
+Race Laps,ms3,object,True,1,0.097,True,PASS
+Race Laps,drv,object,True,0,0.0,False,PASS
+Race Laps,team,object,True,0,0.0,False,PASS

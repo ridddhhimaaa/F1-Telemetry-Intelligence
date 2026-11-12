@@ -1,0 +1,20 @@
+driver_id,team,best_lap_time_s,delta_to_benchmark_s,deficit_pct,top_speed_kmh,avg_wot_pct
+SAI,Ferrari,88.995,0.0,0.0,310.0,51.3
+NOR,McLaren,89.01,0.015,0.02,307.0,50.4
+MAG,Haas F1 Team,89.202,0.207,0.23,337.0,53.4
+LEC,Ferrari,89.273,0.278,0.31,335.0,53.8
+HUL,Haas F1 Team,89.348,0.353,0.4,337.0,52.4
+GAS,Alpine,89.406,0.411,0.46,326.0,53.7
+COL,Williams,89.411,0.416,0.47,313.0,39.4
+ALO,Aston Martin,89.434,0.439,0.49,333.0,55.7
+RUS,Mercedes,89.488,0.493,0.55,332.0,53.1
+VER,Red Bull Racing,89.504,0.509,0.57,335.0,51.9
+HAM,Mercedes,89.666,0.671,0.75,333.0,51.4
+STR,Aston Martin,89.685,0.69,0.78,317.0,53.7
+LAW,RB,89.738,0.743,0.83,318.0,51.6
+BOT,Kick Sauber,89.944,0.949,1.07,318.0,55.9
+ZHO,Kick Sauber,89.966,0.971,1.09,331.0,50.6
+ALB,Williams,90.06,1.065,1.2,336.0,46.0
+TSU,RB,90.115,1.12,1.26,316.0,54.2
+DOO,Alpine,90.198,1.203,1.35,329.0,54.7
+PIA,McLaren,92.201,3.206,3.6,316.0,42.5

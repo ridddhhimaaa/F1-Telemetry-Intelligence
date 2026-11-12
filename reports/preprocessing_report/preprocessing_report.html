@@ -1,0 +1,1448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phase 4 Data Validation &amp; Preprocessing Report - F1 Telemetry Intelligence</title>
+<style>
+:root {
+    --f1-red: #e10600;
+    --f1-dark: #15151e;
+    --f1-surface: #1f1f27;
+    --f1-border: #38383f;
+    --f1-text: #f3f3f3;
+    --f1-text-dim: #949498;
+    --pass-green: #38a169;
+    --warn-yellow: #dd6b20;
+    --danger-red: #e53e3e;
+    --info-blue: #3182ce;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: var(--f1-dark);
+    color: var(--f1-text);
+    line-height: 1.6;
+    padding: 24px;
+}
+.container { max-width: 1400px; margin: 0 auto; }
+header {
+    border-bottom: 4px solid var(--f1-red);
+    padding-bottom: 16px;
+    margin-bottom: 28px;
+}
+header h1 {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+header h1 span.badge {
+    background: var(--f1-red);
+    color: #fff;
+    font-size: 0.8rem;
+    padding: 4px 10px;
+    border-radius: 4px;
+    text-transform: uppercase;
+}
+header p.meta { color: var(--f1-text-dim); font-size: 0.95rem; margin-top: 6px; }
+.metric-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+}
+.metric-card {
+    background: var(--f1-surface);
+    border: 1px solid var(--f1-border);
+    border-radius: 8px;
+    padding: 16px;
+    border-left: 4px solid var(--f1-red);
+}
+.metric-card h3 { font-size: 0.85rem; color: var(--f1-text-dim); text-transform: uppercase; }
+.metric-card p.value { font-size: 1.8rem; font-weight: 800; margin-top: 4px; color: #fff; }
+.metric-card p.subtext { font-size: 0.8rem; color: var(--f1-text-dim); margin-top: 2px; }
+section {
+    background: var(--f1-surface);
+    border: 1px solid var(--f1-border);
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 28px;
+}
+section h2 {
+    font-size: 1.35rem;
+    color: #fff;
+    border-bottom: 2px solid var(--f1-border);
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+}
+section p, section li { color: #d1d1d6; margin-bottom: 12px; font-size: 0.95rem; }
+ul { margin-left: 24px; margin-bottom: 16px; }
+.table-container { overflow-x: auto; margin: 16px 0; }
+table.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+    text-align: left;
+    background: #181820;
+}
+table.styled-table th {
+    background: #272733;
+    color: #fff;
+    padding: 10px 12px;
+    font-weight: 700;
+    border-bottom: 2px solid var(--f1-border);
+    white-space: nowrap;
+}
+table.styled-table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--f1-border);
+    color: #e2e2e8;
+}
+table.styled-table tr:hover { background: #2a2a38; }
+.alert-box {
+    padding: 16px;
+    border-radius: 6px;
+    margin: 16px 0;
+    font-size: 0.92rem;
+}
+.alert-box.info {
+    background: rgba(49, 130, 206, 0.15);
+    border-left: 4px solid var(--info-blue);
+    color: #bee3f8;
+}
+.alert-box.pass {
+    background: rgba(56, 161, 105, 0.15);
+    border-left: 4px solid var(--pass-green);
+    color: #c6f6d5;
+}
+.alert-box.warning {
+    background: rgba(221, 107, 32, 0.15);
+    border-left: 4px solid var(--warn-yellow);
+    color: #feebc8;
+}
+footer {
+    text-align: center;
+    color: var(--f1-text-dim);
+    font-size: 0.85rem;
+    padding: 24px 0;
+    border-top: 1px solid var(--f1-border);
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+    <h1>Formula 1 Telemetry Intelligence <span class="badge">Phase 4 Preprocessing</span></h1>
+    <p class="meta">
+        Event: <strong>2024 Abu Dhabi Grand Prix (Race)</strong> |
+        Pipeline Executed: <strong>2026-11-12 17:14:03 UTC</strong> |
+        Data Integrity: <strong>100% Raw Records Preserved</strong>
+    </p>
+</header>
+
+<div class="metric-grid">
+    <div class="metric-card">
+        <h3>Raw Records Preserved</h3>
+        <p class="value">72,476</p>
+        <p class="subtext">0 records deleted</p>
+    </div>
+    <div class="metric-card">
+        <h3>Derived Features Added</h3>
+        <p class="value">+11</p>
+        <p class="subtext">Companion analytical features</p>
+    </div>
+    <div class="metric-card">
+        <h3>Validation Rules</h3>
+        <p class="value">14</p>
+        <p class="subtext">100% verified</p>
+    </div>
+    <div class="metric-card">
+        <h3>Lap Categories</h3>
+        <p class="value">4</p>
+        <p class="subtext">Flying, Start, VSC, DNF</p>
+    </div>
+    <div class="metric-card">
+        <h3>Distance Calibrations</h3>
+        <p class="value">188</p>
+        <p class="subtext">Grid offsets &amp; jitter smoothed</p>
+    </div>
+    <div class="metric-card">
+        <h3>Spatial Resampled Slices</h3>
+        <p class="value">495,849</p>
+        <p class="subtext">1.0-meter track grid</p>
+    </div>
+</div>
+
+<section id="summary">
+    <h2>1. Executive Summary &amp; Before/After Quality Comparison</h2>
+    <p>Comprehensive before-and-after audit demonstrating signal preservation, calibration, and feature derivation.</p>
+    <div class="table-container">
+        <table class="dataframe styled-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Metric Category</th>
+      <th>Quality Metric</th>
+      <th>Before (Raw)</th>
+      <th>After (Processed)</th>
+      <th>Change / Delta</th>
+      <th>Status</th>
+      <th>Analytical Significance</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Telemetry Volume</td>
+      <td>Total Records Preserved</td>
+      <td>72,476</td>
+      <td>72,476</td>
+      <td>0 records deleted (100% preserved)</td>
+      <td>PASS</td>
+      <td>Zero records dropped; full source fidelity preserved.</td>
+    </tr>
+    <tr>
+      <td>Telemetry Dimensionality</td>
+      <td>Total Columns Count</td>
+      <td>26 columns</td>
+      <td>37 columns</td>
+      <td>+11 derived features</td>
+      <td>PASS</td>
+      <td>26 raw columns preserved; 9 explicit companion features added.</td>
+    </tr>
+    <tr>
+      <td>Missing Value Strategy</td>
+      <td>DistanceToDriverAhead Treatment</td>
+      <td>2,957 unflagged NaNs</td>
+      <td>2,957 NaNs preserved + IsLeadingRace derived</td>
+      <td>Explicit boolean flag derived</td>
+      <td>PASS</td>
+      <td>Structural missingness encoded without artificial imputation distortion.</td>
+    </tr>
+    <tr>
+      <td>Spatial Consistency</td>
+      <td>Negative Starting Grid Offsets</td>
+      <td>44 negative distance samples</td>
+      <td>0 negative samples in Distance_Corrected</td>
+      <td>44 points calibrated</td>
+      <td>PASS</td>
+      <td>Lap 1 distance calibrated to start at 0.0m at start-finish line.</td>
+    </tr>
+    <tr>
+      <td>Spatial Monotonicity</td>
+      <td>Distance Non-Monotonic Laps</td>
+      <td>22 laps with negative increments</td>
+      <td>0 non-monotonic laps in Distance_Corrected</td>
+      <td>22 laps smoothed</td>
+      <td>PASS</td>
+      <td>Floating point jitter removed; strictly forward progression guaranteed.</td>
+    </tr>
+    <tr>
+      <td>Signal Normalization</td>
+      <td>Throttle Overtravel Normalization</td>
+      <td>32 samples > 100% (max 104%)</td>
+      <td>Max 100.0% in Throttle_Clipped + Overtravel Flag</td>
+      <td>32 samples normalized</td>
+      <td>PASS</td>
+      <td>Safe bounded [0..100] signal available for machine learning.</td>
+    </tr>
+    <tr>
+      <td>Lap Segmentation</td>
+      <td>DNF / Incomplete Lap Flagging</td>
+      <td>Implicit in coverage / missing LapTime</td>
+      <td>Explicit LapClassification + IsCompleteLap</td>
+      <td>1 DNF lap + 19 start laps explicitly flagged</td>
+      <td>PASS</td>
+      <td>Perez Lap 1 crash isolated from clean flying lap training sets.</td>
+    </tr>
+  </tbody>
+</table>
+    </div>
+</section>
+
+<section id="validation">
+    <h2>2. Schema &amp; Domain Kinematic Validation</h2>
+    <div class="alert-box pass">
+        <strong>Validation Status: PASS</strong><br>
+        All required 26 telemetry columns and 46 race-lap columns are present. Cross-dataset referential integrity is 100% matched across 20 drivers and 96 driver-lap series.
+    </div>
+    <div class="table-container">
+        <table class="dataframe styled-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>rule_id</th>
+      <th>dataset</th>
+      <th>target</th>
+      <th>expected_condition</th>
+      <th>actual_result</th>
+      <th>affected_records</th>
+      <th>affected_pct</th>
+      <th>severity</th>
+      <th>status</th>
+      <th>recommended_action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>VAL_TEL_COL_PRESENCE</td>
+      <td>Telemetry</td>
+      <td>Columns</td>
+      <td>All 26 required columns present</td>
+      <td>All present</td>
+      <td>0</td>
+      <td>0.0000</td>
+      <td>INFO</td>
+      <td>PASS</td>
+      <td>Ensure upstream ingestion pipeline extracts complete telemetry schema.</td>
+    </tr>
+    <tr>
+      <td>VAL_LAPS_COL_PRESENCE</td>
+      <td>Race Laps</td>
+      <td>Columns</td>
+      <td>All 46 required columns present</td>
+      <td>All present</td>
+      <td>0</td>
+      <td>0.0000</td>
+      <td>INFO</td>
+      <td>PASS</td>
+      <td>Validate race laps extraction schema against tif1/FastF1 contract.</td>
+    </tr>
+    <tr>
+      <td>VAL_TEL_SPEED_RANGE</td>
+      <td>Telemetry</td>
+      <td>Speed</td>
+      <td>Speed >= 0.0 km/h and Speed <= 360.0 km/h</td>
+      <td>Min: 0.0, Max: 337.0 km/h (neg count: 0)</td>
+      <td>0</td>
+      <td>0.0000</td>
+      <td>INFO</td>
+      <td>PASS</td>
+      <td>Inspect sensor recording if negative speeds occur.</td>
+    </tr>
+    <tr>
+      <td>VAL_TEL_THROTTLE_NOMINAL</td>
+      <td>Telemetry</td>
+      <td>Throttle</td>
+      <td>0.0% <= Throttle <= 100.0%</td>
+      <td>32 overtravel samples > 100% (max: 104.0%)</td>
+      <td>32</td>
+      <td>0.0442</td>
+      <td>WARNING</td>
+      <td>WARNING</td>
+      <td>Preserve raw throttle; create derived clipped feature in Stage 4.</td>
+    </tr>
+    <tr>
+      <td>VAL_TEL_BRAKE_REPRESENTATION</td>
+      <td>Telemetry</td>
+      <td>Brake</td>
+      <td>Boolean or binary numeric representation {False, True}</td>
+      <td>dtype: bool, unique values: [np.False_, np.True_]</td>
+      <td>0</td>
+      <td>0.0000</td>
+      <td>INFO</td>
+      <td>PASS</td>
+      <td>Confirmed binary boolean indicator.</td>
+    </tr>
+    <tr>
+      <td>VAL_TEL_RPM_RANGE</td>
+      <td>Telemetry</td>
+      <td>RPM</td>
+      <td>0.0 < RPM <= 15000.0 (active engine)</td>
+      <td>33 zero RPM records detected (all PER Lap 1 retirement)</td>
+      <td>33</td>
+      <td>0.0455</td>
+      <td>WARNING</td>
+      <td>WARNING</td>
+      <td>Retain zero RPM as physical indicator of power unit shutdown; flag DNF in Stage 5.</td>
+    </tr>
+    <tr>
+      <td>VAL_TEL_GEAR_RANGE</td>
+      <td>Telemetry</td>
+      <td>nGear</td>
+      <td>Forward gears integer [1, 8]</td>
+      <td>All gears within 1..8</td>
+      <td>0</td>
+      <td>0.0000</td>
+      <td>INFO</td>
+      <td>PASS</td>
+      <td>Ensure transmission telemetry maps exclusively to forward gears.</td>
+    </tr>
+    <tr>
+      <td>VAL_TEL_DISTANCE_NON_NEGATIVE</td>
+      <td>Telemetry</td>
+      <td>Distance</td>
+      <td>Distance >= 0.0 metres</td>
+      <td>44 samples < 0.0m on Lap 1 starting grid (min: -0.0899m)</td>
+      <td>44</td>
+      <td>0.0607</td>
+      <td>WARNING</td>
+      <td>WARNING</td>
+      <td>Preserve raw Distance; calibrate derived Distance_Corrected to 0.0m at start-finish line in Stage 3.</td>
+    </tr>
+    <tr>
+      <td>VAL_TEL_TIME_MONOTONIC</td>
+      <td>Telemetry</td>
+      <td>Time</td>
+      <td>Time strictly monotonically increasing per driver-lap</td>
+      <td>0 non-monotonic driver-laps detected</td>
+      <td>0</td>
+      <td>0.0000</td>
+      <td>INFO</td>
+      <td>PASS</td>
+      <td>Timestamps must be strictly chronological for valid kinematic calculation.</td>
+    </tr>
+    <tr>
+      <td>VAL_LAPS_DRIVER_ROSTER</td>
+      <td>Race Laps</td>
+      <td>Driver</td>
+      <td>20 official FIA drivers present (20)</td>
+      <td>20 drivers present</td>
+      <td>0</td>
+      <td>0.0000</td>
+      <td>INFO</td>
+      <td>PASS</td>
+      <td>Verify session roster against FIA official entry list.</td>
+    </tr>
+    <tr>
+      <td>VAL_LAPS_NUMBER_BOUNDS</td>
+      <td>Race Laps</td>
+      <td>LapNumber</td>
+      <td>1 <= LapNumber <= 58 (Abu Dhabi Grand Prix total race laps)</td>
+      <td>Range: [1, 58]</td>
+      <td>0</td>
+      <td>0.0000</td>
+      <td>INFO</td>
+      <td>PASS</td>
+      <td>Lap range verified consistent with 58-lap Abu Dhabi Grand Prix.</td>
+    </tr>
+    <tr>
+      <td>VAL_LAPS_TIME_NULLS</td>
+      <td>Race Laps</td>
+      <td>LapTime</td>
+      <td>LapTime present for all completed racing laps</td>
+      <td>2 null LapTime records (PER Lap 1 DNF)</td>
+      <td>2</td>
+      <td>0.1930</td>
+      <td>WARNING</td>
+      <td>WARNING</td>
+      <td>Corresponds to driver retirement without completing Lap 1; expected domain event.</td>
+    </tr>
+    <tr>
+      <td>VAL_CROSS_DRIVERS</td>
+      <td>Cross-Dataset</td>
+      <td>Driver</td>
+      <td>All telemetry drivers must exist in the race-laps dataset</td>
+      <td>20 telemetry drivers matched 20 race lap drivers</td>
+      <td>0</td>
+      <td>0.0000</td>
+      <td>INFO</td>
+      <td>PASS</td>
+      <td>Referential integrity confirmed; 100% driver matching.</td>
+    </tr>
+    <tr>
+      <td>VAL_CROSS_DRIVER_LAPS</td>
+      <td>Cross-Dataset</td>
+      <td>Driver, LapNumber</td>
+      <td>All telemetry driver-laps must exist in the race-laps dataset</td>
+      <td>All 96 telemetry driver-laps exist in race laps (100% matched)</td>
+      <td>0</td>
+      <td>0.0000</td>
+      <td>INFO</td>
+      <td>PASS</td>
+      <td>Driver-lap referential integrity verified.</td>
+    </tr>
+  </tbody>
+</table>
+    </div>
+</section>
+
+<section id="missing-values">
+    <h2>3. Missing Value Treatment &amp; Structural Feature Derivation</h2>
+    <div class="alert-box info">
+        <strong>Domain Rule Applied:</strong> Zero and mean imputation were strictly avoided for <code>DistanceToDriverAhead</code>.
+        All 2,957 missing values belong to race leader Lando Norris; the companion boolean feature <code>IsLeadingRace</code> was derived to preserve statistical distribution fidelity.
+    </div>
+    <div class="table-container">
+        <table class="dataframe styled-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Dataset</th>
+      <th>Column Name</th>
+      <th>Missing Count</th>
+      <th>Missing Percentage (%)</th>
+      <th>Missing Classification</th>
+      <th>Treatment Policy</th>
+      <th>Derived Feature</th>
+      <th>Justification</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Telemetry</td>
+      <td>DistanceToDriverAhead</td>
+      <td>2957</td>
+      <td>4.080%</td>
+      <td>Structural Missingness (MNAR - Race Leader)</td>
+      <td>Preserve NaN; derive 'IsLeadingRace' boolean indicator</td>
+      <td>IsLeadingRace (bool)</td>
+      <td>Imputing 0.0 falsely implies physical collision with another car; mean imputation distorts gap distribution. Norris led Laps 2-5, so no vehicle was physically ahead.</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>DriverAhead</td>
+      <td>4019</td>
+      <td>5.545%</td>
+      <td>Structural MNAR (3,547 NOR) + Boundary Reset (472 Non-NOR)</td>
+      <td>Preserve NaN; derive 'IsTimingLineBoundary' boolean flag</td>
+      <td>IsTimingLineBoundary (bool)</td>
+      <td>Non-NOR nulls cluster within 0..25 metres of timing line boundary where transponder order updates across sector transitions.</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>PitInTime</td>
+      <td>1005</td>
+      <td>97.101%</td>
+      <td>Structural Missingness (Event-Driven)</td>
+      <td>Preserve NaT; non-pit laps legitimately lack pit timestamps</td>
+      <td>HasPitActivity (inferred from notna)</td>
+      <td>Formula 1 cars only pit 1-2 times per race. Absence of pit timestamp is the standard state for racing laps.</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>PitOutTime</td>
+      <td>1007</td>
+      <td>97.295%</td>
+      <td>Structural Missingness (Event-Driven)</td>
+      <td>Preserve NaT; non-pit laps legitimately lack pit timestamps</td>
+      <td>HasPitActivity (inferred from notna)</td>
+      <td>Formula 1 cars only pit 1-2 times per race. Absence of pit timestamp is the standard state for racing laps.</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>DeletedReason</td>
+      <td>1007</td>
+      <td>97.295%</td>
+      <td>Structural Missingness (Conditional Annotation)</td>
+      <td>Preserve null; populate only when Deleted == True</td>
+      <td>None (relies on Deleted boolean)</td>
+      <td>Reason is only generated when a lap time is deleted by FIA race stewards for track limits violations.</td>
+    </tr>
+    <tr>
+      <td>Race Laps</td>
+      <td>LapTime</td>
+      <td>2</td>
+      <td>0.193%</td>
+      <td>Incomplete Racing Sequence (DNF / Lap 1)</td>
+      <td>Preserve NaT; flag DNF_OR_RETIRED in Stage 5</td>
+      <td>IsCompleteLap (bool, Stage 5)</td>
+      <td>Perez retired on Lap 1 without completing the circuit; an official lap time does not exist for this sequence.</td>
+    </tr>
+  </tbody>
+</table>
+    </div>
+</section>
+
+<section id="distance-cleaning">
+    <h2>4. Spatial Distance Calibration &amp; Monotonic Progression</h2>
+    <p>Calibrated Lap 1 start grid offsets (-0.0899m to 0.0m) and removed sub-millimetre floating-point GPS jitter, storing the result in <code>Distance_Corrected</code>.</p>
+    <div class="table-container">
+        <table class="dataframe styled-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Driver</th>
+      <th>LapNumber</th>
+      <th>Index</th>
+      <th>Timestamp</th>
+      <th>Raw Distance (m)</th>
+      <th>Corrected Distance (m)</th>
+      <th>Delta (m)</th>
+      <th>Anomaly Category</th>
+      <th>Interpretation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>ALB</td>
+      <td>1</td>
+      <td>2</td>
+      <td>0 days 00:00:00.082000</td>
+      <td>-0.0002</td>
+      <td>0.0000</td>
+      <td>-0.0002</td>
+      <td>Timing Line Negative Offset</td>
+      <td>Car positioned behind the start-finish timing line. Clamped to 0.0m.</td>
+    </tr>
+    <tr>
+      <td>ALB</td>
+      <td>1</td>
+      <td>3</td>
+      <td>0 days 00:00:00.242000</td>
+      <td>-0.0055</td>
+      <td>0.0000</td>
+      <td>-0.0055</td>
+      <td>Timing Line Negative Offset</td>
+      <td>Car positioned behind the start-finish timing line. Clamped to 0.0m.</td>
+    </tr>
+    <tr>
+      <td>ALB</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0 days 00:00:00.076000</td>
+      <td>0.0000</td>
+      <td>0.0015</td>
+      <td>-0.001487</td>
+      <td>Sub-Millimetre Jitter Step</td>
+      <td>Negative distance change within single lap. Enforced monotonic non-decreasing coordinate.</td>
+    </tr>
+    <tr>
+      <td>ALB</td>
+      <td>1</td>
+      <td>2</td>
+      <td>0 days 00:00:00.082000</td>
+      <td>-0.0002</td>
+      <td>0.0015</td>
+      <td>-0.001487</td>
+      <td>Sub-Millimetre Jitter Step</td>
+      <td>Negative distance change within single lap. Enforced monotonic non-decreasing coordinate.</td>
+    </tr>
+    <tr>
+      <td>ALB</td>
+      <td>1</td>
+      <td>3</td>
+      <td>0 days 00:00:00.242000</td>
+      <td>-0.0055</td>
+      <td>0.0015</td>
+      <td>-0.001487</td>
+      <td>Sub-Millimetre Jitter Step</td>
+      <td>Negative distance change within single lap. Enforced monotonic non-decreasing coordinate.</td>
+    </tr>
+    <tr>
+      <td>ALB</td>
+      <td>1</td>
+      <td>4</td>
+      <td>0 days 00:00:00.277000</td>
+      <td>0.0000</td>
+      <td>0.0015</td>
+      <td>-0.001487</td>
+      <td>Sub-Millimetre Jitter Step</td>
+      <td>Negative distance change within single lap. Enforced monotonic non-decreasing coordinate.</td>
+    </tr>
+    <tr>
+      <td>ALO</td>
+      <td>1</td>
+      <td>3787</td>
+      <td>0 days 00:00:00</td>
+      <td>-0.0022</td>
+      <td>0.0000</td>
+      <td>-0.0022</td>
+      <td>Timing Line Negative Offset</td>
+      <td>Car positioned behind the start-finish timing line. Clamped to 0.0m.</td>
+    </tr>
+    <tr>
+      <td>ALO</td>
+      <td>1</td>
+      <td>3792</td>
+      <td>0 days 00:00:00.422000</td>
+      <td>-0.0899</td>
+      <td>0.0000</td>
+      <td>-0.0899</td>
+      <td>Timing Line Negative Offset</td>
+      <td>Car positioned behind the start-finish timing line. Clamped to 0.0m.</td>
+    </tr>
+    <tr>
+      <td>ALO</td>
+      <td>1</td>
+      <td>3791</td>
+      <td>0 days 00:00:00.277000</td>
+      <td>0.0000</td>
+      <td>0.0082</td>
+      <td>-0.008152</td>
+      <td>Sub-Millimetre Jitter Step</td>
+      <td>Negative distance change within single lap. Enforced monotonic non-decreasing coordinate.</td>
+    </tr>
+    <tr>
+      <td>ALO</td>
+      <td>1</td>
+      <td>3792</td>
+      <td>0 days 00:00:00.422000</td>
+      <td>-0.0899</td>
+      <td>0.0082</td>
+      <td>-0.008152</td>
+      <td>Sub-Millimetre Jitter Step</td>
+      <td>Negative distance change within single lap. Enforced monotonic non-decreasing coordinate.</td>
+    </tr>
+    <tr>
+      <td>ALO</td>
+      <td>1</td>
+      <td>3793</td>
+      <td>0 days 00:00:00.557000</td>
+      <td>0.0000</td>
+      <td>0.0082</td>
+      <td>-0.008152</td>
+      <td>Sub-Millimetre Jitter Step</td>
+      <td>Negative distance change within single lap. Enforced monotonic non-decreasing coordinate.</td>
+    </tr>
+    <tr>
+      <td>ALO</td>
+      <td>3</td>
+      <td>5357</td>
+      <td>0 days 00:00:00</td>
+      <td>-0.0330</td>
+      <td>0.0000</td>
+      <td>-0.0330</td>
+      <td>Timing Line Negative Offset</td>
+      <td>Car positioned behind the start-finish timing line. Clamped to 0.0m.</td>
+    </tr>
+    <tr>
+      <td>BOT</td>
+      <td>1</td>
+      <td>7503</td>
+      <td>0 days 00:00:00.082000</td>
+      <td>-0.0005</td>
+      <td>0.0000</td>
+      <td>-0.0005</td>
+      <td>Timing Line Negative Offset</td>
+      <td>Car positioned behind the start-finish timing line. Clamped to 0.0m.</td>
+    </tr>
+    <tr>
+      <td>BOT</td>
+      <td>1</td>
+      <td>7504</td>
+      <td>0 days 00:00:00.242000</td>
+      <td>-0.0121</td>
+      <td>0.0000</td>
+      <td>-0.0121</td>
+      <td>Timing Line Negative Offset</td>
+      <td>Car positioned behind the start-finish timing line. Clamped to 0.0m.</td>
+    </tr>
+    <tr>
+      <td>BOT</td>
+      <td>1</td>
+      <td>7502</td>
+      <td>0 days 00:00:00.076000</td>
+      <td>0.0000</td>
+      <td>0.0033</td>
+      <td>-0.003290</td>
+      <td>Sub-Millimetre Jitter Step</td>
+      <td>Negative distance change within single lap. Enforced monotonic non-decreasing coordinate.</td>
+    </tr>
+    <tr>
+      <td>BOT</td>
+      <td>1</td>
+      <td>7503</td>
+      <td>0 days 00:00:00.082000</td>
+      <td>-0.0005</td>
+      <td>0.0033</td>
+      <td>-0.003290</td>
+      <td>Sub-Millimetre Jitter Step</td>
+      <td>Negative distance change within single lap. Enforced monotonic non-decreasing coordinate.</td>
+    </tr>
+    <tr>
+      <td>BOT</td>
+      <td>1</td>
+      <td>7504</td>
+      <td>0 days 00:00:00.242000</td>
+      <td>-0.0121</td>
+      <td>0.0033</td>
+      <td>-0.003290</td>
+      <td>Sub-Millimetre Jitter Step</td>
+      <td>Negative distance change within single lap. Enforced monotonic non-decreasing coordinate.</td>
+    </tr>
+    <tr>
+      <td>BOT</td>
+      <td>1</td>
+      <td>7505</td>
+      <td>0 days 00:00:00.277000</td>
+      <td>0.0000</td>
+      <td>0.0033</td>
+      <td>-0.003290</td>
+      <td>Sub-Millimetre Jitter Step</td>
+      <td>Negative distance change within single lap. Enforced monotonic non-decreasing coordinate.</td>
+    </tr>
+    <tr>
+      <td>COL</td>
+      <td>1</td>
+      <td>11279</td>
+      <td>0 days 00:00:00.082000</td>
+      <td>-0.0005</td>
+      <td>0.0000</td>
+      <td>-0.0005</td>
+      <td>Timing Line Negative Offset</td>
+      <td>Car positioned behind the start-finish timing line. Clamped to 0.0m.</td>
+    </tr>
+    <tr>
+      <td>COL</td>
+      <td>1</td>
+      <td>11280</td>
+      <td>0 days 00:00:00.242000</td>
+      <td>-0.0114</td>
+      <td>0.0000</td>
+      <td>-0.0114</td>
+      <td>Timing Line Negative Offset</td>
+      <td>Car positioned behind the start-finish timing line. Clamped to 0.0m.</td>
+    </tr>
+    <tr>
+      <td>COL</td>
+      <td>1</td>
+      <td>11278</td>
+      <td>0 days 00:00:00.076000</td>
+      <td>0.0000</td>
+      <td>0.0031</td>
+      <td>-0.003113</td>
+      <td>Sub-Millimetre Jitter Step</td>
+      <td>Negative distance change within single lap. Enforced monotonic non-decreasing coordinate.</td>
+    </tr>
+    <tr>
+      <td>COL</td>
+      <td>1</td>
+      <td>11279</td>
+      <td>0 days 00:00:00.082000</td>
+      <td>-0.0005</td>
+      <td>0.0031</td>
+      <td>-0.003113</td>
+      <td>Sub-Millimetre Jitter Step</td>
+      <td>Negative distance change within single lap. Enforced monotonic non-decreasing coordinate.</td>
+    </tr>
+    <tr>
+      <td>COL</td>
+      <td>1</td>
+      <td>11280</td>
+      <td>0 days 00:00:00.242000</td>
+      <td>-0.0114</td>
+      <td>0.0031</td>
+      <td>-0.003113</td>
+      <td>Sub-Millimetre Jitter Step</td>
+      <td>Negative distance change within single lap. Enforced monotonic non-decreasing coordinate.</td>
+    </tr>
+    <tr>
+      <td>COL</td>
+      <td>1</td>
+      <td>11281</td>
+      <td>0 days 00:00:00.277000</td>
+      <td>0.0000</td>
+      <td>0.0031</td>
+      <td>-0.003113</td>
+      <td>Sub-Millimetre Jitter Step</td>
+      <td>Negative distance change within single lap. Enforced monotonic non-decreasing coordinate.</td>
+    </tr>
+    <tr>
+      <td>COL</td>
+      <td>4</td>
+      <td>13989</td>
+      <td>0 days 00:00:00</td>
+      <td>-0.0000</td>
+      <td>0.0000</td>
+      <td>-0.0000</td>
+      <td>Timing Line Negative Offset</td>
+      <td>Car positioned behind the start-finish timing line. Clamped to 0.0m.</td>
+    </tr>
+  </tbody>
+</table>
+    </div>
+</section>
+
+<section id="signals">
+    <h2>5. Driver Control Signals (Throttle &amp; Brake)</h2>
+    <p>Potentiometer overtravel (> 100%, max 104.0%) clipped into <code>Throttle_Clipped</code> with companion flag <code>Throttle_Overtravel_Flag</code>. Brake signals converted to explicit booleans and numerical indicator integers.</p>
+    <div class="table-container">
+        <table class="dataframe styled-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Signal</th>
+      <th>Channel Checked</th>
+      <th>Validation Rule</th>
+      <th>Metric</th>
+      <th>Observed Value</th>
+      <th>Unit</th>
+      <th>Derived Features</th>
+      <th>Interpretation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Throttle</td>
+      <td>Telemetry.Throttle</td>
+      <td>Nominal range [0..100%]; overtravel check</td>
+      <td>Overtravel Count (> 100%)</td>
+      <td>32 (0.044%)</td>
+      <td>samples</td>
+      <td>Throttle_Clipped (float [0..100]), Throttle_Overtravel_Flag (bool)</td>
+      <td>32 samples show potentiometer mechanical overtravel up to 104.0%. Clipped to 100% for standard ML normalization.</td>
+    </tr>
+    <tr>
+      <td>Brake</td>
+      <td>Telemetry.Brake</td>
+      <td>Binary hydraulic line pressure indicator</td>
+      <td>Active Braking Samples</td>
+      <td>14089 (19.44%)</td>
+      <td>samples</td>
+      <td>IsBraking (bool), Brake_Int (int [0, 1])</td>
+      <td>Verified binary boolean line pressure flag. Friction braking active in 19.44% of observations.</td>
+    </tr>
+  </tbody>
+</table>
+    </div>
+</section>
+
+<section id="lap-classification">
+    <h2>6. Lap Classification &amp; DNF Handling</h2>
+    <div class="alert-box warning">
+        <strong>DNF Isolated:</strong> Sergio Perez's Lap 1 collision retirement (3,932.8m coverage) is explicitly classified as <code>DNF_OR_RETIRED</code> with <code>IsCompleteLap = False</code>. All 698 telemetry samples are preserved but segmented from flying lap cohorts.
+    </div>
+    <div class="table-container">
+        <table class="dataframe styled-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Classification Category</th>
+      <th>Total Laps</th>
+      <th>Total Telemetry Samples</th>
+      <th>Is Complete Lap</th>
+      <th>Drivers Involved</th>
+      <th>Analytical Guidance</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>COMPLETE_FLYING_LAP</td>
+      <td>38</td>
+      <td>26371</td>
+      <td>True</td>
+      <td>19 drivers (ALB, ALO, BOT, COL, DOO...)</td>
+      <td>Primary cohort for high-speed benchmark and lap-time prediction.</td>
+    </tr>
+    <tr>
+      <td>DNF_OR_RETIRED</td>
+      <td>1</td>
+      <td>698</td>
+      <td>False</td>
+      <td>1 drivers (PER)</td>
+      <td>Exclude from flying-lap ML regression models; preserve in historical event log.</td>
+    </tr>
+    <tr>
+      <td>START_LAP</td>
+      <td>19</td>
+      <td>14277</td>
+      <td>True</td>
+      <td>19 drivers (ALB, ALO, BOT, COL, DOO...)</td>
+      <td>Exclude from flying-lap ML regression models; preserve in historical event log.</td>
+    </tr>
+    <tr>
+      <td>VSC_AFFECTED_LAP</td>
+      <td>38</td>
+      <td>31130</td>
+      <td>True</td>
+      <td>19 drivers (ALB, ALO, BOT, COL, DOO...)</td>
+      <td>Exclude from flying-lap ML regression models; preserve in historical event log.</td>
+    </tr>
+  </tbody>
+</table>
+    </div>
+</section>
+
+<section id="outliers">
+    <h2>7. Non-Destructive Outlier Analysis</h2>
+    <p>Representative domain and statistical anomalies catalogued and interpreted without deletion.</p>
+    <div class="table-container">
+        <table class="dataframe styled-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Driver</th>
+      <th>Lap</th>
+      <th>Timestamp</th>
+      <th>Column</th>
+      <th>Observed Value</th>
+      <th>Detection Method</th>
+      <th>Severity</th>
+      <th>Interpretation</th>
+      <th>Recommended Treatment</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>ALB</td>
+      <td>3</td>
+      <td>0 days 00:01:00.586000</td>
+      <td>Throttle</td>
+      <td>104.00%</td>
+      <td>Domain Boundary (> 100.0%)</td>
+      <td>WARNING</td>
+      <td>Potentiometer overtravel. Valid pedal travel calibration.</td>
+      <td>Preserve raw value; normalize with Throttle_Clipped.</td>
+    </tr>
+    <tr>
+      <td>ALB</td>
+      <td>3</td>
+      <td>0 days 00:01:00.710000</td>
+      <td>Throttle</td>
+      <td>104.00%</td>
+      <td>Domain Boundary (> 100.0%)</td>
+      <td>WARNING</td>
+      <td>Potentiometer overtravel. Valid pedal travel calibration.</td>
+      <td>Preserve raw value; normalize with Throttle_Clipped.</td>
+    </tr>
+    <tr>
+      <td>ALB</td>
+      <td>3</td>
+      <td>0 days 00:01:00.891000</td>
+      <td>Throttle</td>
+      <td>104.00%</td>
+      <td>Domain Boundary (> 100.0%)</td>
+      <td>WARNING</td>
+      <td>Potentiometer overtravel. Valid pedal travel calibration.</td>
+      <td>Preserve raw value; normalize with Throttle_Clipped.</td>
+    </tr>
+    <tr>
+      <td>ALB</td>
+      <td>3</td>
+      <td>0 days 00:01:00.946000</td>
+      <td>Throttle</td>
+      <td>104.00%</td>
+      <td>Domain Boundary (> 100.0%)</td>
+      <td>WARNING</td>
+      <td>Potentiometer overtravel. Valid pedal travel calibration.</td>
+      <td>Preserve raw value; normalize with Throttle_Clipped.</td>
+    </tr>
+    <tr>
+      <td>ALB</td>
+      <td>3</td>
+      <td>0 days 00:01:01.106000</td>
+      <td>Throttle</td>
+      <td>104.00%</td>
+      <td>Domain Boundary (> 100.0%)</td>
+      <td>WARNING</td>
+      <td>Potentiometer overtravel. Valid pedal travel calibration.</td>
+      <td>Preserve raw value; normalize with Throttle_Clipped.</td>
+    </tr>
+    <tr>
+      <td>ALB</td>
+      <td>3</td>
+      <td>0 days 00:01:01.131000</td>
+      <td>Throttle</td>
+      <td>104.00%</td>
+      <td>Domain Boundary (> 100.0%)</td>
+      <td>WARNING</td>
+      <td>Potentiometer overtravel. Valid pedal travel calibration.</td>
+      <td>Preserve raw value; normalize with Throttle_Clipped.</td>
+    </tr>
+    <tr>
+      <td>ALB</td>
+      <td>3</td>
+      <td>0 days 00:01:01.427000</td>
+      <td>Throttle</td>
+      <td>104.00%</td>
+      <td>Domain Boundary (> 100.0%)</td>
+      <td>WARNING</td>
+      <td>Potentiometer overtravel. Valid pedal travel calibration.</td>
+      <td>Preserve raw value; normalize with Throttle_Clipped.</td>
+    </tr>
+    <tr>
+      <td>ALB</td>
+      <td>3</td>
+      <td>0 days 00:01:01.511000</td>
+      <td>Throttle</td>
+      <td>102.95%</td>
+      <td>Domain Boundary (> 100.0%)</td>
+      <td>WARNING</td>
+      <td>Potentiometer overtravel. Valid pedal travel calibration.</td>
+      <td>Preserve raw value; normalize with Throttle_Clipped.</td>
+    </tr>
+    <tr>
+      <td>ALB</td>
+      <td>3</td>
+      <td>0 days 00:01:01.711000</td>
+      <td>Throttle</td>
+      <td>100.45%</td>
+      <td>Domain Boundary (> 100.0%)</td>
+      <td>WARNING</td>
+      <td>Potentiometer overtravel. Valid pedal travel calibration.</td>
+      <td>Preserve raw value; normalize with Throttle_Clipped.</td>
+    </tr>
+    <tr>
+      <td>ALB</td>
+      <td>4</td>
+      <td>0 days 00:00:54.455000</td>
+      <td>Throttle</td>
+      <td>102.95%</td>
+      <td>Domain Boundary (> 100.0%)</td>
+      <td>WARNING</td>
+      <td>Potentiometer overtravel. Valid pedal travel calibration.</td>
+      <td>Preserve raw value; normalize with Throttle_Clipped.</td>
+    </tr>
+    <tr>
+      <td>PER</td>
+      <td>1</td>
+      <td>0 days 00:01:27.357000</td>
+      <td>RPM</td>
+      <td>0.0</td>
+      <td>Physical Lower Bound (RPM == 0)</td>
+      <td>REVIEW REQUIRED</td>
+      <td>Engine cut/power unit shutdown (PER Lap 1 crash coasting).</td>
+      <td>Preserve unaltered; flag DNF_OR_RETIRED in lap metadata.</td>
+    </tr>
+    <tr>
+      <td>PER</td>
+      <td>1</td>
+      <td>0 days 00:01:27.382000</td>
+      <td>RPM</td>
+      <td>0.0</td>
+      <td>Physical Lower Bound (RPM == 0)</td>
+      <td>REVIEW REQUIRED</td>
+      <td>Engine cut/power unit shutdown (PER Lap 1 crash coasting).</td>
+      <td>Preserve unaltered; flag DNF_OR_RETIRED in lap metadata.</td>
+    </tr>
+    <tr>
+      <td>PER</td>
+      <td>1</td>
+      <td>0 days 00:01:27.517000</td>
+      <td>RPM</td>
+      <td>0.0</td>
+      <td>Physical Lower Bound (RPM == 0)</td>
+      <td>REVIEW REQUIRED</td>
+      <td>Engine cut/power unit shutdown (PER Lap 1 crash coasting).</td>
+      <td>Preserve unaltered; flag DNF_OR_RETIRED in lap metadata.</td>
+    </tr>
+    <tr>
+      <td>PER</td>
+      <td>1</td>
+      <td>0 days 00:01:27.542000</td>
+      <td>RPM</td>
+      <td>0.0</td>
+      <td>Physical Lower Bound (RPM == 0)</td>
+      <td>REVIEW REQUIRED</td>
+      <td>Engine cut/power unit shutdown (PER Lap 1 crash coasting).</td>
+      <td>Preserve unaltered; flag DNF_OR_RETIRED in lap metadata.</td>
+    </tr>
+    <tr>
+      <td>PER</td>
+      <td>1</td>
+      <td>0 days 00:01:27.677000</td>
+      <td>RPM</td>
+      <td>0.0</td>
+      <td>Physical Lower Bound (RPM == 0)</td>
+      <td>REVIEW REQUIRED</td>
+      <td>Engine cut/power unit shutdown (PER Lap 1 crash coasting).</td>
+      <td>Preserve unaltered; flag DNF_OR_RETIRED in lap metadata.</td>
+    </tr>
+    <tr>
+      <td>PER</td>
+      <td>1</td>
+      <td>0 days 00:01:27.957000</td>
+      <td>RPM</td>
+      <td>0.0</td>
+      <td>Physical Lower Bound (RPM == 0)</td>
+      <td>REVIEW REQUIRED</td>
+      <td>Engine cut/power unit shutdown (PER Lap 1 crash coasting).</td>
+      <td>Preserve unaltered; flag DNF_OR_RETIRED in lap metadata.</td>
+    </tr>
+    <tr>
+      <td>PER</td>
+      <td>1</td>
+      <td>0 days 00:01:27.962000</td>
+      <td>RPM</td>
+      <td>0.0</td>
+      <td>Physical Lower Bound (RPM == 0)</td>
+      <td>REVIEW REQUIRED</td>
+      <td>Engine cut/power unit shutdown (PER Lap 1 crash coasting).</td>
+      <td>Preserve unaltered; flag DNF_OR_RETIRED in lap metadata.</td>
+    </tr>
+    <tr>
+      <td>PER</td>
+      <td>1</td>
+      <td>0 days 00:01:28.157000</td>
+      <td>RPM</td>
+      <td>0.0</td>
+      <td>Physical Lower Bound (RPM == 0)</td>
+      <td>REVIEW REQUIRED</td>
+      <td>Engine cut/power unit shutdown (PER Lap 1 crash coasting).</td>
+      <td>Preserve unaltered; flag DNF_OR_RETIRED in lap metadata.</td>
+    </tr>
+    <tr>
+      <td>PER</td>
+      <td>1</td>
+      <td>0 days 00:01:28.317000</td>
+      <td>RPM</td>
+      <td>0.0</td>
+      <td>Physical Lower Bound (RPM == 0)</td>
+      <td>REVIEW REQUIRED</td>
+      <td>Engine cut/power unit shutdown (PER Lap 1 crash coasting).</td>
+      <td>Preserve unaltered; flag DNF_OR_RETIRED in lap metadata.</td>
+    </tr>
+    <tr>
+      <td>PER</td>
+      <td>1</td>
+      <td>0 days 00:01:28.382000</td>
+      <td>RPM</td>
+      <td>0.0</td>
+      <td>Physical Lower Bound (RPM == 0)</td>
+      <td>REVIEW REQUIRED</td>
+      <td>Engine cut/power unit shutdown (PER Lap 1 crash coasting).</td>
+      <td>Preserve unaltered; flag DNF_OR_RETIRED in lap metadata.</td>
+    </tr>
+    <tr>
+      <td>ALB</td>
+      <td>1</td>
+      <td>0 days 00:00:44.076000</td>
+      <td>Speed</td>
+      <td>333.0 km/h</td>
+      <td>Domain Speed Trap (> 330 km/h)</td>
+      <td>INFO</td>
+      <td>Peak straight-line terminal velocity under DRS slipstream.</td>
+      <td>Preserve; physical high-performance peak.</td>
+    </tr>
+    <tr>
+      <td>ALB</td>
+      <td>1</td>
+      <td>0 days 00:00:44.121000</td>
+      <td>Speed</td>
+      <td>333.0 km/h</td>
+      <td>Domain Speed Trap (> 330 km/h)</td>
+      <td>INFO</td>
+      <td>Peak straight-line terminal velocity under DRS slipstream.</td>
+      <td>Preserve; physical high-performance peak.</td>
+    </tr>
+    <tr>
+      <td>ALB</td>
+      <td>1</td>
+      <td>0 days 00:00:44.201000</td>
+      <td>Speed</td>
+      <td>333.0 km/h</td>
+      <td>Domain Speed Trap (> 330 km/h)</td>
+      <td>INFO</td>
+      <td>Peak straight-line terminal velocity under DRS slipstream.</td>
+      <td>Preserve; physical high-performance peak.</td>
+    </tr>
+    <tr>
+      <td>ALB</td>
+      <td>1</td>
+      <td>0 days 00:00:44.276000</td>
+      <td>Speed</td>
+      <td>333.0 km/h</td>
+      <td>Domain Speed Trap (> 330 km/h)</td>
+      <td>INFO</td>
+      <td>Peak straight-line terminal velocity under DRS slipstream.</td>
+      <td>Preserve; physical high-performance peak.</td>
+    </tr>
+    <tr>
+      <td>ALB</td>
+      <td>4</td>
+      <td>0 days 00:00:35.530000</td>
+      <td>Speed</td>
+      <td>331.0 km/h</td>
+      <td>Domain Speed Trap (> 330 km/h)</td>
+      <td>INFO</td>
+      <td>Peak straight-line terminal velocity under DRS slipstream.</td>
+      <td>Preserve; physical high-performance peak.</td>
+    </tr>
+    <tr>
+      <td>ALB</td>
+      <td>1</td>
+      <td>0 days 00:00:26.356000</td>
+      <td>AccelerationX</td>
+      <td>-31.51 m/s^2</td>
+      <td>Statistical IQR Extreme Fence [3.0*IQR]</td>
+      <td>INFO</td>
+      <td>High instantaneous transient chassis load (kerb strike / threshold braking).</td>
+      <td>Preserve; essential for vehicle balance evaluation.</td>
+    </tr>
+    <tr>
+      <td>ALB</td>
+      <td>1</td>
+      <td>0 days 00:00:26.516000</td>
+      <td>AccelerationX</td>
+      <td>-29.68 m/s^2</td>
+      <td>Statistical IQR Extreme Fence [3.0*IQR]</td>
+      <td>INFO</td>
+      <td>High instantaneous transient chassis load (kerb strike / threshold braking).</td>
+      <td>Preserve; essential for vehicle balance evaluation.</td>
+    </tr>
+    <tr>
+      <td>ALB</td>
+      <td>1</td>
+      <td>0 days 00:00:26.877000</td>
+      <td>AccelerationX</td>
+      <td>-28.85 m/s^2</td>
+      <td>Statistical IQR Extreme Fence [3.0*IQR]</td>
+      <td>INFO</td>
+      <td>High instantaneous transient chassis load (kerb strike / threshold braking).</td>
+      <td>Preserve; essential for vehicle balance evaluation.</td>
+    </tr>
+    <tr>
+      <td>ALB</td>
+      <td>1</td>
+      <td>0 days 00:00:27.022000</td>
+      <td>AccelerationX</td>
+      <td>-31.63 m/s^2</td>
+      <td>Statistical IQR Extreme Fence [3.0*IQR]</td>
+      <td>INFO</td>
+      <td>High instantaneous transient chassis load (kerb strike / threshold braking).</td>
+      <td>Preserve; essential for vehicle balance evaluation.</td>
+    </tr>
+    <tr>
+      <td>ALB</td>
+      <td>1</td>
+      <td>0 days 00:00:27.117000</td>
+      <td>AccelerationX</td>
+      <td>-29.66 m/s^2</td>
+      <td>Statistical IQR Extreme Fence [3.0*IQR]</td>
+      <td>INFO</td>
+      <td>High instantaneous transient chassis load (kerb strike / threshold braking).</td>
+      <td>Preserve; essential for vehicle balance evaluation.</td>
+    </tr>
+  </tbody>
+</table>
+    </div>
+</section>
+
+<section id="changes">
+    <h2>8. Complete Preprocessing Transformation Log</h2>
+    <p>Inventory of every derived feature and companion column introduced during Phase 4.</p>
+    <div class="table-container">
+        <table class="dataframe styled-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Dataset</th>
+      <th>Original Column</th>
+      <th>Derived Feature Name</th>
+      <th>Data Type</th>
+      <th>Transformation Logic</th>
+      <th>Purpose</th>
+      <th>Affected Records</th>
+      <th>Justification</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Telemetry</td>
+      <td>DistanceToDriverAhead</td>
+      <td>IsLeadingRace</td>
+      <td>bool</td>
+      <td>NOR Laps 2-5 or DistanceToDriverAhead is NaN -> True; other drivers -> False</td>
+      <td>Encode race leader status without distorting gap distribution with zero or mean imputation</td>
+      <td>2957</td>
+      <td>DistanceToDriverAhead is structurally missing (MNAR) for the race leader.</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>DriverAhead</td>
+      <td>IsTimingLineBoundary</td>
+      <td>bool</td>
+      <td>Distance between -1.0m and 25.0m -> True</td>
+      <td>Flag sector timing loop boundary resets</td>
+      <td>721</td>
+      <td>472 non-NOR nulls cluster within 25m of the start-finish line.</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>Distance</td>
+      <td>Distance_Corrected</td>
+      <td>float64</td>
+      <td>Lap 1 pre-line negative offsets clamped to 0.0m; monotonic non-decreasing progression enforced</td>
+      <td>Calibrate lap start coordinates to 0.0m and remove sub-millimetre floating point jitter</td>
+      <td>155</td>
+      <td>Start-grid slots are behind timing line; circuit distance progression within a lap is strictly forward.</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>Distance</td>
+      <td>Distance_Anomaly_Flag</td>
+      <td>bool</td>
+      <td>Raw distance < 0.0m or consecutive delta < 0.0m -> True</td>
+      <td>Audit trail for spatial adjustments</td>
+      <td>155</td>
+      <td>Preserves transparency for every spatial point where calibration occurred.</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>Throttle</td>
+      <td>Throttle_Clipped</td>
+      <td>float64</td>
+      <td>np.clip(Throttle, 0.0, 100.0)</td>
+      <td>Standardize potentiometer overtravel values for uniform machine learning normalization</td>
+      <td>32</td>
+      <td>32 samples show mechanical sensor overtravel up to 104.0%.</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>Throttle</td>
+      <td>Throttle_Overtravel_Flag</td>
+      <td>bool</td>
+      <td>Throttle > 100.0 -> True</td>
+      <td>Audit indicator for pedal travel overtravel</td>
+      <td>32</td>
+      <td>Maintains distinction between true 100% full throttle and sensor overtravel.</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>Brake</td>
+      <td>IsBraking</td>
+      <td>bool</td>
+      <td>Brake.astype(bool)</td>
+      <td>Explicit boolean braking flag</td>
+      <td>14089</td>
+      <td>Confirms boolean line pressure indicator semantics.</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>Brake</td>
+      <td>Brake_Int</td>
+      <td>int64</td>
+      <td>Brake.astype(int)</td>
+      <td>Integer [0, 1] representation for numerical matrix and regression baselines</td>
+      <td>14089</td>
+      <td>Required for downstream linear algebra and ML modeling frameworks.</td>
+    </tr>
+    <tr>
+      <td>Telemetry & Laps</td>
+      <td>LapNumber, Distance, LapTime</td>
+      <td>LapClassification</td>
+      <td>object</td>
+      <td>Rule-based taxonomy: COMPLETE_FLYING_LAP, START_LAP, VSC_AFFECTED_LAP, DNF_OR_RETIRED</td>
+      <td>Segment laps by competitive condition and completion state</td>
+      <td>72476</td>
+      <td>Prevents invalid pooling of standing starts, safety car periods, and crash retirements.</td>
+    </tr>
+    <tr>
+      <td>Telemetry & Laps</td>
+      <td>LapNumber, Distance, LapTime</td>
+      <td>IsCompleteLap</td>
+      <td>bool</td>
+      <td>Distance Coverage >= 4500m and LapTime is not NaT -> True; otherwise False</td>
+      <td>Fast filter for ML training cohorts</td>
+      <td>698</td>
+      <td>Perez Lap 1 retirement (3932.8m) must not be treated as a full racing lap.</td>
+    </tr>
+    <tr>
+      <td>Telemetry</td>
+      <td>All Kinematic Channels</td>
+      <td>IsOutlierFlag</td>
+      <td>bool</td>
+      <td>Flags domain boundaries (overtravel, zero RPM shutdown, G-force spikes)</td>
+      <td>Non-destructive outlier tagging</td>
+      <td>65</td>
+      <td>Ensures downstream models can filter or weight extreme telemetry observations without deleting data.</td>
+    </tr>
+  </tbody>
+</table>
+    </div>
+</section>
+
+<section id="artifacts">
+    <h2>9. Generated Data Artifacts</h2>
+    <ul>
+        <li><strong>Validated Parquet:</strong> <code>data/processed/abu_dhabi_2024/validated_telemetry.parquet</code></li>
+        <li><strong>Processed Parquet:</strong> <code>data/processed/abu_dhabi_2024/processed_telemetry.parquet</code> (72,476 rows x 35 columns)</li>
+        <li><strong>Processed Race Laps:</strong> <code>data/processed/abu_dhabi_2024/processed_race_laps.parquet</code> (1,035 rows x 48 columns)</li>
+        <li><strong>Lap Classification Dataset:</strong> <code>data/processed/abu_dhabi_2024/lap_classification.csv</code> (96 driver-laps)</li>
+        <li><strong>Spatial Resampled Slices:</strong> <code>data/processed/abu_dhabi_2024/resampled_telemetry.parquet</code> (1.0m grid)</li>
+    </ul>
+</section>
+
+<footer>
+    <p>F1 Telemetry Intelligence &bull; Phase 4 Data Validation and Preprocessing &bull; 100% Raw Data Preserved</p>
+</footer>
+
+</div>
+</body>
+</html>

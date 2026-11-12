@@ -1,0 +1,23 @@
+Driver,LapNumber,Repeated Type,Repeated Rows Count,Sample Distance Values,Interpretation
+ALB,1,Distance,2,[np.float64(0.0)],Legitimate stationary/start grid or sensor plateau; do not drop.
+ALO,1,Distance,3,[np.float64(0.0)],Legitimate stationary/start grid or sensor plateau; do not drop.
+BOT,1,Distance,2,[np.float64(0.0)],Legitimate stationary/start grid or sensor plateau; do not drop.
+COL,1,Distance,2,[np.float64(0.0)],Legitimate stationary/start grid or sensor plateau; do not drop.
+COL,4,Distance,18,"[np.float64(201.1686111111111), np.float64(202.9019444444444), np.float64(203.52416666666664)]",Legitimate stationary/start grid or sensor plateau; do not drop.
+DOO,1,Distance,2,[np.float64(0.0)],Legitimate stationary/start grid or sensor plateau; do not drop.
+GAS,1,Distance,3,[np.float64(0.0)],Legitimate stationary/start grid or sensor plateau; do not drop.
+HAM,1,Distance,3,[np.float64(0.0)],Legitimate stationary/start grid or sensor plateau; do not drop.
+HUL,1,Distance,2,[np.float64(0.0)],Legitimate stationary/start grid or sensor plateau; do not drop.
+LAW,1,Distance,3,[np.float64(0.0)],Legitimate stationary/start grid or sensor plateau; do not drop.
+LEC,1,Distance,3,[np.float64(0.0)],Legitimate stationary/start grid or sensor plateau; do not drop.
+MAG,1,Distance,2,[np.float64(0.0)],Legitimate stationary/start grid or sensor plateau; do not drop.
+NOR,1,Distance,2,[np.float64(0.0)],Legitimate stationary/start grid or sensor plateau; do not drop.
+PER,1,Distance,2,[np.float64(0.0)],Legitimate stationary/start grid or sensor plateau; do not drop.
+PIA,1,Distance,8,"[np.float64(0.0), np.float64(390.56555555555536)]",Legitimate stationary/start grid or sensor plateau; do not drop.
+PIA,5,Distance,18,[np.float64(136.06111111111107)],Legitimate stationary/start grid or sensor plateau; do not drop.
+RUS,1,Distance,2,[np.float64(0.0)],Legitimate stationary/start grid or sensor plateau; do not drop.
+SAI,1,Distance,3,[np.float64(0.0)],Legitimate stationary/start grid or sensor plateau; do not drop.
+STR,1,Distance,2,[np.float64(0.0)],Legitimate stationary/start grid or sensor plateau; do not drop.
+TSU,1,Distance,3,[np.float64(0.0)],Legitimate stationary/start grid or sensor plateau; do not drop.
+VER,1,Distance,2,[np.float64(0.0)],Legitimate stationary/start grid or sensor plateau; do not drop.
+ZHO,1,Distance,2,[np.float64(0.0)],Legitimate stationary/start grid or sensor plateau; do not drop.

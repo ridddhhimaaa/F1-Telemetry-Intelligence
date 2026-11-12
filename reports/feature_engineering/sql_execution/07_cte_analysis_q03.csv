@@ -1,0 +1,20 @@
+driver_id,team,avg_braking_time_s,avg_peak_decel_g,max_decel_g,decel_g_vs_fleet
+LEC,Ferrari,18.56,5.72,6.75,1.09
+STR,Aston Martin,14.26,5.48,5.62,0.85
+ALO,Aston Martin,17.5,5.31,6.27,0.68
+COL,Williams,19.73,5.21,5.85,0.58
+DOO,Alpine,16.61,4.99,5.86,0.36
+HUL,Haas F1 Team,16.19,4.98,5.6,0.35
+GAS,Alpine,13.29,4.89,4.93,0.26
+RUS,Mercedes,15.85,4.77,5.02,0.14
+MAG,Haas F1 Team,15.63,4.74,4.9,0.11
+BOT,Kick Sauber,16.67,4.64,5.46,0.01
+LAW,RB,14.17,4.63,4.64,0.0
+SAI,Ferrari,15.72,4.37,4.42,-0.26
+ALB,Williams,17.23,4.29,4.38,-0.34
+TSU,RB,15.23,4.23,4.45,-0.4
+HAM,Mercedes,18.24,4.13,4.44,-0.5
+ZHO,Kick Sauber,17.81,4.11,4.14,-0.52
+PIA,McLaren,19.55,3.98,3.99,-0.65
+NOR,McLaren,12.84,3.82,4.29,-0.81
+VER,Red Bull Racing,14.56,3.74,4.03,-0.89

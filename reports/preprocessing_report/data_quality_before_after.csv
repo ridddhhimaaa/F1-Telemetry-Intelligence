@@ -1,0 +1,8 @@
+Metric Category,Quality Metric,Before (Raw),After (Processed),Change / Delta,Status,Analytical Significance
+Telemetry Volume,Total Records Preserved,"72,476","72,476",0 records deleted (100% preserved),PASS,Zero records dropped; full source fidelity preserved.
+Telemetry Dimensionality,Total Columns Count,26 columns,37 columns,+11 derived features,PASS,26 raw columns preserved; 9 explicit companion features added.
+Missing Value Strategy,DistanceToDriverAhead Treatment,"2,957 unflagged NaNs","2,957 NaNs preserved + IsLeadingRace derived",Explicit boolean flag derived,PASS,Structural missingness encoded without artificial imputation distortion.
+Spatial Consistency,Negative Starting Grid Offsets,44 negative distance samples,0 negative samples in Distance_Corrected,44 points calibrated,PASS,Lap 1 distance calibrated to start at 0.0m at start-finish line.
+Spatial Monotonicity,Distance Non-Monotonic Laps,22 laps with negative increments,0 non-monotonic laps in Distance_Corrected,22 laps smoothed,PASS,Floating point jitter removed; strictly forward progression guaranteed.
+Signal Normalization,Throttle Overtravel Normalization,32 samples > 100% (max 104%),Max 100.0% in Throttle_Clipped + Overtravel Flag,32 samples normalized,PASS,Safe bounded [0..100] signal available for machine learning.
+Lap Segmentation,DNF / Incomplete Lap Flagging,Implicit in coverage / missing LapTime,Explicit LapClassification + IsCompleteLap,1 DNF lap + 19 start laps explicitly flagged,PASS,Perez Lap 1 crash isolated from clean flying lap training sets.

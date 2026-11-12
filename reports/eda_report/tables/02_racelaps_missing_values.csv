@@ -1,0 +1,20 @@
+Entity,Column,NullCount,NullPercentage,EngineeringDomainRootCause
+RaceLaps,LapTime,2,0.193,Crash retirement: Sergio Perez Lap 1 did not complete lap
+RaceLaps,PitOutTime,1007,97.295,Structural: Cars only enter pitlane 1-2 times per race
+RaceLaps,PitInTime,1005,97.101,Structural: Cars only enter pitlane 1-2 times per race
+RaceLaps,Sector1Time,21,2.029,Unknown
+RaceLaps,Sector2Time,2,0.193,Unknown
+RaceLaps,Sector3Time,2,0.193,Unknown
+RaceLaps,Sector1SessionTime,25,2.415,Unknown
+RaceLaps,Sector2SessionTime,2,0.193,Unknown
+RaceLaps,Sector3SessionTime,2,0.193,Unknown
+RaceLaps,SpeedI1,2,0.193,Unknown
+RaceLaps,SpeedI2,2,0.193,Unknown
+RaceLaps,SpeedFL,32,3.092,Unknown
+RaceLaps,SpeedST,2,0.193,Unknown
+RaceLaps,Position,2,0.193,Unknown
+RaceLaps,DeletedReason,1008,97.391,Structural: Populated only upon track limits breach deletion
+RaceLaps,LapTimeSeconds,2,0.193,Unknown
+RaceLaps,ms3,1,0.097,Unknown
+RaceLaps,LapClassification,939,90.725,Unknown
+RaceLaps,IsCompleteLap,939,90.725,Unknown

@@ -1,0 +1,4 @@
+SplittingStrategy,AdjacentNeighborLeakage,GeneralizationRisk,DeploymentSuitability
+Random Row Split (80/20),96.12% of test samples have t±0.125s neighbor in train,"Catastrophic optimism bias (interpolates consecutive points, ACF=0.997)",STRICTLY FORBIDDEN
+"GroupKFold by (Driver, LapNumber)",0.00% (Entire 90-second laps isolated),None; preserves temporal integrity of intra-lap trajectory,MANDATED BENCHMARK
+GroupKFold by Driver (Leave-One-Driver-Out),0.00% (Entire vehicle & driver isolated),Tests cross-driver vehicle transferability,RECOMMENDED FOR DRIVER AGNOSTIC MODELS

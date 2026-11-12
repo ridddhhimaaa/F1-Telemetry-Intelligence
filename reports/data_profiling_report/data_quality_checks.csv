@@ -1,0 +1,16 @@
+Check Name,Dataset / Column,Affected Records,Affected Percentage (%),Severity,Result,Explanation
+Speed: Non-Negative Validation,Telemetry / Speed,0,0.0,INFO,PASS,Telemetry speed must be non-negative (>= 0 km/h).
+Speed: Max Realistic Velocity (< 360 km/h),Telemetry / Speed,0,0.0,INFO,PASS,Speed exceeds modern Yas Marina top-speed envelope (> 360 km/h). Observed max: 337.0 km/h.
+Speed: Stationary Observations (Speed == 0),Telemetry / Speed,184,0.2539,INFO,PASS,Cars stationary at start grid on Lap 1 before lights out. Fully valid physical state.
+Throttle: Non-Negative Validation,Telemetry / Throttle,0,0.0,INFO,PASS,Throttle input cannot be negative.
+Throttle: Range Upper Bound (<= 100%),Telemetry / Throttle,32,0.0442,REVIEW REQUIRED,WARNING,Throttle values up to 104.0% observed (sensor pedal travel calibration overtravel).
+Brake: Boolean / Binary State Representation,Telemetry / Brake,0,0.0,INFO,PASS,Brake column dtype is bool; binary values verified (2 unique states).
+RPM: Non-Negative Validation,Telemetry / RPM,0,0.0,INFO,PASS,Engine RPM cannot be negative.
+RPM: Zero RPM Observations,Telemetry / RPM,33,0.0455,REVIEW REQUIRED,WARNING,33 zero RPM records detected. Verified: all 33 rows belong to PER Lap 1 post-crash engine shutdown.
+"RPM: Realistic ICE Rev Limit (<= 15,000 RPM)",Telemetry / RPM,0,0.0,INFO,PASS,"F1 1.6L V6 Turbo Hybrid regulatory rev ceiling is 15,000 RPM (practical limit ~12,500-13,200). Observed max: 13,090 RPM."
+Gear: Forward Range Validation (Gears 1 to 8),Telemetry / nGear,0,0.0,INFO,PASS,Forward transmission gears span 1 to 8. Reverse and neutral not observed in race telemetry.
+Distance: Negative Offset Check,Telemetry / Distance,44,0.0607,REVIEW REQUIRED,WARNING,44 samples have negative distance (minimum: -0.0899m). Occurs at Lap 1 starting grid slots.
+Distance: Lap Monotonicity Check,Telemetry / Distance,22,22.92,REVIEW REQUIRED,WARNING,22 out of 96 laps exhibit non-monotonic distance steps (20 laps at Lap 1 line crossing + 2 jitter laps).
+Time: Strict Monotonic Progression,Telemetry / Time,0,0.0,INFO,PASS,Time is 100% strictly monotonically increasing across all 96 driver-lap telemetry series.
+Cross-Dataset: Telemetry Drivers in Race Laps,Telemetry vs Race Laps / Driver,0,0.0,INFO,PASS,All 20 telemetry drivers exist in the race-laps dataset. Perfect alignment.
+Cross-Dataset: Driver-Lap Alignment,"Telemetry vs Race Laps / (Driver, LapNumber)",0,0.0,INFO,PASS,All 96 telemetry driver-laps exist in the race-laps dataset (100% matched).

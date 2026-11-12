@@ -1,0 +1,39 @@
+driver_id,driver_name,team,lap_number,lap_time_s,speed_mean_kmh,speed_max_kmh,full_throttle_pct,braking_duration_s
+SAI,Carlos Sainz,Ferrari,4,88.995,211.49,309.0,50.94,15.5
+NOR,Lando Norris,McLaren,4,89.01,210.62,306.0,51.08,12.716
+NOR,Lando Norris,McLaren,5,89.104,209.03,307.0,49.7,12.961
+MAG,Kevin Magnussen,Haas F1 Team,4,89.202,212.64,337.0,54.43,13.853
+SAI,Carlos Sainz,Ferrari,5,89.25,210.21,310.0,51.65,15.947
+LEC,Charles Leclerc,Ferrari,4,89.273,211.51,335.0,54.43,18.528
+HUL,Nico Hulkenberg,Haas F1 Team,4,89.348,213.29,337.0,52.82,16.939
+GAS,Pierre Gasly,Alpine,4,89.406,210.81,326.0,52.1,12.939
+COL,Franco Colapinto,Williams,5,89.411,212.08,313.0,49.49,14.664
+ALO,Fernando Alonso,Aston Martin,4,89.434,211.61,333.0,56.87,17.214
+RUS,George Russell,Mercedes,4,89.488,211.26,327.0,52.91,15.869
+VER,Max Verstappen,Red Bull Racing,4,89.504,209.99,318.0,52.62,14.18
+GAS,Pierre Gasly,Alpine,5,89.611,209.82,308.0,55.37,13.642
+HAM,Lewis Hamilton,Mercedes,4,89.666,209.87,327.0,50.43,18.063
+STR,Lance Stroll,Aston Martin,4,89.685,210.82,317.0,53.56,14.709
+HAM,Lewis Hamilton,Mercedes,5,89.733,210.24,333.0,52.29,18.424
+LAW,Liam Lawson,RB,4,89.738,209.33,316.0,50.29,14.696
+LEC,Charles Leclerc,Ferrari,5,89.753,210.15,332.0,53.11,18.588
+RUS,George Russell,Mercedes,5,89.796,209.46,332.0,53.33,15.831
+VER,Max Verstappen,Red Bull Racing,5,89.813,211.3,335.0,51.25,14.947
+LAW,Liam Lawson,RB,5,89.869,210.02,318.0,52.95,13.653
+BOT,Valtteri Bottas,Kick Sauber,4,89.944,208.78,318.0,56.94,16.377
+ZHO,Guanyu Zhou,Kick Sauber,4,89.966,208.76,331.0,51.59,18.797
+HUL,Nico Hulkenberg,Haas F1 Team,5,89.968,209.36,327.0,51.92,15.438
+MAG,Kevin Magnussen,Haas F1 Team,5,90.04,208.77,329.0,52.36,17.397
+STR,Lance Stroll,Aston Martin,5,90.05,210.35,311.0,53.83,13.813
+ALB,Alexander Albon,Williams,4,90.06,207.88,336.0,47.76,17.024
+ALO,Fernando Alonso,Aston Martin,5,90.084,209.1,328.0,54.49,17.778
+TSU,Yuki Tsunoda,RB,4,90.115,208.68,316.0,54.68,15.43
+DOO,Jack Doohan,Alpine,4,90.198,208.35,329.0,54.47,16.766
+TSU,Yuki Tsunoda,RB,5,90.343,206.21,315.0,53.72,15.035
+ALB,Alexander Albon,Williams,5,90.369,205.78,336.0,44.15,17.44
+DOO,Jack Doohan,Alpine,5,90.457,205.97,329.0,55.02,16.459
+ZHO,Guanyu Zhou,Kick Sauber,5,90.462,206.73,324.0,49.63,16.821
+BOT,Valtteri Bottas,Kick Sauber,5,90.474,206.65,318.0,54.9,16.956
+PIA,Oscar Piastri,McLaren,4,92.201,203.35,316.0,44.35,16.799
+PIA,Oscar Piastri,McLaren,5,110.887,171.66,302.0,40.71,22.308
+COL,Franco Colapinto,Williams,4,115.146,163.42,311.0,29.28,24.788

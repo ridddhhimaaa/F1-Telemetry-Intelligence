@@ -1,0 +1,5 @@
+Classification,DriverLapSequences,Percentage,TotalTelemetrySamples
+VSC_AFFECTED_LAP,38,39.58,31130
+COMPLETE_FLYING_LAP,38,39.58,26371
+START_LAP,19,19.79,14277
+DNF_OR_RETIRED,1,1.04,698
